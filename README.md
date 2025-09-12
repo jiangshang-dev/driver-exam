@@ -35,15 +35,14 @@
 - 菜单管理、定时任务、参数管理、字典管理、系统日志，没有数据权限
 - 业务功能，按照用户数据权限，查询、操作数据【没有本部门数据权限，也能查询本人数据】
 
-<br> 
-
+<br>
 
 **项目结构**
 ```
-renren-security
-├─renren-common     公共模块
-│ 
-├─renren-admin      管理后台
+driver-exam
+├─driver-exam-common     公共模块
+├─driver-exam-dynamic-datasource   多数据源模块
+├─driver-exam-admin      管理后台
 │    ├─db  数据库SQL脚本
 │    │ 
 │    ├─modules  模块
@@ -58,17 +57,22 @@ renren-security
 │        ├─public  静态资源
 │        └─application.yml   全局配置文件
 │       
-│ 
-├─renren-api        API服务
-│ 
-├─renren-generator  代码生成器
-│        └─resources 
-│           ├─mapper   MyBatis文件
-│           ├─template 代码生成器模板（可增加或修改相应模板）
-│           ├─application.yml    全局配置文件
-│           └─generator.properties   代码生成器，配置文件
-│ 
-├─renren-ui        Vue3前端工程
+├─driver-exam-api        API服务
+├─driver-exam-generator  代码生成器
+├─driver-exam-vod        视频点播服务模块（新增）
+│        ├─src/main/java/com/heima/vod
+│        │   ├─config/   配置类
+│        │   ├─controller/ 控制器
+│        │   ├─dao/      数据访问对象
+│        │   ├─entity/   实体类
+│        │   ├─service/  服务接口
+│        │   │   └─impl/ 服务实现
+│        │   └─DriverExamVodApplication.java  启动类
+│        └─src/main/resources/
+│            ├─db/       数据库脚本
+│            ├─mapper/   MyBatis映射文件
+│            └─application.yml   配置文件
+└─driver-exam-ui         Vue3前端工程
 ```
 
 <br>
@@ -94,16 +98,17 @@ renren-security
 - 达梦8
 <br>
 
-
 **本地部署**
 - 通过git下载源码
-- 创建数据库renren_security，数据库编码为UTF-8
+- 创建数据库driver_exam，数据库编码为UTF-8
 - 执行db/mysql.sql文件，初始化数据
 - 修改application-dev.yml文件，更新MySQL账号和密码
-- 在renren-security目录下，执行mvn clean install
-- IDEA运行AdminApplication.java，则可启动项目【renren-admin】
-- renren-admin访问路径：http://localhost:8080/renren-admin
-- swagger文档路径：http://localhost:8080/renren-admin/doc.html
+- 在driver-exam目录下，执行mvn clean install
+- IDEA运行AdminApplication.java，则可启动项目【driver-exam-admin】
+- driver-exam-admin访问路径：http://localhost:8080/driver-exam-admin
+- swagger文档路径：http://localhost:8080/driver-exam-admin/doc.html
+- 启动视频点播服务模块：运行DriverExamVodApplication.java
+- 视频点播服务访问路径：http://localhost:8082/
 - 再启动前端工程
 - 账号密码：admin/admin
 <br>
@@ -123,4 +128,3 @@ renren-security
 - [人人开源](https://www.renren.io)：https://www.renren.io
 - 如需关注项目最新动态，请Watch、Star项目，同时也是对项目最好的支持
 <br>
-

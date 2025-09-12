@@ -1,0 +1,271 @@
+package com.heima.modules.vod.controller;
+
+import com.aliyuncs.vod.model.v20170321.*;
+import com.heima.common.utils.Result;
+import com.heima.vod.entity.VideoInfoEntity;
+import com.heima.vod.entity.VodConfigEntity;
+import com.heima.vod.service.AliyunVodService;
+import com.heima.vod.service.VideoInfoService;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 视频点播控制器
+ */
+@RestController
+@RequestMapping("/vod")
+public class VodController {
+    
+    @Resource
+    private AliyunVodService aliyunVodService;
+    
+    @Resource
+    private VideoInfoService videoInfoService;
+    
+    /**
+     * 获取视频上传地址和凭证
+     * @param title 视频标题
+     * @param fileName 文件名
+     * @param fileSize 文件大小
+     * @return 上传地址和凭证
+     */
+    @PostMapping("/upload/auth")
+    public Result<Map<String, Object>> createUploadVideo(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String fileName,
+            @RequestParam(required = false) Long fileSize) {
+
+        try {
+            // 如果通过表单参数没有获取到值，尝试从请求体获取
+            if (title == null || fileName == null) {
+                return new Result<Map<String, Object>>().error("缺少必需参数");
+            }
+
+            CreateUploadVideoResponse response = aliyunVodService.createUploadVideo(title, fileName, fileSize);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("videoId", response.getVideoId());
+            result.put("uploadAddress", response.getUploadAddress());
+            result.put("uploadAuth", response.getUploadAuth());
+
+            // 保存视频信息到数据库
+            VideoInfoEntity videoInfo = new VideoInfoEntity();
+            videoInfo.setVideoId(response.getVideoId());
+            videoInfo.setTitle(title);
+            videoInfo.setStatus("Uploading");
+            if (fileSize != null) {
+                videoInfo.setSize(fileSize);
+            }
+            videoInfoService.createVideoInfo(videoInfo);
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 创建一个内部类用于接收JSON数据
+     */
+    public static class UploadAuthRequest {
+        private String title;
+        private String fileName;
+        private Long fileSize;
+        
+        // Getters and setters
+        public String getTitle() {
+            return title;
+        }
+        
+        public void setTitle(String title) {
+            this.title = title;
+        }
+        
+        public String getFileName() {
+            return fileName;
+        }
+        
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+        
+        public Long getFileSize() {
+            return fileSize;
+        }
+        
+        public void setFileSize(Long fileSize) {
+            this.fileSize = fileSize;
+        }
+    }
+    
+    /**
+     * 获取视频上传地址和凭证 (支持JSON格式请求体)
+     * @param request 请求参数
+     * @return 上传地址和凭证
+     */
+    @PostMapping("/upload/auth/json")
+    public Result<Map<String, Object>> createUploadVideoJson(@RequestBody UploadAuthRequest request) {
+        try {
+            if (request.getTitle() == null || request.getFileName() == null) {
+                return new Result<Map<String, Object>>().error("缺少必需参数");
+            }
+
+            CreateUploadVideoResponse response = aliyunVodService.createUploadVideo(
+                request.getTitle(), 
+                request.getFileName(), 
+                request.getFileSize()
+            );
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("videoId", response.getVideoId());
+            result.put("uploadAddress", response.getUploadAddress());
+            result.put("uploadAuth", response.getUploadAuth());
+
+            // 保存视频信息到数据库
+            VideoInfoEntity videoInfo = new VideoInfoEntity();
+            videoInfo.setVideoId(response.getVideoId());
+            videoInfo.setTitle(request.getTitle());
+            videoInfo.setStatus("Uploading");
+            if (request.getFileSize() != null) {
+                videoInfo.setSize(request.getFileSize());
+            }
+            videoInfoService.createVideoInfo(videoInfo);
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 刷新视频上传凭证
+     * @param videoId 视频ID
+     * @return 新的上传凭证
+     */
+    @PostMapping("/upload/refresh")
+    public Result<Map<String, Object>> refreshUploadVideo(@RequestParam String videoId) {
+        try {
+            RefreshUploadVideoResponse response = aliyunVodService.refreshUploadVideo(videoId);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("uploadAddress", response.getUploadAddress());
+            result.put("uploadAuth", response.getUploadAuth());
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 获取视频播放地址
+     * @param videoId 视频ID
+     * @return 播放地址
+     */
+    @GetMapping("/play/info")
+    public Result<Map<String, Object>> getPlayInfo(@RequestParam String videoId) {
+        try {
+            GetPlayInfoResponse response = aliyunVodService.getPlayInfo(videoId);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("videoBase", response.getVideoBase());
+            result.put("playInfoList", response.getPlayInfoList());
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 获取视频播放凭证
+     * @param videoId 视频ID
+     * @return 播放凭证
+     */
+    @GetMapping("/play/auth")
+    public Result<Map<String, Object>> getVideoPlayAuth(@RequestParam String videoId) {
+        try {
+            GetVideoPlayAuthResponse response = aliyunVodService.getVideoPlayAuth(videoId);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("playAuth", response.getPlayAuth());
+            result.put("videoMeta", response.getVideoMeta());
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 删除视频
+     * @param videoId 视频ID
+     * @return 删除结果
+     */
+    @DeleteMapping("/video")
+    public Result<Map<String, Object>> deleteVideo(@RequestParam String videoId) {
+        try {
+            DeleteVideoResponse response = aliyunVodService.deleteVideo(videoId);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("message", "删除成功");
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 更新视频信息
+     * @param videoId 视频ID
+     * @param title 标题
+     * @param description 描述
+     * @param tags 标签
+     * @return 更新结果
+     */
+    @PutMapping("/video")
+    public Result<Map<String, Object>> updateVideoInfo(
+            @RequestParam String videoId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String tags) {
+        
+        try {
+            UpdateVideoInfoResponse response = aliyunVodService.updateVideoInfo(videoId, title, description, tags);
+            
+            // 更新数据库中的视频信息
+            VideoInfoEntity videoInfo = new VideoInfoEntity();
+            videoInfo.setVideoId(videoId);
+            if (title != null) {
+                videoInfo.setTitle(title);
+            }
+            if (description != null) {
+                videoInfo.setDescription(description);
+            }
+            if (tags != null) {
+                videoInfo.setTags(tags);
+            }
+            videoInfoService.updateByVideoId(videoInfo);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("message", "更新成功");
+
+            return new Result<Map<String, Object>>().ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Map<String, Object>>().error(e.getMessage());
+        }
+    }
+}

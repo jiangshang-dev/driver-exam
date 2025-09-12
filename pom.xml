@@ -21,6 +21,7 @@
         <module>driver-exam-admin</module>
         <module>driver-exam-api</module>
         <module>driver-exam-generator</module>
+        <module>driver-exam-vod</module>
     </modules>
 
     <properties>

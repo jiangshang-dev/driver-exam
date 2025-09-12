@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 驾考通</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="page-title">个人中心</h1>
+            <i class="fas fa-cog settings-btn" onclick="goToSettings()"></i>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <!-- 用户信息卡片 -->
+        <section class="user-card">
+            <div class="user-avatar">
+                <img src="https://via.placeholder.com/80x80/667eea/white?text=用户" alt="用户头像">
+                <div class="vip-badge">VIP</div>
+            </div>
+            <div class="user-info">
+                <h3 class="username">驾考学员</h3>
+                <p class="user-level">高级会员</p>
+                <div class="user-stats">
+                    <span>学习天数: 45天</span>
+                    <span>正确率: 89%</span>
+                </div>
+            </div>
+            <div class="login-btn" onclick="showLoginModal()">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>登录</span>
+            </div>
+        </section>
+
+        <!-- 学习进度 -->
+        <section class="study-progress">
+            <h2 class="section-title">学习进度</h2>
+            <div class="progress-card">
+                <div class="progress-item">
+                    <div class="progress-info">
+                        <span class="subject-name">科目一</span>
+                        <span class="progress-percent">75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span>已练习: 750/1000题</span>
+                        <span>正确率: 92%</span>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-info">
+                        <span class="subject-name">科目四</span>
+                        <span class="progress-percent">45%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span>已练习: 225/500题</span>
+                        <span>正确率: 87%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快捷功能 -->
+        <section class="quick-functions">
+            <h2 class="section-title">我的功能</h2>
+            <div class="function-grid">
+                <div class="function-item" onclick="goToFavorites()">
+                    <i class="fas fa-heart"></i>
+                    <span>我的收藏</span>
+                    <div class="function-badge">156</div>
+                </div>
+                <div class="function-item" onclick="goToWrongQuestions()">
+                    <i class="fas fa-times-circle"></i>
+                    <span>错题本</span>
+                    <div class="function-badge">23</div>
+                </div>
+                <div class="function-item" onclick="goToPoints()">
+                    <i class="fas fa-coins"></i>
+                    <span>我的积分</span>
+                    <div class="function-badge">2580</div>
+                </div>
+                <div class="function-item" onclick="goToLikes()">
+                    <i class="fas fa-thumbs-up"></i>
+                    <span>我的点赞</span>
+                    <div class="function-badge">89</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 会员中心 -->
+        <section class="vip-section">
+            <div class="vip-card">
+                <div class="vip-header">
+                    <i class="fas fa-crown"></i>
+                    <h3>VIP会员特权</h3>
+                </div>
+                <div class="vip-content">
+                    <p>您的VIP会员将于 2024-12-31 到期</p>
+                    <div class="vip-benefits">
+                        <span>✓ 无限制学习</span>
+                        <span>✓ 专业解析</span>
+                        <span>✓ 优先客服</span>
+                    </div>
+                </div>
+                <button class="vip-renew-btn" onclick="renewVip()">续费会员</button>
+            </div>
+        </section>
+
+        <!-- 系统功能 -->
+        <section class="system-functions">
+            <div class="function-list">
+                <div class="function-row" onclick="goToHelp()">
+                    <div class="function-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <span class="function-name">帮助中心</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="function-row" onclick="goToContact()">
+                    <div class="function-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <span class="function-name">联系我们</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="function-row" onclick="goToAbout()">
+                    <div class="function-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <span class="function-name">关于我们</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="function-row" onclick="goToAccountSecurity()">
+                    <div class="function-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <span class="function-name">账号安全</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="function-row" onclick="goToFeedback()">
+                    <div class="function-icon">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <span class="function-name">意见反馈</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 登录弹窗 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>登录驾考通</h3>
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="login-tabs">
+                    <div class="login-tab active" onclick="switchLoginTab('phone')">手机登录</div>
+                    <div class="login-tab" onclick="switchLoginTab('third')">第三方登录</div>
+                </div>
+
+                <!-- 手机号登录 -->
+                <div id="phoneLogin" class="login-form">
+                    <div class="input-group">
+                        <input type="tel" placeholder="请输入手机号" maxlength="11">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入验证码" maxlength="6">
+                        <button class="verify-btn">获取验证码</button>
+                    </div>
+                    <button class="login-submit-btn">登录</button>
+                    <div class="login-agreement">
+                        <label>
+                            <input type="checkbox" checked>
+                            我已阅读并同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 第三方登录 -->
+                <div id="thirdLogin" class="login-form hidden">
+                    <div class="third-login-options">
+                        <div class="third-login-item" onclick="loginWith('huawei')">
+                            <div class="third-icon huawei">
+                                <i class="fab fa-android"></i>
+                            </div>
+                            <span>华为账号登录</span>
+                        </div>
+                        <div class="third-login-item" onclick="loginWith('wechat')">
+                            <div class="third-icon wechat">
+                                <i class="fab fa-weixin"></i>
+                            </div>
+                            <span>微信登录</span>
+                        </div>
+                        <div class="third-login-item" onclick="loginWith('alipay')">
+                            <div class="third-icon alipay">
+                                <i class="fab fa-alipay"></i>
+                            </div>
+                            <span>支付宝登录</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 收藏页面 -->
+    <div id="favoritesPage" class="page-overlay hidden">
+        <div class="page-header">
+            <i class="fas fa-arrow-left back-btn" onclick="closePage('favoritesPage')"></i>
+            <h2>我的收藏</h2>
+            <span></span>
+        </div>
+        <div class="page-content">
+            <div class="favorite-tabs">
+                <div class="tab-item active" onclick="switchFavoriteTab('videos')">视频收藏</div>
+                <div class="tab-item" onclick="switchFavoriteTab('questions')">题目收藏</div>
+            </div>
+            
+            <div id="videoFavorites" class="favorite-content">
+                <div class="favorite-item">
+                    <img src="https://via.placeholder.com/100x60/2196F3/white?text=视频" alt="视频缩略图">
+                    <div class="favorite-info">
+                        <h4>交通标志详解</h4>
+                        <p>科目一 • 15分钟</p>
+                        <div class="favorite-stats">
+                            <span><i class="fas fa-thumbs-up"></i> 1.2k</span>
+                            <span><i class="fas fa-eye"></i> 5.6k</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-heart favorite-remove" onclick="removeFavorite(this)"></i>
+                </div>
+                <div class="favorite-item">
+                    <img src="https://via.placeholder.com/100x60/FF9800/white?text=视频" alt="视频缩略图">
+                    <div class="favorite-info">
+                        <h4>科目一技巧总结</h4>
+                        <p>科目一 • 20分钟</p>
+                        <div class="favorite-stats">
+                            <span><i class="fas fa-thumbs-up"></i> 2.1k</span>
+                            <span><i class="fas fa-eye"></i> 8.3k</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-heart favorite-remove" onclick="removeFavorite(this)"></i>
+                </div>
+            </div>
+
+            <div id="questionFavorites" class="favorite-content hidden">
+                <div class="favorite-question">
+                    <div class="question-header">
+                        <span class="question-num">第1题</span>
+                        <span class="question-type">科目一</span>
+                    </div>
+                    <p class="question-text">在没有中心隔离设施或者没有中心线的道路上，机动车遇相对方向来车时应当怎样行驶？</p>
+                    <div class="question-answer">
+                        <span class="correct-answer">正确答案：A</span>
+                        <i class="fas fa-heart favorite-remove" onclick="removeFavorite(this)"></i>
+                    </div>
+                </div>
+                <div class="favorite-question">
+                    <div class="question-header">
+                        <span class="question-num">第2题</span>
+                        <span class="question-type">科目一</span>
+                    </div>
+                    <p class="question-text">驾驶机动车在道路上违反道路交通安全法的行为，属于什么行为？</p>
+                    <div class="question-answer">
+                        <span class="correct-answer">正确答案：B</span>
+                        <i class="fas fa-heart favorite-remove" onclick="removeFavorite(this)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 积分页面 -->
+    <div id="pointsPage" class="page-overlay hidden">
+        <div class="page-header">
+            <i class="fas fa-arrow-left back-btn" onclick="closePage('pointsPage')"></i>
+            <h2>我的积分</h2>
+            <span></span>
+        </div>
+        <div class="page-content">
+            <div class="points-summary">
+                <div class="points-total">
+                    <span class="points-number">2,580</span>
+                    <span class="points-label">当前积分</span>
+                </div>
+                <div class="points-info">
+                    <div class="points-item">
+                        <span class="label">今日获得</span>
+                        <span class="value">+25</span>
+                    </div>
+                    <div class="points-item">
+                        <span class="label">累计获得</span>
+                        <span class="value">15,680</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="points-rules">
+                <h3>积分规则</h3>
+                <div class="rule-list">
+                    <div class="rule-item">
+                        <span class="rule-action">每日签到</span>
+                        <span class="rule-points">+10积分</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-action">完成练习题</span>
+                        <span class="rule-points">+1积分/题</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-action">模拟考试通过</span>
+                        <span class="rule-points">+50积分</span>
+                    </div>
+                    <div class="rule-item">
+                        <span class="rule-action">视频学习完成</span>
+                        <span class="rule-points">+20积分</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="points-history">
+                <h3>积分记录</h3>
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-info">
+                            <span class="action">完成练习题</span>
+                            <span class="time">2024-01-15 14:30</span>
+                        </div>
+                        <span class="points gained">+15</span>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-info">
+                            <span class="action">每日签到</span>
+                            <span class="time">2024-01-15 08:15</span>
+                        </div>
+                        <span class="points gained">+10</span>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-info">
+                            <span class="action">模拟考试通过</span>
+                            <span class="time">2024-01-14 16:45</span>
+                        </div>
+                        <span class="points gained">+50</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="switchTab('home')">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <!-- <div class="nav-item" onclick="switchTab('study')">
+            <i class="fas fa-book"></i>
+            <span>学习</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('exam')">
+            <i class="fas fa-clipboard-list"></i>
+            <span>考试</span>
+        </div> -->
+        <div class="nav-item active" onclick="switchTab('profile')">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </nav>
+
+    <script src="js/common.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>驾考刷题 - 驾考通</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/questions.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-content">
+            <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+            <h1 class="page-title">驾考刷题</h1>
+            <i class="fas fa-bookmark bookmark-btn" onclick="toggleBookmark()"></i>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <!-- 题型选择 -->
+        <section class="subject-tabs">
+            <div class="tab-item active" onclick="switchSubject('subject1')">科目一</div>
+            <div class="tab-item" onclick="switchSubject('subject4')">科目四</div>
+        </section>
+
+        <!-- 章节分类 -->
+        <section class="chapter-section">
+            <h2 class="section-title">按章节练习</h2>
+            <div class="chapter-grid">
+                <div class="chapter-item" onclick="startChapter(1)">
+                    <div class="chapter-icon">
+                        <i class="fas fa-traffic-light"></i>
+                    </div>
+                    <div class="chapter-info">
+                        <h4>交通信号</h4>
+                        <p>共236题</p>
+                        <div class="progress-info">
+                            <span class="progress-text">已练习: 156/236</span>
+                            <div class="mini-progress">
+                                <div class="mini-progress-fill" style="width: 66%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chapter-status">
+                        <span class="accuracy">正确率: 85%</span>
+                    </div>
+                </div>
+
+                <div class="chapter-item" onclick="startChapter(2)">
+                    <div class="chapter-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="chapter-info">
+                        <h4>机动车驾驶操作</h4>
+                        <p>共189题</p>
+                        <div class="progress-info">
+                            <span class="progress-text">已练习: 45/189</span>
+                            <div class="mini-progress">
+                                <div class="mini-progress-fill" style="width: 24%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chapter-status">
+                        <span class="accuracy">正确率: 72%</span>
+                    </div>
+                </div>
+
+                <div class="chapter-item" onclick="startChapter(3)">
+                    <div class="chapter-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <div class="chapter-info">
+                        <h4>道路通行条件</h4>
+                        <p>共145题</p>
+                        <div class="progress-info">
+                            <span class="progress-text">已练习: 0/145</span>
+                            <div class="mini-progress">
+                                <div class="mini-progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chapter-status">
+                        <span class="accuracy new">未开始</span>
+                    </div>
+                </div>
+
+                <div class="chapter-item" onclick="startChapter(4)">
+                    <div class="chapter-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="chapter-info">
+                        <h4>违法行为综合判断</h4>
+                        <p>共98题</p>
+                        <div class="progress-info">
+                            <span class="progress-text">已练习: 98/98</span>
+                            <div class="mini-progress">
+                                <div class="mini-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chapter-status">
+                        <span class="accuracy completed">已完成</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快速练习 -->
+        <section class="quick-practice">
+            <h2 class="section-title">快速练习</h2>
+            <div class="practice-grid">
+                <div class="practice-item" onclick="quickPractice('random')">
+                    <i class="fas fa-random"></i>
+                    <span>随机练习</span>
+                </div>
+                <div class="practice-item" onclick="quickPractice('sequential')">
+                    <i class="fas fa-list-ol"></i>
+                    <span>顺序练习</span>
+                </div>
+                <div class="practice-item" onclick="quickPractice('wrong')">
+                    <i class="fas fa-times-circle"></i>
+                    <span>错题练习</span>
+                </div>
+                <div class="practice-item" onclick="quickPractice('favorite')">
+                    <i class="fas fa-heart"></i>
+                    <span>收藏练习</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习统计 -->
+        <section class="stats-section">
+            <h2 class="section-title">学习统计</h2>
+            <div class="stats-card">
+                <div class="stat-item">
+                    <span class="stat-number">1,256</span>
+                    <span class="stat-label">已练习题目</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">89.2%</span>
+                    <span class="stat-label">平均正确率</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">45</span>
+                    <span class="stat-label">错题数量</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">收藏题目</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 答题页面 -->
+    <div id="questionPage" class="question-page hidden">
+        <div class="question-header">
+            <div class="question-nav">
+                <i class="fas fa-times close-btn" onclick="closeQuestion()"></i>
+                <span class="question-progress">1/20</span>
+                <i class="fas fa-bookmark bookmark-question" onclick="bookmarkQuestion()"></i>
+            </div>
+            <div class="question-timer">
+                <i class="fas fa-clock"></i>
+                <span id="timer">00:45</span>
+            </div>
+        </div>
+
+        <div class="question-content">
+            <!-- 题目图片（如果有） -->
+            <div class="question-image">
+                <img src="https://via.placeholder.com/300x200/E0E0E0/666?text=交通标志图片" alt="题目图片">
+            </div>
+
+            <!-- 题目文本 -->
+            <div class="question-text">
+                <span class="question-number">1.</span>
+                <p>图中标志的含义是什么？</p>
+            </div>
+
+            <!-- 选项 -->
+            <div class="question-options">
+                <div class="option-item" onclick="selectOption('A')">
+                    <span class="option-label">A</span>
+                    <span class="option-text">禁止通行</span>
+                </div>
+                <div class="option-item" onclick="selectOption('B')">
+                    <span class="option-label">B</span>
+                    <span class="option-text">减速慢行</span>
+                </div>
+                <div class="option-item" onclick="selectOption('C')">
+                    <span class="option-label">C</span>
+                    <span class="option-text">注意危险</span>
+                </div>
+                <div class="option-item" onclick="selectOption('D')">
+                    <span class="option-label">D</span>
+                    <span class="option-text">停车让行</span>
+                </div>
+            </div>
+
+            <!-- 答案解析 -->
+            <div id="answerAnalysis" class="answer-analysis hidden">
+                <div class="analysis-header">
+                    <i class="fas fa-check-circle correct-icon"></i>
+                    <span class="result-text">回答正确！</span>
+                </div>
+                <div class="analysis-content">
+                    <p><strong>正确答案：</strong>A</p>
+                    <p><strong>解析：</strong>图中标志为禁止通行标志，表示禁止一切车辆和行人通行。此标志设在禁止通行的道路入口处。</p>
+                </div>
+                <div class="analysis-actions">
+                    <button class="btn-secondary" onclick="showComments()">
+                        <i class="fas fa-comments"></i>
+                        查看评论
+                    </button>
+                    <button class="btn" onclick="nextQuestion()">下一题</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 评论弹窗 -->
+    <div id="commentsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>题目讨论</h3>
+                <span class="close" onclick="closeComments()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">驾考小能手</span>
+                                <span class="comment-time">2小时前</span>
+                            </div>
+                            <p class="comment-text">这道题要注意区分禁止通行和禁止驶入的区别，形状不同含义也不同。</p>
+                            <div class="comment-actions">
+                                <span class="like-btn"><i class="fas fa-thumbs-up"></i> 23</span>
+                                <span class="reply-btn">回复</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">新手上路</span>
+                                <span class="comment-time">5小时前</span>
+                            </div>
+                            <p class="comment-text">谢谢解析，现在明白了！</p>
+                            <div class="comment-actions">
+                                <span class="like-btn"><i class="fas fa-thumbs-up"></i> 8</span>
+                                <span class="reply-btn">回复</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-input">
+                    <textarea placeholder="发表你的看法..."></textarea>
+                    <button class="btn">发布</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="switchTab('home')">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <!-- <div class="nav-item active" onclick="switchTab('study')">
+            <i class="fas fa-book"></i>
+            <span>学习</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('exam')">
+            <i class="fas fa-clipboard-list"></i>
+            <span>考试</span>
+        </div> -->
+        <div class="nav-item" onclick="switchTab('profile')">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </nav>
+
+    <script src="js/common.js"></script>
+    <script src="js/questions.js"></script>
+</body>
+</html>

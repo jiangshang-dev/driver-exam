@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交规视频 - 驾考通</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/videos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-content">
+            <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+            <h1 class="page-title">交规视频</h1>
+            <i class="fas fa-search search-btn" onclick="showSearch()"></i>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <!-- VIP提示横幅 -->
+        <section class="vip-banner">
+            <div class="vip-content">
+                <div class="vip-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="vip-text">
+                    <h3>开通VIP享受专业视频课程</h3>
+                    <p>专业讲师授课，助您轻松通过考试</p>
+                </div>
+                <button class="vip-upgrade-btn" onclick="showVipModal()">立即开通</button>
+            </div>
+        </section>
+
+        <!-- 分类标签 -->
+        <section class="category-tabs">
+            <div class="tab-scroll">
+                <div class="tab-item active" onclick="switchCategory('all')">全部</div>
+                <div class="tab-item" onclick="switchCategory('subject1')">科目一</div>
+                <div class="tab-item" onclick="switchCategory('subject4')">科目四</div>
+                <div class="tab-item" onclick="switchCategory('signs')">交通标志</div>
+                <div class="tab-item" onclick="switchCategory('rules')">交通规则</div>
+                <div class="tab-item" onclick="switchCategory('skills')">考试技巧</div>
+            </div>
+        </section>
+
+        <!-- 视频列表 -->
+        <section class="video-list-section">
+            <div class="video-grid">
+                <div class="video-card" onclick="playVideo(1)">
+                    <div class="video-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/2196F3/white?text=交通标志详解" alt="视频缩略图">
+                        <div class="video-duration">15:30</div>
+                        <div class="vip-overlay">
+                            <i class="fas fa-lock"></i>
+                            <span>VIP专享</span>
+                        </div>
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">交通标志详解 - 禁令标志篇</h4>
+                        <p class="video-description">详细讲解各类禁令标志的含义和应用场景</p>
+                        <div class="video-meta">
+                            <span class="video-instructor">
+                                <i class="fas fa-user"></i>
+                                张教练
+                            </span>
+                            <span class="video-stats">
+                                <i class="fas fa-eye"></i>
+                                1.2万
+                            </span>
+                            <span class="video-likes">
+                                <i class="fas fa-thumbs-up"></i>
+                                856
+                            </span>
+                        </div>
+                        <div class="video-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); likeVideo(1)">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); favoriteVideo(1)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); shareVideo(1)">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="playVideo(2)">
+                    <div class="video-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/FF9800/white?text=科目一技巧" alt="视频缩略图">
+                        <div class="video-duration">22:15</div>
+                        <div class="vip-overlay">
+                            <i class="fas fa-lock"></i>
+                            <span>VIP专享</span>
+                        </div>
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">科目一高分技巧总结</h4>
+                        <p class="video-description">总结科目一考试重点，分享高分通过技巧</p>
+                        <div class="video-meta">
+                            <span class="video-instructor">
+                                <i class="fas fa-user"></i>
+                                李教练
+                            </span>
+                            <span class="video-stats">
+                                <i class="fas fa-eye"></i>
+                                2.1万
+                            </span>
+                            <span class="video-likes">
+                                <i class="fas fa-thumbs-up"></i>
+                                1.3k
+                            </span>
+                        </div>
+                        <div class="video-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); likeVideo(2)">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); favoriteVideo(2)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); shareVideo(2)">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="playVideo(3)">
+                    <div class="video-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/4CAF50/white?text=安全驾驶" alt="视频缩略图">
+                        <div class="video-duration">18:45</div>
+                        <div class="vip-overlay">
+                            <i class="fas fa-lock"></i>
+                            <span>VIP专享</span>
+                        </div>
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">安全文明驾驶常识</h4>
+                        <p class="video-description">科目四安全文明驾驶知识点详解</p>
+                        <div class="video-meta">
+                            <span class="video-instructor">
+                                <i class="fas fa-user"></i>
+                                王教练
+                            </span>
+                            <span class="video-stats">
+                                <i class="fas fa-eye"></i>
+                                8.5千
+                            </span>
+                            <span class="video-likes">
+                                <i class="fas fa-thumbs-up"></i>
+                                642
+                            </span>
+                        </div>
+                        <div class="video-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); likeVideo(3)">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); favoriteVideo(3)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); shareVideo(3)">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card free-video" onclick="playVideo(4)">
+                    <div class="video-thumbnail">
+                        <img src="https://via.placeholder.com/300x180/9C27B0/white?text=免费试看" alt="视频缩略图">
+                        <div class="video-duration">05:30</div>
+                        <div class="free-badge">免费</div>
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">驾考基础知识入门</h4>
+                        <p class="video-description">驾考新手必看的基础知识介绍</p>
+                        <div class="video-meta">
+                            <span class="video-instructor">
+                                <i class="fas fa-user"></i>
+                                驾考通
+                            </span>
+                            <span class="video-stats">
+                                <i class="fas fa-eye"></i>
+                                5.2万
+                            </span>
+                            <span class="video-likes">
+                                <i class="fas fa-thumbs-up"></i>
+                                2.1k
+                            </span>
+                        </div>
+                        <div class="video-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); likeVideo(4)">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); favoriteVideo(4)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); shareVideo(4)">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 视频播放页面 -->
+    <div id="videoPlayer" class="video-player hidden">
+        <div class="player-header">
+            <i class="fas fa-arrow-left close-player" onclick="closeVideoPlayer()"></i>
+            <h3 id="playerTitle">视频标题</h3>
+            <div class="player-actions">
+                <i class="fas fa-heart player-favorite" onclick="togglePlayerFavorite()"></i>
+                <i class="fas fa-share player-share" onclick="shareCurrentVideo()"></i>
+            </div>
+        </div>
+        
+        <div class="player-content">
+            <div class="video-container">
+                <video id="videoElement" controls>
+                    <source src="#" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+            </div>
+            
+            <div class="video-details">
+                <h3 id="videoTitle">视频标题</h3>
+                <div class="video-stats-bar">
+                    <span class="instructor">张教练</span>
+                    <div class="stats">
+                        <span><i class="fas fa-eye"></i> 1.2万</span>
+                        <span><i class="fas fa-thumbs-up"></i> 856</span>
+                        <span><i class="fas fa-clock"></i> 2024-01-15</span>
+                    </div>
+                </div>
+                <p class="video-desc">详细讲解各类禁令标志的含义和应用场景，帮助学员快速掌握交通标志知识。</p>
+                
+                <div class="action-bar">
+                    <button class="action-button" onclick="likeCurrentVideo()">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>点赞</span>
+                    </button>
+                    <button class="action-button" onclick="favoriteCurrentVideo()">
+                        <i class="fas fa-heart"></i>
+                        <span>收藏</span>
+                    </button>
+                    <button class="action-button" onclick="showVideoComments()">
+                        <i class="fas fa-comment"></i>
+                        <span>评论</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 评论区域 -->
+            <div class="comments-section">
+                <h4>评论 (25)</h4>
+                <div class="comment-input-section">
+                    <textarea placeholder="发表你的看法..." id="commentInput"></textarea>
+                    <button class="comment-submit" onclick="submitVideoComment()">发表</button>
+                </div>
+                
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">学车新手</span>
+                                <span class="comment-time">2小时前</span>
+                            </div>
+                            <p class="comment-text">讲解很详细，终于明白了各种标志的区别，谢谢老师！</p>
+                            <div class="comment-actions">
+                                <button class="comment-like">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>12</span>
+                                </button>
+                                <button class="comment-reply">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">准备考试中</span>
+                                <span class="comment-time">5小时前</span>
+                            </div>
+                            <p class="comment-text">刚看完就去做题，正确率提高了不少！</p>
+                            <div class="comment-actions">
+                                <button class="comment-like">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>8</span>
+                                </button>
+                                <button class="comment-reply">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIP开通弹窗 -->
+    <div id="vipModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>开通VIP会员</h3>
+                <span class="close" onclick="closeVipModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="vip-benefits">
+                    <h4>VIP专享特权</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 解锁全部交规视频</li>
+                        <li><i class="fas fa-check"></i> 专业教练在线指导</li>
+                        <li><i class="fas fa-check"></i> 无限制刷题练习</li>
+                        <li><i class="fas fa-check"></i> 优先客服支持</li>
+                    </ul>
+                </div>
+                <div class="vip-plans">
+                    <div class="plan-item">
+                        <h5>月卡</h5>
+                        <p class="price">￥29.9</p>
+                    </div>
+                    <div class="plan-item recommended">
+                        <h5>年卡</h5>
+                        <p class="price">￥199.9</p>
+                        <span class="discount">省60%</span>
+                    </div>
+                </div>
+                <button class="vip-btn" onclick="purchaseVip()">立即开通</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="switchTab('home')">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="nav-item active" onclick="switchTab('study')">
+            <i class="fas fa-book"></i>
+            <span>学习</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('exam')">
+            <i class="fas fa-clipboard-list"></i>
+            <span>考试</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('profile')">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </nav>
+
+    <script src="js/common.js"></script>
+    <script src="js/videos.js"></script>
+</body>
+</html>

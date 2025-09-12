@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟考试 - 驾考通</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/exam.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-content">
+            <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+            <h1 class="page-title">模拟考试</h1>
+            <i class="fas fa-history history-btn" onclick="showHistory()"></i>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <!-- 考试选择页面 -->
+        <div id="examSelection" class="exam-selection">
+            <!-- 考试须知 -->
+            <section class="exam-notice">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    考试须知
+                </h2>
+                <div class="notice-card">
+                    <ul class="notice-list">
+                        <li>考试时间为45分钟，共100题</li>
+                        <li>满分100分，90分及以上为合格</li>
+                        <li>考试过程中不能退出或暂停</li>
+                        <li>每题限时30秒，超时自动跳转</li>
+                        <li>提交后不能修改答案</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 考试类型选择 -->
+            <section class="exam-types">
+                <h2 class="section-title">选择考试类型</h2>
+                <div class="type-grid">
+                    <div class="type-item" onclick="startExam('subject1')">
+                        <div class="type-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="type-info">
+                            <h4>科目一模拟考试</h4>
+                            <p>道路交通安全法律法规</p>
+                            <div class="type-stats">
+                                <span>100题 | 45分钟</span>
+                            </div>
+                        </div>
+                        <div class="start-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+
+                    <div class="type-item" onclick="startExam('subject4')">
+                        <div class="type-icon">
+                            <i class="fas fa-car-crash"></i>
+                        </div>
+                        <div class="type-info">
+                            <h4>科目四模拟考试</h4>
+                            <p>安全文明驾驶常识</p>
+                            <div class="type-stats">
+                                <span>50题 | 30分钟</span>
+                            </div>
+                        </div>
+                        <div class="start-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 历史成绩 -->
+            <section class="exam-history">
+                <h2 class="section-title">最近考试记录</h2>
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-info">
+                            <div class="exam-subject">科目一模拟考试</div>
+                            <div class="exam-time">2024-01-15 14:30</div>
+                        </div>
+                        <div class="exam-score passed">
+                            <span class="score">92</span>
+                            <span class="status">合格</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-info">
+                            <div class="exam-subject">科目四模拟考试</div>
+                            <div class="exam-time">2024-01-14 09:15</div>
+                        </div>
+                        <div class="exam-score failed">
+                            <span class="score">85</span>
+                            <span class="status">不合格</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-info">
+                            <div class="exam-subject">科目一模拟考试</div>
+                            <div class="exam-time">2024-01-13 16:45</div>
+                        </div>
+                        <div class="exam-score passed">
+                            <span class="score">96</span>
+                            <span class="status">合格</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 考试进行页面 -->
+        <div id="examPage" class="exam-page hidden">
+            <!-- 考试状态栏 -->
+            <div class="exam-status">
+                <div class="exam-info">
+                    <span class="exam-subject-name">科目一模拟考试</span>
+                    <span class="question-counter">第 <span id="currentQuestionNum">1</span> 题 / 共 <span id="totalQuestions">100</span> 题</span>
+                </div>
+                <div class="exam-timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="examTimer">45:00</span>
+                </div>
+            </div>
+
+            <!-- 题目导航 -->
+            <div class="question-nav-bar">
+                <div class="nav-scroll">
+                    <div class="question-nav-grid" id="questionNavGrid">
+                        <!-- 动态生成题目导航 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 题目内容 -->
+            <div class="exam-question">
+                <div class="question-image">
+                    <img id="questionImg" src="" alt="题目图片" class="hidden">
+                </div>
+                
+                <div class="question-text">
+                    <span class="question-number" id="questionNumber">1.</span>
+                    <p id="questionContent">在没有中心隔离设施或者没有中心线的道路上，机动车遇相对方向来车时应当怎样行驶？</p>
+                </div>
+
+                <div class="question-options" id="questionOptions">
+                    <!-- 动态生成选项 -->
+                </div>
+            </div>
+
+            <!-- 考试控制按钮 -->
+            <div class="exam-controls">
+                <button class="control-btn" id="prevBtn" onclick="prevQuestion()">
+                    <i class="fas fa-chevron-left"></i>
+                    上一题
+                </button>
+                <button class="control-btn primary" id="nextBtn" onclick="nextQuestion()">
+                    下一题
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="control-btn submit-btn" id="submitBtn" onclick="showSubmitDialog()">
+                    交卷
+                </button>
+            </div>
+        </div>
+
+        <!-- 交卷确认弹窗 -->
+        <div id="submitDialog" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>确认交卷</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="submit-summary">
+                        <p>您已完成 <span id="answeredCount">85</span> 题，还有 <span id="unansweredCount">15</span> 题未作答。</p>
+                        <p class="warning-text">交卷后将不能修改答案，确定要提交吗？</p>
+                    </div>
+                    <div class="submit-actions">
+                        <button class="btn-secondary" onclick="closeSubmitDialog()">继续答题</button>
+                        <button class="btn" onclick="submitExam()">确认交卷</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 考试结果页面 -->
+        <div id="examResult" class="exam-result hidden">
+            <div class="result-header">
+                <div class="result-icon">
+                    <i id="resultIcon" class="fas fa-check-circle"></i>
+                </div>
+                <h2 id="resultTitle">恭喜通过！</h2>
+                <div class="result-score">
+                    <span class="score-number" id="finalScore">92</span>
+                    <span class="score-total">/ 100</span>
+                </div>
+                <div class="result-status" id="resultStatus">合格</div>
+            </div>
+
+            <div class="result-details">
+                <div class="detail-item">
+                    <span class="detail-label">考试用时</span>
+                    <span class="detail-value" id="examDuration">32分15秒</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">正确题数</span>
+                    <span class="detail-value" id="correctCount">92题</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">错误题数</span>
+                    <span class="detail-value" id="wrongCount">8题</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">正确率</span>
+                    <span class="detail-value" id="accuracyRate">92%</span>
+                </div>
+            </div>
+
+            <!-- 错题分析 -->
+            <div class="wrong-analysis">
+                <h3 class="analysis-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    错题分析
+                </h3>
+                <div class="wrong-questions" id="wrongQuestions">
+                    <!-- 动态生成错题 -->
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn-secondary" onclick="viewAllAnswers()">查看答案解析</button>
+                <button class="btn" onclick="retakeExam()">再次考试</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="switchTab('home')">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <!-- <div class="nav-item" onclick="switchTab('study')">
+            <i class="fas fa-book"></i>
+            <span>学习</span>
+        </div>
+        <div class="nav-item active" onclick="switchTab('exam')">
+            <i class="fas fa-clipboard-list"></i>
+            <span>考试</span>
+        </div> -->
+        <div class="nav-item" onclick="switchTab('profile')">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </nav>
+
+    <script src="js/common.js"></script>
+    <script src="js/exam.js"></script>
+</body>
+</html>

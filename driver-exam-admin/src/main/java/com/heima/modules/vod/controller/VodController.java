@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +61,8 @@ public class VodController {
             videoInfo.setVideoId(response.getVideoId());
             videoInfo.setTitle(title);
             videoInfo.setStatus("Uploading");
-            videoInfo.setCreateTime(LocalDateTime.now());
-            videoInfo.setUpdateTime(LocalDateTime.now());
+            videoInfo.setCreateTime(new Date());
+            videoInfo.setUpdateTime(new Date());
             if (fileSize != null) {
                 videoInfo.setSize(fileSize);
             }

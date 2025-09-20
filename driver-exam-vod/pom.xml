@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.5.30</version>
+            <version>4.6.3</version>
         </dependency>
 
         <!-- 阿里云VOD依赖 -->

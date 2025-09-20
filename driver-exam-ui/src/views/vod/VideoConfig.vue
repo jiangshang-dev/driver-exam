@@ -51,6 +51,19 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
+
+    <!-- 测试链接 -->
+    <div class="test-section">
+      <el-card>
+        <div slot="header">
+          <span>功能测试</span>
+        </div>
+        <div class="test-content">
+          <el-button type="primary" @click="goToUploadTest">上传功能测试</el-button>
+          <el-button type="success" @click="goToVideoUpload">视频上传页面</el-button>
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -58,6 +71,10 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import baseService from '@/service/baseService'
+import { useRouter } from 'vue-router'
+
+// 路由
+const router = useRouter()
 
 // 活动标签页
 const activeTab = ref('aliyun')
@@ -97,6 +114,16 @@ const videoRules = {
 // 表单引用
 const aliyunFormRef = ref(null)
 const videoFormRef = ref(null)
+
+// 跳转到上传测试页面
+const goToUploadTest = () => {
+  router.push('/vod/upload-test')
+}
+
+// 跳转到视频上传页面
+const goToVideoUpload = () => {
+  router.push('/vod/video-upload')
+}
 
 // 加载阿里云VOD配置
 const loadAliyunConfig =  () => {
@@ -155,7 +182,11 @@ onMounted(() => {
   padding: 20px;
 }
 
-.el-form {
-  max-width: 600px;
+.test-section {
+  margin-top: 20px;
+}
+
+.test-content .el-button {
+  margin-right: 10px;
 }
 </style>

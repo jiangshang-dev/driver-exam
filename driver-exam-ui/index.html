@@ -5,6 +5,10 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>学车宝典管理平台</title>
+    <!-- 静态加载阿里云上传SDK，避免动态导入问题 -->
+    <script src="/src/lib/aliyun-upload-sdk/lib/es6-promise.min.js"></script>
+    <script src="/src/lib/aliyun-upload-sdk/lib/aliyun-oss-sdk-6.17.1.min.js"></script>
+    <script src="/src/lib/aliyun-upload-sdk/aliyun-upload-sdk-1.5.7.min.js"></script>
     <script>
       //全局钩子
       window.SITE_CONFIG = {

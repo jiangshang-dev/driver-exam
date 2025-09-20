@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,8 @@ public class VodController {
             videoInfo.setVideoId(response.getVideoId());
             videoInfo.setTitle(title);
             videoInfo.setStatus("Uploading");
+            videoInfo.setCreateTime(LocalDateTime.now());
+            videoInfo.setUpdateTime(LocalDateTime.now());
             if (fileSize != null) {
                 videoInfo.setSize(fileSize);
             }
@@ -116,6 +120,11 @@ public class VodController {
                 return new Result<Map<String, Object>>().error("缺少必需参数");
             }
 
+            // 检查文件大小是否合理（不超过1GB）
+            if (request.getFileSize() != null && request.getFileSize() > 1024L * 1024L * 1024L) {
+                return new Result<Map<String, Object>>().error("文件大小不能超过1GB");
+            }
+
             CreateUploadVideoResponse response = aliyunVodService.createUploadVideo(
                 request.getTitle(), 
                 request.getFileName(), 
@@ -126,6 +135,7 @@ public class VodController {
             result.put("videoId", response.getVideoId());
             result.put("uploadAddress", response.getUploadAddress());
             result.put("uploadAuth", response.getUploadAuth());
+            result.put("requestId", response.getRequestId());
 
             // 保存视频信息到数据库
             VideoInfoEntity videoInfo = new VideoInfoEntity();
@@ -140,7 +150,7 @@ public class VodController {
             return new Result<Map<String, Object>>().ok(result);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Map<String, Object>>().error(e.getMessage());
+            return new Result<Map<String, Object>>().error("上传凭证获取失败: " + e.getMessage());
         }
     }
     
@@ -171,13 +181,17 @@ public class VodController {
      * @return 播放地址
      */
     @GetMapping("/play/info")
-    public Result<Map<String, Object>> getPlayInfo(@RequestParam String videoId) {
+    public Result<Map<String, Object>> getPlayInfo(@RequestParam(value = "videoId") String videoId) {
         try {
             GetPlayInfoResponse response = aliyunVodService.getPlayInfo(videoId);
-            
+
+            List<GetPlayInfoResponse.PlayInfo> playInfoList = response.getPlayInfoList();
             Map<String, Object> result = new HashMap<>();
             result.put("videoBase", response.getVideoBase());
-            result.put("playInfoList", response.getPlayInfoList());
+
+            if (!playInfoList.isEmpty()) {
+                result.put("playUrl", playInfoList.getFirst().getPlayURL());
+            }
 
             return new Result<Map<String, Object>>().ok(result);
         } catch (Exception e) {

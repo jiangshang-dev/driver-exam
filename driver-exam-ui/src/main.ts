@@ -1,4 +1,5 @@
 import "@/assets/icons/iconfont/iconfont.js";
+import "@/assets/iconfont/iconfont.css"; // 添加这一行引入图标字体CSS
 import RenDeptTree from "@/components/ren-dept-tree";
 import RenRadioGroup from "@/components/ren-radio-group";
 import RenRegionTree from "@/components/ren-region-tree";

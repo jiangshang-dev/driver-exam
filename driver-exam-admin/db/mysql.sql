@@ -321,6 +321,11 @@ INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, cr
 INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date) VALUES (1067246875800000061, 1067246875800000040, '删除', '', 'sys:params:delete', 1, '', 3, 1067246875800000001, now(), 1067246875800000001, now());
 INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date) VALUES (1156748733921165314, 1067246875800000053, '接口文档', '{{ApiUrl}}/doc.html', '', 0, 'icon-file-word', 1, 1067246875800000001, now(), 1067246875800000001, now());
 
+-- 视频点播菜单项
+INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date) VALUES (1200000000000000001, 0, '视频管理', NULL, NULL, 0, 'icon-video-camera', 4, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date) VALUES (1200000000000000002, 1200000000000000001, '视频上传', 'vod/video-upload', NULL, 0, 'icon-upload', 0, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date) VALUES (1200000000000000003, 1200000000000000001, '视频配置', 'vod/video-config', NULL, 0, 'icon-setting', 1, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date) VALUES (1200000000000000004, 1200000000000000001, '视频列表', 'vod/video-list', NULL, 0, 'icon-unorderedlist', 2, 1067246875800000001, now(), 1067246875800000001, now());
 
 INSERT INTO sys_dept(id, pid, pids, name, sort, creator, create_date, updater, update_date) VALUES (1067246875800000062, 1067246875800000063, '1067246875800000066,1067246875800000063', '技术部', 2, 1067246875800000001, now(), 1067246875800000001, now());
 INSERT INTO sys_dept(id, pid, pids, name, sort, creator, create_date, updater, update_date) VALUES (1067246875800000063, 1067246875800000066, '1067246875800000066', '长沙分公司', 1, 1067246875800000001, now(), 1067246875800000001, now());

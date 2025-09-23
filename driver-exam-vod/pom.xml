@@ -11,6 +11,7 @@
 
     <artifactId>driver-exam-vod</artifactId>
     <packaging>jar</packaging>
+    <description>视频管理模块</description>
 
     <dependencies>
         <dependency>

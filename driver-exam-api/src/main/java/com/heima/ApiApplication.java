@@ -1,22 +1,13 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
 package com.heima;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
- * renren-api
- *
- * @author Mark sunlightcs@gmail.com
+ * 驾考系统API应用
  */
 @SpringBootApplication
 public class ApiApplication extends SpringBootServletInitializer {

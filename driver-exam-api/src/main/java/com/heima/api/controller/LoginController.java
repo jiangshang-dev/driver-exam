@@ -1,15 +1,22 @@
 package com.heima.api.controller;
 
-import com.heima.business.auth.dto.LoginResult;
-import com.heima.business.auth.dto.WechatMiniLoginRequest;
-import com.heima.business.auth.service.AuthService;
-import com.heima.common.utils.Result;
-import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.heima.business.auth.service.AuthService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.heima.annotation.Log;
+import com.heima.business.auth.dto.LoginResult;
+import com.heima.business.auth.dto.WechatMiniLoginRequest;
+import com.heima.common.utils.Result;
+
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 登录认证接口
@@ -25,6 +32,7 @@ public class LoginController {
     /**
      * 微信小程序登录
      */
+    @Log(type = "wechat", description = "微信小程序登录", isLogin = true)
     @PostMapping("/wxMin")
     public Result<Map<String, Object>> wechatMiniLogin(@RequestBody WechatMiniLoginRequest request) {
         try {
@@ -56,6 +64,7 @@ public class LoginController {
     /**
      * 微信小程序简单登录（用于测试）
      */
+    @Log(type = "wechat_simple", description = "微信小程序简单登录（测试）", isLogin = true)
     @PostMapping("/wxMin/simple")
     public Result<Map<String, Object>> wechatMiniSimpleLogin(@RequestParam String phoneNumber) {
         try {

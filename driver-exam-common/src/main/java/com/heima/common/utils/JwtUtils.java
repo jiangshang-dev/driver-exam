@@ -42,4 +42,10 @@ public class JwtUtils {
     public static boolean validateToken(String token) {
         return token != null && token.startsWith("token_") && getUserId(token) != null;
     }
+
+    public static void main(String[] args) {
+        String token = "token_1970613603083800578_5962c0f6ca434c92ac87bc1cf6e38e61";
+        Long userId = getUserId(token);
+        System.out.println(userId);
+    }
 }

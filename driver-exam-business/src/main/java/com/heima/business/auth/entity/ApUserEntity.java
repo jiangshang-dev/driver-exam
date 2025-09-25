@@ -34,7 +34,9 @@ public class ApUserEntity {
     
     /** 邮箱 */
     private String email;
-    
+
+    private Integer vipLevel;
+
     /** 性别 0:未知 1:男 2:女 */
     private Integer gender;
     

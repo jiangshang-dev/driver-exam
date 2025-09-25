@@ -73,7 +73,7 @@ public class AuthService {
             result.setAvatar(user.getAvatar());
             result.setMobile(user.getPhone());
             result.setToken(token);
-            result.setVipLevel(0); // 默认非VIP
+            result.setVipLevel(user.getVipLevel()); // 默认非VIP
             result.setLevel(1);    // 默认等级
             
             log.info("微信小程序登录成功: userId={}, openId={}", user.getId(), wechatUser.getOpenId());
@@ -103,6 +103,7 @@ public class AuthService {
                 updateUser.setId(user.getId());
                 updateUser.setPhone(wechatUser.getPhoneNumber());
                 updateUser.setUpdateTime(LocalDateTime.now());
+                updateUser.setVipLevel(user.getVipLevel());
                 userService.updateById(updateUser);
                 user.setPhone(wechatUser.getPhoneNumber());
             }
@@ -141,6 +142,7 @@ public class AuthService {
         user.setAvatar(wechatUser.getHeadImgUrl());
         user.setPhone(wechatUser.getPhoneNumber());
         user.setGender(wechatUser.getSex());
+        user.setVipLevel(0); // 默认非VIP
         user.setStatus(1); // 正常状态
         
         userService.save(user);

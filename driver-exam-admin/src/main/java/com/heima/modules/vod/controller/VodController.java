@@ -3,15 +3,11 @@ package com.heima.modules.vod.controller;
 import com.aliyuncs.vod.model.v20170321.*;
 import com.heima.common.utils.Result;
 import com.heima.vod.entity.VideoInfoEntity;
-import com.heima.vod.entity.VodConfigEntity;
 import com.heima.vod.service.AliyunVodService;
 import com.heima.vod.service.VideoInfoService;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;

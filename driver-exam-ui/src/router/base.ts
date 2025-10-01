@@ -18,11 +18,6 @@ const routes: Array<RouteRecordRaw> = [
         path: "/home",
         component: () => import("@/views/home.vue"),
         meta: { title: "主页", icon: "icon-home" }
-      },
-      {
-        path: "/test-svg",
-        component: () => import("@/views/test-svg.vue"),
-        meta: { title: "SVG测试", icon: "icon-home" }
       }
     ]
   },

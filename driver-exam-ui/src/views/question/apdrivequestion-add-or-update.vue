@@ -55,7 +55,16 @@
         <el-input v-model="dataForm.questionExplain" placeholder="题目解析"></el-input>
       </el-form-item>
       <el-form-item label="题目配图URL" prop="imageUrl">
-        <el-input v-model="dataForm.imageUrl" placeholder="题目配图URL"></el-input>
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="dataForm.imageUrl"
+          :zoom-rate="1.2"
+          :max-scale="7"
+          :min-scale="0.2"
+          show-progress
+          :initial-index="4"
+          fit="cover"
+        />
       </el-form-item>
       <el-form-item label="题目视频URL" prop="videoUrl">
         <el-input v-model="dataForm.videoUrl" placeholder="题目视频URL"></el-input>
@@ -190,8 +199,6 @@ const rules = ref({
   correctAnswer: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   questionExplain: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   imageUrl: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  videoUrl: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  audioUrl: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   difficultyLevel: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   isVip: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   isHot: [{ required: true, message: "必填项不能为空", trigger: "blur" }],

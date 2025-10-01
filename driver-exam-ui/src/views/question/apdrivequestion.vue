@@ -101,7 +101,15 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column prop="imageUrl" label="题目配图URL" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="imageUrl" label="题目配图URL" header-align="center" align="center">
+        <template v-slot="scope">
+          <el-image
+            style="width: 50px; height: 50px"
+            :src="scope.row.imageUrl"
+            fit="cover"
+          />
+        </template>
+      </el-table-column>
       <el-table-column prop="videoUrl" label="题目视频URL" header-align="center" align="center"></el-table-column>
       <el-table-column prop="audioUrl" label="题目音频URL" header-align="center" align="center"></el-table-column>
       <el-table-column prop="difficultyLevel" label="难度等级" header-align="center" align="center">

@@ -16,6 +16,7 @@ import com.heima.common.validator.AssertUtils;
 import com.heima.common.validator.ValidatorUtils;
 import com.heima.common.validator.group.DefaultGroup;
 import com.heima.common.validator.group.UpdateGroup;
+import com.heima.modules.sys.dto.SysDictDataDTO;
 import com.heima.modules.sys.dto.SysDictTypeDTO;
 import com.heima.modules.sys.entity.DictType;
 import com.heima.modules.sys.service.SysDictTypeService;
@@ -117,4 +118,11 @@ public class SysDictTypeController {
         return new Result<List<DictType>>().ok(list);
     }
 
+    @GetMapping("getByDictName")
+    @Operation(summary = "信息")
+    @RequiresPermissions("sys:dict:info")
+    public Result<List<SysDictDataDTO>> getByDictName(String dictCode) {
+        List<SysDictDataDTO> data = sysDictTypeService.getByDictName(dictCode);
+        return new Result<List<SysDictDataDTO>>().ok(data);
+    }
 }

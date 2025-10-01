@@ -8,12 +8,16 @@
 
 package com.heima;
 
+import com.heima.modules.sys.dto.SysDictDataDTO;
+import com.heima.modules.sys.service.SysDictTypeService;
 import com.heima.service.DynamicDataSourceTestService;
 import jakarta.annotation.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 
 /**
@@ -27,6 +31,9 @@ public class DynamicDataSourceTest {
     @Resource
     private DynamicDataSourceTestService dynamicDataSourceTestService;
 
+    @Resource
+    private SysDictTypeService sysDictTypeService;
+
     @Test
     public void test() {
         Long id = 1067246875800000001L;
@@ -34,6 +41,12 @@ public class DynamicDataSourceTest {
         dynamicDataSourceTestService.updateUser(id);
         dynamicDataSourceTestService.updateUserBySlave1(id);
         //dynamicDataSourceTestService.updateUserBySlave2(id);
+    }
+
+    @Test
+    public void test1() {
+        List<SysDictDataDTO> knowledge = sysDictTypeService.getByDictName("knowledge");
+        System.out.println(knowledge);
     }
 
 

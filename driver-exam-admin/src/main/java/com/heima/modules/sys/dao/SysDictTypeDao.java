@@ -28,4 +28,5 @@ public interface SysDictTypeDao extends BaseDao<SysDictTypeEntity> {
      */
     List<DictType> getDictTypeList();
 
+    Long getDictTypeByDictName(String dictCode);
 }

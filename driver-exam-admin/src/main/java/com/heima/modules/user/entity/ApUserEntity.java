@@ -1,5 +1,7 @@
 package com.heima.modules.user.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -16,8 +18,9 @@ import java.util.Date;
 public class ApUserEntity {
 
     /**
-     * 
+     * ID
      */
+    @TableId(type = IdType.ASSIGN_ID)
 	private Long id;
     /**
      * 用户名

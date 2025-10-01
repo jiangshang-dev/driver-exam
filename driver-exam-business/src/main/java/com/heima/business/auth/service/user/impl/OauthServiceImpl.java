@@ -1,9 +1,9 @@
-package com.heima.business.auth.service.impl;
+package com.heima.business.auth.service.user.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.heima.business.auth.dao.ApUserOauthDao;
 import com.heima.business.auth.entity.ApUserOauthEntity;
-import com.heima.business.auth.service.OauthService;
+import com.heima.business.auth.service.user.OauthService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

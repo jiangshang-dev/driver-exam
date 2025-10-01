@@ -1,4 +1,4 @@
-package com.heima.business.auth.service.impl;
+package com.heima.business.auth.service.user.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -8,9 +8,9 @@ import com.heima.business.auth.dto.WechatUserInfo;
 import com.heima.business.auth.entity.ApUserEntity;
 import com.heima.business.auth.entity.ApUserOauthEntity;
 import com.heima.business.auth.provider.WechatAuthProvider;
-import com.heima.business.auth.service.AuthService;
-import com.heima.business.auth.service.OauthService;
-import com.heima.business.auth.service.ApUserService;
+import com.heima.business.auth.service.user.AuthService;
+import com.heima.business.auth.service.user.OauthService;
+import com.heima.business.auth.service.user.ApUserService;
 import com.heima.common.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

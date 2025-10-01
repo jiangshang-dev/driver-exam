@@ -1,4 +1,4 @@
-package com.heima.business.auth.service;
+package com.heima.business.auth.service.user;
 
 import com.heima.business.auth.entity.ApUserLoginLogEntity;
 import com.heima.common.service.CrudService;

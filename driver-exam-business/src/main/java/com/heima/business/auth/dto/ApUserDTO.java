@@ -1,4 +1,4 @@
-package com.heima.modules.user.dto;
+package com.heima.business.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;

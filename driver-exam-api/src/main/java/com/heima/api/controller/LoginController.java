@@ -3,7 +3,7 @@ package com.heima.api.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.heima.business.auth.service.AuthService;
+import com.heima.business.auth.service.user.AuthService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

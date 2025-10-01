@@ -16,9 +16,11 @@ import com.heima.common.service.impl.BaseServiceImpl;
 import com.heima.common.utils.ConvertUtils;
 import com.heima.modules.sys.dao.SysDictDataDao;
 import com.heima.modules.sys.dao.SysDictTypeDao;
+import com.heima.modules.sys.dto.SysDictDataDTO;
 import com.heima.modules.sys.dto.SysDictTypeDTO;
 import com.heima.modules.sys.entity.DictData;
 import com.heima.modules.sys.entity.DictType;
+import com.heima.modules.sys.entity.SysDictDataEntity;
 import com.heima.modules.sys.entity.SysDictTypeEntity;
 import com.heima.modules.sys.service.SysDictTypeService;
 import lombok.AllArgsConstructor;
@@ -102,6 +104,16 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeDao, SysD
             }
         }
         return typeList;
+    }
+
+    @Override
+    public List<SysDictDataDTO> getByDictName(String dictCode) {
+        Long typeId = baseDao.getDictTypeByDictName(dictCode);
+        QueryWrapper<SysDictDataEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_type_id", typeId);
+        List<SysDictDataEntity> selectedList = sysDictDataDao.selectList(wrapper);
+        List<SysDictDataDTO> list = ConvertUtils.sourceToTarget(selectedList, SysDictDataDTO.class);
+        return list;
     }
 
 }

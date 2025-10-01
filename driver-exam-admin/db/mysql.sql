@@ -372,6 +372,35 @@ CREATE TABLE QRTZ_TRIGGERS (
   JOB_GROUP VARCHAR(200) NOT NULL,
   DESCRIPTION VARCHAR(250) NULL,
   NEXT_FIRE_TIME BIGINT(13) NULL,
+```
+
+```
+-- 在文件末尾添加以下内容：
+
+-- 添加驾考字典类型
+INSERT INTO sys_dict_type(id, dict_type, dict_name, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000001, 'exam_type', '考试类型', '驾考考试类型', 0, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_type(id, dict_type, dict_name, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000002, 'question_tags', '题目标签', '驾考题目标签', 1, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_type(id, dict_type, dict_name, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000003, 'knowledge', '知识点', '驾考知识点', 2, 1067246875800000001, now(), 1067246875800000001, now());
+
+-- 考试类型字典数据
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000001, 1300000000000000001, 'C1', 'C1', '小型汽车', 0, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000002, 1300000000000000001, 'C2', 'C2', '小型自动挡汽车', 1, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000003, 1300000000000000001, 'A1', 'A1', '大型客车', 2, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000004, 1300000000000000001, 'A2', 'A2', '牵引车', 3, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000005, 1300000000000000001, 'B1', 'B1', '中型客车', 4, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000006, 1300000000000000001, 'B2', 'B2', '大型货车', 5, 1067246875800000001, now(), 1067246875800000001, now());
+
+-- 题目标签字典数据
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000011, 1300000000000000002, '交通标志', 'traffic_signs', '交通标志类题目', 0, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000012, 1300000000000000002, '交通法规', 'traffic_rules', '交通法规类题目', 1, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000013, 1300000000000000002, '安全文明', 'safety_civilization', '安全文明驾驶类题目', 2, 1067246875800000001, now(), 1067246875800000001, now());
+
+-- 知识点字典数据
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000021, 1300000000000000003, '道路交通安全法', 'road_traffic_safety_law', '道路交通安全法相关知识点', 0, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000022, 1300000000000000003, '交通信号', 'traffic_signals', '交通信号相关知识点', 1, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000023, 1300000000000000003, '安全行车', 'safe_driving', '安全行车相关知识点', 2, 1067246875800000001, now(), 1067246875800000001, now());
+INSERT INTO sys_dict_data(id, dict_type_id, dict_label, dict_value, remark, sort, creator, create_date, updater, update_date) VALUES (1300000000000000024, 1300000000000000003, '机动车驾驶操作', 'vehicle_operation', '机动车驾驶操作相关知识点', 3, 1067246875800000001, now(), 1067246875800000001, now());
+
   PREV_FIRE_TIME BIGINT(13) NULL,
   PRIORITY INTEGER NULL,
   TRIGGER_STATE VARCHAR(16) NOT NULL,

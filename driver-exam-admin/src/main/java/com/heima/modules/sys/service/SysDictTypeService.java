@@ -10,6 +10,7 @@ package com.heima.modules.sys.service;
 
 import com.heima.common.page.PageData;
 import com.heima.common.service.BaseService;
+import com.heima.modules.sys.dto.SysDictDataDTO;
 import com.heima.modules.sys.dto.SysDictTypeDTO;
 import com.heima.modules.sys.entity.DictType;
 import com.heima.modules.sys.entity.SysDictTypeEntity;
@@ -39,4 +40,5 @@ public interface SysDictTypeService extends BaseService<SysDictTypeEntity> {
      */
     List<DictType> getAllList();
 
+    List<SysDictDataDTO> getByDictName(String dictCode);
 }

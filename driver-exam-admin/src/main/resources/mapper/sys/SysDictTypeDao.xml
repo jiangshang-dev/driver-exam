@@ -7,4 +7,13 @@
         select id, dict_type from sys_dict_type order by dict_type, sort
     </select>
 
+    <select id="getDictTypeByDictName" resultType="java.lang.Long">
+        select id from sys_dict_type
+        <where>
+            <if test="dictCode != null and dictCode != ''">
+                and dict_type = #{dictCode}
+            </if>
+        </where>
+    </select>
+
 </mapper>

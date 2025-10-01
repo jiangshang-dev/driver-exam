@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.heima.business.auth.entity.ApUserLoginLogEntity;
-import com.heima.business.auth.service.ApUserLoginLogService;
+import com.heima.business.auth.service.user.ApUserLoginLogService;
 import jakarta.annotation.Resource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

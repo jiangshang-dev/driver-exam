@@ -1,9 +1,9 @@
-package com.heima.business.auth.service.impl;
+package com.heima.business.auth.service.user.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.heima.business.auth.dao.ApUserLoginLogDao;
 import com.heima.business.auth.entity.ApUserLoginLogEntity;
-import com.heima.business.auth.service.ApUserLoginLogService;
+import com.heima.business.auth.service.user.ApUserLoginLogService;
 import com.heima.common.service.impl.CrudServiceImpl;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.stereotype.Service;

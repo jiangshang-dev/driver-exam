@@ -97,3 +97,7 @@ auth:
   wechat:
     app-id: wx333f111792840ed9
     app-secret: 6f4df02472e71d0533bdba955b0fdebd
+
+drive:
+  key: c840fd2624309bc47aed32c5065ea20f
+  url: http://v.juhe.cn/jztk/query

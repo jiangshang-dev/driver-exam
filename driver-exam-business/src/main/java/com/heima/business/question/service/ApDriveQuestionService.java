@@ -7,6 +7,8 @@ import com.heima.business.question.enums.SubjectEnums;
 import com.heima.common.service.CrudService;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.List;
+
 /**
  * 驾考题目表
  *
@@ -17,4 +19,5 @@ public interface ApDriveQuestionService extends CrudService<ApDriveQuestionEntit
 
     void syncQuestion(SubjectEnums subject, ExamTypeEnums model, String testType);
 
+    List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType);
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -113,6 +114,14 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
                 .toList();
 
         baseDao.insert(driveTopicList);
+    }
+
+    @Override
+    public List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType) {
+        QueryWrapper<ApDriveQuestionEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("subject", subject).eq(StringUtils.isNotBlank(questionType),"tags", questionType);
+        List<ApDriveQuestionEntity> driveTopicList = baseDao.selectList(queryWrapper);
+        return driveTopicList;
     }
 
     /**

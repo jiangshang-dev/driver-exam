@@ -12,7 +12,7 @@
           <el-option v-for="item in examTypeOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="题型代码" prop="questionType">
+<!--      <el-form-item label="题型代码" prop="questionType">
         <el-select v-model="dataForm.questionType" placeholder="题型代码">
           <el-option label="交通标志" value="traffic_signs"></el-option>
           <el-option label="交通法规" value="traffic_rules"></el-option>
@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item label="题型名称" prop="questionTypeName">
         <el-input v-model="dataForm.questionTypeName" placeholder="题型名称"></el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="题目内容" prop="questionContent">
         <el-input v-model="dataForm.questionContent" placeholder="题目内容"></el-input>
       </el-form-item>
@@ -57,6 +57,7 @@
       <el-form-item label="题目配图URL" prop="imageUrl">
         <el-image
           style="width: 100px; height: 100px"
+          v-if="dataForm.imageUrl!==''"
           :src="dataForm.imageUrl"
           :zoom-rate="1.2"
           :max-scale="7"
@@ -198,7 +199,6 @@ const rules = ref({
   optionB: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   correctAnswer: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   questionExplain: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  imageUrl: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   difficultyLevel: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   isVip: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   isHot: [{ required: true, message: "必填项不能为空", trigger: "blur" }],

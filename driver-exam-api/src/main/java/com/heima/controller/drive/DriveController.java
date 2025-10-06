@@ -23,12 +23,23 @@ public class DriveController {
     /**
      * 获取驾考题库顺序列表
      * @param subject 科目
-     * @param driveType 测试类型
+     * @param questionType 测试类型
      */
     @GetMapping("/driveTopicList")
     public Result driveTopicList(@RequestParam(value = "subject", defaultValue = "1") String subject,
                                  @RequestParam(value = "questionType", defaultValue = "") String questionType) {
         List<ApDriveQuestionEntity> driveTopicList = driveQuestionService.driveQuestionList(subject, questionType);
         return new Result<List<ApDriveQuestionEntity>>().ok(driveTopicList);
+    }
+
+    /**
+     * 获取驾考题库考试随机100题列表
+     * @param subject
+     * @return
+     */
+    @GetMapping("/examDriveQuestion")
+    public Result examDriveQuestion(@RequestParam(value = "subject", defaultValue = "1") String subject) {
+        List<ApDriveQuestionEntity> driveTopicList = driveQuestionService.examDriveQuestion(subject);
+        return new Result<>().ok(driveTopicList);
     }
 }

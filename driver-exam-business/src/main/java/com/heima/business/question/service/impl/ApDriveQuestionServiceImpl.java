@@ -5,8 +5,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -122,6 +126,22 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
         queryWrapper.eq("subject", subject).eq(StringUtils.isNotBlank(questionType),"tags", questionType);
         List<ApDriveQuestionEntity> driveTopicList = baseDao.selectList(queryWrapper);
         return driveTopicList;
+    }
+
+    @Override
+    public List<ApDriveQuestionEntity> examDriveQuestion(String subject) {
+        LambdaQueryWrapper<ApDriveQuestionEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ApDriveQuestionEntity::getSubject, subject);
+        long count = baseDao.selectCount(queryWrapper);
+        int totalPages = (int) Math.ceil((double) count / 100);
+        Random random = new Random();
+        int randomPage = 0;
+        if (totalPages > 0) {
+            randomPage = random.nextInt(totalPages) + 1;
+        }
+        Page<ApDriveQuestionEntity> page = new Page<>(randomPage, 100);
+        IPage<ApDriveQuestionEntity> resultPage = baseDao.selectPage(page, queryWrapper);
+        return resultPage.getRecords().stream().filter(record -> StringUtils.isNotBlank(record.getOptionA()) && StringUtils.isNotBlank(record.getOptionB())).toList();
     }
 
     /**

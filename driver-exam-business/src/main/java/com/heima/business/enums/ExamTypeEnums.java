@@ -1,4 +1,4 @@
-package com.heima.business.question.enums;
+package com.heima.business.enums;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,15 +30,6 @@ public enum ExamTypeEnums {
     ExamTypeEnums(String code, String name) {
         this.code = code;
         this.name = name;
-    }
-
-    public static ExamTypeEnums getEnumByCode(Integer code) {
-        for (ExamTypeEnums statusEnum : ExamTypeEnums.values()) {
-            if (statusEnum.getCode().equals(code)) {
-                return statusEnum;
-            }
-        }
-        return null;
     }
 
     public static ExamTypeEnums getEnumByName(String name) {

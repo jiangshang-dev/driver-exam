@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.heima.business.question.enums.ExamTypeEnums;
-import com.heima.business.question.enums.SubjectEnums;
+import com.heima.business.enums.ExamTypeEnums;
+import com.heima.business.enums.SubjectEnums;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;

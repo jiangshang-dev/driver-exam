@@ -20,8 +20,8 @@ import com.heima.business.question.dao.ApDriveQuestionDao;
 import com.heima.business.question.dto.ApDriveQuestionDTO;
 import com.heima.business.question.dto.SyncDriveQuestionDTO;
 import com.heima.business.question.entity.ApDriveQuestionEntity;
-import com.heima.business.question.enums.ExamTypeEnums;
-import com.heima.business.question.enums.SubjectEnums;
+import com.heima.business.enums.ExamTypeEnums;
+import com.heima.business.enums.SubjectEnums;
 import com.heima.business.question.service.ApDriveQuestionService;
 import com.heima.common.service.impl.CrudServiceImpl;
 

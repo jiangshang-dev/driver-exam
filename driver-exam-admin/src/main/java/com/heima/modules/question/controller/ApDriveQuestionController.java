@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.heima.business.question.dto.ApDriveQuestionDTO;
-import com.heima.business.question.enums.ExamTypeEnums;
-import com.heima.business.question.enums.SubjectEnums;
+import com.heima.business.enums.ExamTypeEnums;
+import com.heima.business.enums.SubjectEnums;
 import com.heima.business.question.excel.ApDriveQuestionExcel;
 import com.heima.business.question.service.ApDriveQuestionService;
 import com.heima.common.annotation.LogOperation;

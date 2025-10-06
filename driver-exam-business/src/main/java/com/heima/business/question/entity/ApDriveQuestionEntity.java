@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.heima.business.question.enums.ExamTypeEnums;
-import com.heima.business.question.enums.SubjectEnums;
+import com.heima.business.enums.ExamTypeEnums;
+import com.heima.business.enums.SubjectEnums;
 
 import lombok.Data;
 

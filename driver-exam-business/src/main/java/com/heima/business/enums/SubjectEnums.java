@@ -1,4 +1,4 @@
-package com.heima.business.question.enums;
+package com.heima.business.enums;
 
 import java.util.Arrays;
 import java.util.List;

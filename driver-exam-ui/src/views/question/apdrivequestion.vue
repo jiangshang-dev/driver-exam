@@ -32,12 +32,10 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="题型代码">
-        <el-input v-model="queryForm.questionType" placeholder="请输入题型代码" clearable></el-input>
-      </el-form-item>
-
-      <el-form-item label="题型名称">
-        <el-input v-model="queryForm.questionTypeName" placeholder="请输入题型名称" clearable></el-input>
+      <el-form-item label="题目标签" prop="tags">
+        <el-select v-model="queryForm.tags" placeholder="题目标签">
+          <el-option v-for="item in questionTagsOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item label="题目内容">
@@ -62,9 +60,18 @@
           {{ scope.row.subject === 1 ? '科目一' : (scope.row.subject === 4 ? '科目四' : scope.row.subject) }}
         </template>
       </el-table-column>
-      <el-table-column prop="questionType" label="题型代码" header-align="center" align="center">
-        <!-- ：traffic_signs-交通标志，traffic_rules-交通法规等-->
+      <el-table-column prop="tags" label="题目标签" header-align="center" align="center">
+<!--      questionTagsOption显示字典里面的名称name
+ questionTagsOptions: [ { "id": "1975119388950986754", "dictLabel": "交通信号灯题", "dictValue": "traffic_light" } ]
+ scope.row.tags和questionTagsOptions匹配显示名称
+ -->
+        <template v-slot="scope">
+          {{questionTagsOptions.find(item => item.dictValue === scope.row.tags)?.dictLabel || ''}}
+        </template>
       </el-table-column>
+<!--      <el-table-column prop="questionType" label="题型代码" header-align="center" align="center">-->
+        <!-- ：traffic_signs-交通标志，traffic_rules-交通法规等-->
+<!--      </el-table-column>-->
       <el-table-column prop="examType" label="题型类型" header-align="center" align="center">
         <template v-slot="scope">
           {{ scope.row.examType ? scope.row.examType.code || scope.row.examType : '' }}
@@ -129,7 +136,6 @@
       </el-table-column>
       <el-table-column prop="sequenceOrder" label="顺序刷题排序" header-align="center" align="center"></el-table-column>
       <el-table-column prop="weight" label="题目权重" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="tags" label="题目标签" header-align="center" align="center"></el-table-column>
       <el-table-column prop="knowledgePoints" label="知识点" header-align="center" align="center"></el-table-column>
       <el-table-column prop="viewCount" label="浏览次数" header-align="center" align="center"></el-table-column>
       <el-table-column prop="errorCount" label="错误次数" header-align="center" align="center"></el-table-column>
@@ -215,6 +221,7 @@ const queryForm = reactive({
   subject: '',
   examType: '',
   questionType: '',
+  tags: '',
   questionTypeName: '',
   questionContent: ''
 });
@@ -235,7 +242,8 @@ const resetQuery = () => {
   queryForm.questionType = '';
   queryForm.questionTypeName = '';
   queryForm.questionContent = '';
-
+  queryForm.tags = '';
+  handleQuery();
   // 确保dataForm已初始化并清空查询条件
   if (!state.dataForm) {
     state.dataForm = {};
@@ -272,6 +280,7 @@ interface DictItem {
 // 定义字典选项数据
 const examTypeOptions = ref<DictItem[]>([]);
 const modelOptions = ref<DictItem[]>([]);
+const questionTagsOptions = ref<DictItem[]>([]);
 
 // 获取字典数据
 const getDictData = () => {
@@ -279,8 +288,14 @@ const getDictData = () => {
   baseService.get("/sys/dict/type/getByDictName?dictCode=exam_type").then((res) => {
     examTypeOptions.value = res.data;
   });
+
+  // 获取题目标签字典数据
+  baseService.get("/sys/dict/type/getByDictName?dictCode=question_tags").then((res) => {
+    questionTagsOptions.value = res.data;
+  });
 };
 
+// 同步题库
 const confirmSync = () => {
   if (!syncForm.subject || !syncForm.model) {
     ElMessage.warning('请选择学科和车型');

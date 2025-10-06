@@ -50,6 +50,7 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
         String questionType = (String)params.get("questionType");
         String questionTypeName = (String)params.get("questionTypeName");
         String questionContent = (String)params.get("questionContent");
+        String tags = (String)params.get("tags");
 
         QueryWrapper<ApDriveQuestionEntity> wrapper = new QueryWrapper<>();
         wrapper.eq(StrUtil.isNotBlank(id), "id", id);
@@ -74,6 +75,7 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
         }
         
         wrapper.eq(StrUtil.isNotBlank(questionType), "question_type", questionType);
+        wrapper.eq(StrUtil.isNotBlank(tags), "tags", tags);
         wrapper.eq(StrUtil.isNotBlank(questionTypeName), "question_type_name", questionTypeName);
         wrapper.like(StrUtil.isNotBlank(questionContent), "question_content", questionContent);
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heima.business.wrongCollection.dao.ApUserWrongCollectionQuestionDao">
+
+    <resultMap type="com.heima.business.wrongCollection.entity.ApUserWrongCollectionQuestionEntity" id="apUserWrongCollectionQuestionMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="questionId" column="question_id"/>
+        <result property="subject" column="subject"/>
+        <result property="wrongCount" column="wrong_count"/>
+        <result property="lastWrongAnswer" column="last_wrong_answer"/>
+        <result property="isMastered" column="is_mastered"/>
+        <result property="masteredTime" column="mastered_time"/>
+        <result property="firstWrongTime" column="first_wrong_time"/>
+        <result property="lastWrongTime" column="last_wrong_time"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="myCollectPage" resultType="com.heima.business.wrongCollection.dto.ApUserWrongCollectionQuestionDTO">
+        SELECT
+            dq.id,
+            dq.image_url,
+            dq.question_content,
+            dq.option_a,
+            dq.option_b,
+            dq.option_c,
+            dq.option_d,
+            dq.correct_answer,
+            dq.question_explain,
+            dq.difficulty_level,
+            dq.is_vip,
+            dq.is_hot,
+            dq.question_format,
+            dq.tags,
+            dq.`subject`,
+            uwcq.create_time
+        FROM
+            ap_user_wrong_collection_question uwcq LEFT JOIN
+            ap_drive_question dq ON uwcq.question_id = dq.id
+        WHERE
+            uwcq.user_id = #{userId}
+          <if test="subject != null and subject != ''">
+              AND uwcq.`subject` = #{subject}
+          </if>
+          AND uwcq.record_type = 0
+        LIMIT #{pageSize} OFFSET #{pageNo}
+    </select>
+
+</mapper>

@@ -24,4 +24,8 @@ public interface ApUserWrongCollectionQuestionService extends CrudService<ApUser
     ApUserWrongCollectionQuestionDTO getOne(QueryWrapper<ApUserWrongCollectionQuestionEntity> wrapper);
 
     PageData<ApUserWrongCollectionQuestionDTO> myCollectPage(Map<String, Object> params);
+
+    PageData<ApUserWrongCollectionQuestionDTO> myWrongPage(Map<String, Object> params);
+
+    boolean clearWrong(Long userId);
 }

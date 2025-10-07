@@ -20,4 +20,7 @@ public interface ApUserWrongCollectionQuestionDao extends BaseDao<ApUserWrongCol
 
     List<ApUserWrongCollectionQuestionDTO> myCollectPage(@Param("userId") String userId, @Param("subject") String subject,
                                                          @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+
+    List<ApUserWrongCollectionQuestionDTO> myWrongPage(@Param("userId") String userId, @Param("subject") String subject,
+                                                       @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 }

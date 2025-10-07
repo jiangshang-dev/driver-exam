@@ -1,5 +1,7 @@
 package com.heima.business.wrongCollection.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.heima.business.enums.RecordTypeEnums;
 import lombok.Data;
@@ -65,6 +67,9 @@ public class ApUserWrongCollectionQuestionEntity {
     /**
      * 是否删除：0-未删除，1-已删除
      */
+    // 逻辑删
+    @TableLogic
+    @TableField("is_deleted")
 	private Integer isDeleted;
     /**
      * 创建时间

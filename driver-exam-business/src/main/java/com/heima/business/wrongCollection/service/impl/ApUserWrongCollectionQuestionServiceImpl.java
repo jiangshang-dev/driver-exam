@@ -3,6 +3,8 @@ package com.heima.business.wrongCollection.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.heima.business.enums.RecordTypeEnums;
 import com.heima.common.page.PageData;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +65,28 @@ public class ApUserWrongCollectionQuestionServiceImpl extends CrudServiceImpl<Ap
         PageData page = new PageData(pageData, pageData.size());
         page.setList(pageData);
         return page;
+    }
+
+    @Override
+    public PageData<ApUserWrongCollectionQuestionDTO> myWrongPage(Map<String, Object> params) {
+        String userId = (String)params.get("userId");
+        String subject = (String)params.get("subject");
+        String pageNo = (String)params.get("pageNo");
+        int pageNum = Integer.parseInt(pageNo);
+        int offset = (pageNum - 1) * 20;
+        List<ApUserWrongCollectionQuestionDTO> pageData = baseDao.myWrongPage(userId, subject, offset, 20);
+        PageData page = new PageData(pageData, pageData.size());
+        page.setList(pageData);
+        return page;
+    }
+
+    @Override
+    public boolean clearWrong(Long userId) {
+        LambdaQueryWrapper<ApUserWrongCollectionQuestionEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ApUserWrongCollectionQuestionEntity::getUserId, userId);
+        queryWrapper.eq(ApUserWrongCollectionQuestionEntity::getRecordType, RecordTypeEnums.WRONG);
+        List<ApUserWrongCollectionQuestionEntity> selectedList = baseDao.selectList(queryWrapper);
+        int delete = baseDao.deleteByIds(selectedList);
+        return delete > 0;
     }
 }

@@ -45,6 +45,39 @@
               AND uwcq.`subject` = #{subject}
           </if>
           AND uwcq.record_type = 0
+          AND uwcq.is_deleted = 0
+        LIMIT #{pageSize} OFFSET #{pageNo}
+    </select>
+
+    <select id="myWrongPage" resultType="com.heima.business.wrongCollection.dto.ApUserWrongCollectionQuestionDTO">
+        SELECT
+        dq.id,
+        dq.image_url,
+        dq.question_content,
+        dq.option_a,
+        dq.option_b,
+        dq.option_c,
+        dq.option_d,
+        dq.correct_answer,
+        dq.question_explain,
+        dq.difficulty_level,
+        dq.is_vip,
+        dq.is_hot,
+        dq.question_format,
+        dq.tags,
+        dq.`subject`,
+        uwcq.create_time,
+        uwcq.wrong_count
+        FROM
+        ap_user_wrong_collection_question uwcq LEFT JOIN
+        ap_drive_question dq ON uwcq.question_id = dq.id
+        WHERE
+        uwcq.user_id = #{userId}
+        <if test="subject != null and subject != ''">
+            AND uwcq.`subject` = #{subject}
+        </if>
+        AND uwcq.record_type = 1
+        AND uwcq.is_deleted = 0
         LIMIT #{pageSize} OFFSET #{pageNo}
     </select>
 

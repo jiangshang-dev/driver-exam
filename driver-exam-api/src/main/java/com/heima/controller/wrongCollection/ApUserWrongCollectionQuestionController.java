@@ -3,6 +3,7 @@ package com.heima.controller.wrongCollection;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.heima.business.wrongCollection.entity.ApUserWrongCollectionQuestionEntity;
 import com.heima.common.constant.Constant;
 import com.heima.common.page.PageData;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,6 +43,20 @@ public class ApUserWrongCollectionQuestionController {
     @Resource
     private ApUserWrongCollectionQuestionService apUserWrongCollectionQuestionService;
 
+    @GetMapping("myWrongPage")
+    @Operation(summary = "我的错题-分页")
+    @Parameters({
+            @Parameter(name = Constant.PAGE, description = "当前页码，从1开始", in = ParameterIn.QUERY, required = true, ref = "int"),
+            @Parameter(name = Constant.LIMIT, description = "每页显示记录数", in = ParameterIn.QUERY, required = true, ref = "int"),
+            @Parameter(name = Constant.ORDER_FIELD, description = "排序字段", in = ParameterIn.QUERY, ref = "String"),
+            @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref = "String")
+    })
+    public Result<PageData<ApUserWrongCollectionQuestionDTO>> myWrongPage(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
+        PageData<ApUserWrongCollectionQuestionDTO> page = apUserWrongCollectionQuestionService.myWrongPage(params);
+
+        return new Result<PageData<ApUserWrongCollectionQuestionDTO>>().ok(page);
+    }
+
     @GetMapping("myCollectPage")
     @Operation(summary = "我的收藏-分页")
     @Parameters({
@@ -69,7 +84,7 @@ public class ApUserWrongCollectionQuestionController {
     public Result<Boolean> isCollected(@RequestParam("userId") Long userId, @RequestParam("questionId") Long questionId) {
         // 检查是否已存在该题目的收藏记录
         ApUserWrongCollectionQuestionDTO existingDto = apUserWrongCollectionQuestionService.getOne(
-                new QueryWrapper<com.heima.business.wrongCollection.entity.ApUserWrongCollectionQuestionEntity>()
+                new QueryWrapper<ApUserWrongCollectionQuestionEntity>()
                         .eq("user_id", userId)
                         .eq("question_id", questionId)
                         .eq("record_type", RecordTypeEnums.COLLECT.getValue())
@@ -78,6 +93,13 @@ public class ApUserWrongCollectionQuestionController {
         // 如果存在记录则表示已收藏，否则未收藏
         boolean isCollected = existingDto != null;
         return new Result<Boolean>().ok(isCollected);
+    }
+
+    @GetMapping("clearWrong")
+    @Operation(summary = "清空当前用户的错题")
+    public Result<Boolean> clearWrong(@RequestParam("userId") Long userId) {
+        boolean isSuccess = apUserWrongCollectionQuestionService.clearWrong(userId);
+        return new Result<Boolean>().ok(isSuccess);
     }
 
     @PostMapping("collect")

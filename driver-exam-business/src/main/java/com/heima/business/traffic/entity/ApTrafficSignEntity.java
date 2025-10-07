@@ -1,5 +1,6 @@
 package com.heima.business.traffic.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -58,6 +59,7 @@ public class ApTrafficSignEntity {
     /**
      * 是否删除：0-未删除，1-已删除
      */
+    @TableLogic
 	private Integer isDeleted;
     /**
      * 创建时间

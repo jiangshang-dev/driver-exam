@@ -23,9 +23,13 @@ public class ApTrafficSignServiceImpl extends CrudServiceImpl<ApTrafficSignDao, 
     @Override
     public QueryWrapper<ApTrafficSignEntity> getWrapper(Map<String, Object> params){
         String id = (String)params.get("id");
+        String signName = (String)params.get("signName");
+        String signCategory = (String)params.get("signCategory");
 
         QueryWrapper<ApTrafficSignEntity> wrapper = new QueryWrapper<>();
         wrapper.eq(StrUtil.isNotBlank(id), "id", id);
+        wrapper.like(StrUtil.isNotBlank(signName), "sign_name", signName);
+        wrapper.like(StrUtil.isNotBlank(signCategory), "sign_category", signCategory);
 
         return wrapper;
     }

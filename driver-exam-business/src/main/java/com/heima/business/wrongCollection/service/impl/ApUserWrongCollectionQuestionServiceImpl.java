@@ -1,7 +1,9 @@
 package com.heima.business.wrongCollection.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
+import com.heima.common.page.PageData;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -48,5 +50,18 @@ public class ApUserWrongCollectionQuestionServiceImpl extends CrudServiceImpl<Ap
             return null;
         }
         return ConvertUtils.sourceToTarget(entity, ApUserWrongCollectionQuestionDTO.class);
+    }
+
+    @Override
+    public PageData<ApUserWrongCollectionQuestionDTO> myCollectPage(Map<String, Object> params) {
+        String userId = (String)params.get("userId");
+        String subject = (String)params.get("subject");
+        String pageNo = (String)params.get("pageNo");
+        int pageNum = Integer.parseInt(pageNo);
+        int offset = (pageNum - 1) * 20;
+        List<ApUserWrongCollectionQuestionDTO> pageData = baseDao.myCollectPage(userId, subject, offset, 20);
+        PageData page = new PageData(pageData, pageData.size());
+        page.setList(pageData);
+        return page;
     }
 }

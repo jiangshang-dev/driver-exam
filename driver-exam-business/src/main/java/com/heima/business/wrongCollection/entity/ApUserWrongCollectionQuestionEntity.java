@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.heima.business.enums.RecordTypeEnums;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -52,15 +53,15 @@ public class ApUserWrongCollectionQuestionEntity {
     /**
      * 掌握时间
      */
-	private Date masteredTime;
+	private LocalDateTime masteredTime;
     /**
      * 首次错误时间
      */
-	private Date firstWrongTime;
+	private LocalDateTime firstWrongTime;
     /**
      * 最后错误时间
      */
-	private Date lastWrongTime;
+	private LocalDateTime lastWrongTime;
     /**
      * 是否删除：0-未删除，1-已删除
      */
@@ -68,9 +69,9 @@ public class ApUserWrongCollectionQuestionEntity {
     /**
      * 创建时间
      */
-	private Date createTime;
+	private LocalDateTime createTime;
     /**
      * 修改时间
      */
-	private Date updateTime;
+	private LocalDateTime updateTime;
 }

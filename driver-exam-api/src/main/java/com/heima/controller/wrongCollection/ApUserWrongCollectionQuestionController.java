@@ -50,8 +50,8 @@ public class ApUserWrongCollectionQuestionController {
             @Parameter(name = Constant.ORDER_FIELD, description = "排序字段", in = ParameterIn.QUERY, ref = "String"),
             @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref = "String")
     })
-    public Result<PageData<ApUserWrongCollectionQuestionDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
-        PageData<ApUserWrongCollectionQuestionDTO> page = apUserWrongCollectionQuestionService.page(params);
+    public Result<PageData<ApUserWrongCollectionQuestionDTO>> myCollectPage(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
+        PageData<ApUserWrongCollectionQuestionDTO> page = apUserWrongCollectionQuestionService.myCollectPage(params);
 
         return new Result<PageData<ApUserWrongCollectionQuestionDTO>>().ok(page);
     }

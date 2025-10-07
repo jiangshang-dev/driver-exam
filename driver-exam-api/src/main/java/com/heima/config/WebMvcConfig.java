@@ -1,17 +1,12 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- * <p>
- * https://www.renren.io
- * <p>
- * 版权所有，侵权必究！
- */
-
 package com.heima.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.heima.common.utils.DateUtils;
 import com.heima.interceptor.AuthorizationInterceptor;
 import com.heima.resolver.LoginUserHandlerMethodArgumentResolver;
@@ -29,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -39,6 +36,7 @@ import java.util.TimeZone;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
     @Resource
     private AuthorizationInterceptor authorizationInterceptor;
     @Resource
@@ -73,6 +71,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setDateFormat(new SimpleDateFormat(DateUtils.DATE_TIME_PATTERN));
         mapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+
+        // 添加Java 8时间类型支持
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN)));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN)));
+        mapper.registerModule(javaTimeModule);
 
         //Long类型转String类型
         SimpleModule simpleModule = new SimpleModule();

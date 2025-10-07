@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heima.business.traffic.dao.ApTrafficVideoDao">
+
+    <resultMap type="com.heima.business.traffic.entity.ApTrafficVideoEntity" id="apTrafficVideoMap">
+        <result property="id" column="id"/>
+        <result property="videoTitle" column="video_title"/>
+        <result property="videoDesc" column="video_desc"/>
+        <result property="coverImage" column="cover_image"/>
+        <result property="videoUrl" column="video_url"/>
+        <result property="aliyunVideoId" column="aliyun_video_id"/>
+        <result property="playAuth" column="play_auth"/>
+        <result property="videoDuration" column="video_duration"/>
+        <result property="videoSize" column="video_size"/>
+        <result property="videoFormat" column="video_format"/>
+        <result property="resolution" column="resolution"/>
+        <result property="category" column="category"/>
+        <result property="tags" column="tags"/>
+        <result property="instructor" column="instructor"/>
+        <result property="difficultyLevel" column="difficulty_level"/>
+        <result property="isVip" column="is_vip"/>
+        <result property="isHot" column="is_hot"/>
+        <result property="isDownloadable" column="is_downloadable"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="shareCount" column="share_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="downloadCount" column="download_count"/>
+        <result property="rating" column="rating"/>
+        <result property="ratingCount" column="rating_count"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="status" column="status"/>
+        <result property="uploadUserId" column="upload_user_id"/>
+        <result property="auditUserId" column="audit_user_id"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="publishTime" column="publish_time"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+
+</mapper>

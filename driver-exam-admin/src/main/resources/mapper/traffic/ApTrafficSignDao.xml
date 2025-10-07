@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heima.business.traffic.dao.ApTrafficSignDao">
+
+    <resultMap type="com.heima.business.traffic.entity.ApTrafficSignEntity" id="apTrafficSignMap">
+        <result property="id" column="id"/>
+        <result property="signName" column="sign_name"/>
+        <result property="signDesc" column="sign_desc"/>
+        <result property="signImage" column="sign_image"/>
+        <result property="signCategory" column="sign_category"/>
+        <result property="signType" column="sign_type"/>
+        <result property="usageScene" column="usage_scene"/>
+        <result property="relatedRegulations" column="related_regulations"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+
+</mapper>

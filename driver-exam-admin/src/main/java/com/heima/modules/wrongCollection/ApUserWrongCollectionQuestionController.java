@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 1.0.0 2025-10-06
  */
 @RestController
-@RequestMapping("demo/apuserwrongcollectionquestion")
+@RequestMapping("/apuserwrongcollectionquestion")
 @Tag(name="用户收藏_错题本表")
 public class ApUserWrongCollectionQuestionController {
     @Resource
@@ -47,7 +47,7 @@ public class ApUserWrongCollectionQuestionController {
         @Parameter(name = Constant.ORDER_FIELD, description = "排序字段", in = ParameterIn.QUERY, ref="String") ,
         @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref="String")
     })
-    @RequiresPermissions("demo:apuserwrongcollectionquestion:page")
+    @RequiresPermissions("apuserwrongcollectionquestion:page")
     public Result<PageData<ApUserWrongCollectionQuestionDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
         PageData<ApUserWrongCollectionQuestionDTO> page = apUserWrongCollectionQuestionService.page(params);
 
@@ -56,7 +56,7 @@ public class ApUserWrongCollectionQuestionController {
 
     @GetMapping("{id}")
     @Operation(summary = "信息")
-    @RequiresPermissions("demo:apuserwrongcollectionquestion:info")
+    @RequiresPermissions("apuserwrongcollectionquestion:info")
     public Result<ApUserWrongCollectionQuestionDTO> get(@PathVariable("id") Long id){
         ApUserWrongCollectionQuestionDTO data = apUserWrongCollectionQuestionService.get(id);
 
@@ -66,7 +66,7 @@ public class ApUserWrongCollectionQuestionController {
     @PostMapping
     @Operation(summary = "保存")
     @LogOperation("保存")
-    @RequiresPermissions("demo:apuserwrongcollectionquestion:save")
+    @RequiresPermissions("apuserwrongcollectionquestion:save")
     public Result save(@RequestBody ApUserWrongCollectionQuestionDTO dto){
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
@@ -79,7 +79,7 @@ public class ApUserWrongCollectionQuestionController {
     @PutMapping
     @Operation(summary = "修改")
     @LogOperation("修改")
-    @RequiresPermissions("demo:apuserwrongcollectionquestion:update")
+    @RequiresPermissions("apuserwrongcollectionquestion:update")
     public Result update(@RequestBody ApUserWrongCollectionQuestionDTO dto){
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
@@ -92,7 +92,7 @@ public class ApUserWrongCollectionQuestionController {
     @DeleteMapping
     @Operation(summary = "删除")
     @LogOperation("删除")
-    @RequiresPermissions("demo:apuserwrongcollectionquestion:delete")
+    @RequiresPermissions("apuserwrongcollectionquestion:delete")
     public Result delete(@RequestBody Long[] ids){
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
@@ -105,7 +105,7 @@ public class ApUserWrongCollectionQuestionController {
     @GetMapping("export")
     @Operation(summary = "导出")
     @LogOperation("导出")
-    @RequiresPermissions("demo:apuserwrongcollectionquestion:export")
+    @RequiresPermissions("apuserwrongcollectionquestion:export")
     public void export(@Parameter(hidden = true) @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<ApUserWrongCollectionQuestionDTO> list = apUserWrongCollectionQuestionService.list(params);
 

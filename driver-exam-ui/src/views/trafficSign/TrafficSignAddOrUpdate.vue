@@ -7,11 +7,13 @@
       <el-form-item label="标志说明" prop="signDesc">
         <el-input v-model="dataForm.signDesc" placeholder="标志说明"></el-input>
       </el-form-item>
-      <el-form-item label="标志图片URL" prop="signImage">
-        <el-input v-model="dataForm.signImage" placeholder="标志图片URL"></el-input>
+      <el-form-item label="标志图片" prop="signImage">
+        <CoverImageUpload v-model="dataForm.signImage" />
       </el-form-item>
-      <el-form-item label="标志类别：warning-警告标志，prohibition-禁令标志等" prop="signCategory">
-        <el-input v-model="dataForm.signCategory" placeholder="标志类别：warning-警告标志，prohibition-禁令标志等"></el-input>
+      <el-form-item label="标志类别" prop="signCategory">
+        <el-select v-model="dataForm.signCategory" placeholder="请选择">
+          <el-option v-for="item in categoryOptions" :key="item.id" :label="item.categoryName" :value="item.id"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="标志类型" prop="signType">
         <el-input v-model="dataForm.signType" placeholder="标志类型"></el-input>
@@ -23,19 +25,7 @@
         <el-input v-model="dataForm.relatedRegulations" placeholder="相关法规"></el-input>
       </el-form-item>
       <el-form-item label="排序权重" prop="sortOrder">
-        <el-input v-model="dataForm.sortOrder" placeholder="排序权重"></el-input>
-      </el-form-item>
-      <el-form-item label="查看次数" prop="viewCount">
-        <el-input v-model="dataForm.viewCount" placeholder="查看次数"></el-input>
-      </el-form-item>
-      <el-form-item label="是否删除：0-未删除，1-已删除" prop="isDeleted">
-        <el-input v-model="dataForm.isDeleted" placeholder="是否删除：0-未删除，1-已删除"></el-input>
-      </el-form-item>
-      <el-form-item label="创建时间" prop="gmtCreate">
-        <el-input v-model="dataForm.gmtCreate" placeholder="创建时间"></el-input>
-      </el-form-item>
-      <el-form-item label="修改时间" prop="gmtModified">
-        <el-input v-model="dataForm.gmtModified" placeholder="修改时间"></el-input>
+        <el-input-number v-model="dataForm.sortOrder" placeholder="排序权重"></el-input-number>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -49,6 +39,7 @@
 import { reactive, ref } from "vue";
 import baseService from "@/service/baseService";
 import { ElMessage } from "element-plus";
+import CoverImageUpload from "@/components/CoverImageUpload.vue";
 
 const emit = defineEmits(["refreshDataList"]);
 
@@ -95,6 +86,9 @@ const init = (id?: number) => {
     dataFormRef.value.resetFields();
   }
 
+  // 获取分类数据
+  getCategory();
+
   if (id) {
     getInfo(id);
   }
@@ -129,4 +123,25 @@ const dataFormSubmitHandle = () => {
 defineExpose({
   init
 });
+
+interface CategoryOption {
+  id: string;
+  categoryName: string;
+}
+
+// 分类选项
+const categoryOptions = ref<CategoryOption[]>([]);
+
+// 获取分类
+const getCategory = () => {
+  baseService.get("/sys/dict/type/getByDictName?dictCode=traffic_logo").then((res) => {
+    if (res.data && Array.isArray(res.data)) {
+      console.log('res---',res.data);
+      categoryOptions.value = res.data.map(item => ({
+        id: item.id,
+        categoryName: item.dictLabel
+      }));
+    }
+  })
+};
 </script>

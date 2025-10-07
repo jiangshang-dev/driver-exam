@@ -24,6 +24,7 @@ public class DictTypeServiceImpl extends BaseServiceImpl<SysDictTypeDao, SysDict
         Long typeId = baseDao.getDictTypeByDictName(dictCode);
         QueryWrapper<DictDataEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("dict_type_id", typeId);
+        wrapper.orderByAsc("sort");
         List<DictDataEntity> selectedList = sysDictDataDao.selectList(wrapper);
         List<SysDictDataDTO> list = ConvertUtils.sourceToTarget(selectedList, SysDictDataDTO.class);
         return list;

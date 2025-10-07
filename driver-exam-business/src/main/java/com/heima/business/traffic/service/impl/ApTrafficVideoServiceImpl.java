@@ -24,10 +24,12 @@ public class ApTrafficVideoServiceImpl extends CrudServiceImpl<ApTrafficVideoDao
     public QueryWrapper<ApTrafficVideoEntity> getWrapper(Map<String, Object> params){
         String id = (String)params.get("id");
         String videoTitle = (String)params.get("videoTitle");
+        String category = (String)params.get("category");
 
         QueryWrapper<ApTrafficVideoEntity> wrapper = new QueryWrapper<>();
         wrapper.eq(StrUtil.isNotBlank(id), "id", id);
         wrapper.like(StrUtil.isNotBlank(videoTitle), "video_title", videoTitle);
+        wrapper.like(StrUtil.isNotBlank(category), "category", category);
 
         return wrapper;
     }

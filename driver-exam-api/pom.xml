@@ -25,6 +25,11 @@
 			<artifactId>driver-exam-business</artifactId>
 			<version>5.5.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.heima</groupId>
+			<artifactId>driver-exam-vod</artifactId>
+			<version>5.5.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

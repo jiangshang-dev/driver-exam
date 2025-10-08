@@ -37,6 +37,9 @@ public class ApUserEntity {
 
     private Integer vipLevel;
 
+    /** 会员到期时间 */
+    private LocalDateTime vipExpireTime;
+
     /** 性别 0:未知 1:男 2:女 */
     private Integer gender;
     

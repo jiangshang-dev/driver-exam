@@ -2,6 +2,8 @@ package com.heima.business.auth.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 登录响应结果
  */
@@ -31,4 +33,7 @@ public class LoginResult {
     
     /** 用户等级 */
     private Integer level;
+
+    /** 会员到期时间 */
+    private LocalDateTime vipExpireTime;
 }

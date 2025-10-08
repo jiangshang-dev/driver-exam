@@ -77,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
             result.setMobile(user.getPhone());
             result.setToken(token);
             result.setVipLevel(user.getVipLevel()); // 默认非VIP
+            result.setVipExpireTime(user.getVipExpireTime()); // 默认非VIP
             result.setLevel(1);    // 默认等级
             
             log.info("微信小程序登录成功: userId={}, openId={}", user.getId(), wechatUser.getOpenId());
@@ -98,6 +99,10 @@ public class AuthServiceImpl implements AuthService {
         if (oauth != null) {
             // 已绑定，直接返回用户信息
             ApUserEntity user = userService.getById(oauth.getUserId());
+
+            // 如果isVIP是true，说明是VIP用户
+            boolean isVip = user.getVipExpireTime() != null
+                    && user.getVipExpireTime().isAfter(LocalDateTime.now());
             
             // 如果这次登录获取到了手机号，但用户表中没有，则更新手机号
             if (StrUtil.isNotBlank(wechatUser.getPhoneNumber()) && 
@@ -106,9 +111,22 @@ public class AuthServiceImpl implements AuthService {
                 updateUser.setId(user.getId());
                 updateUser.setPhone(wechatUser.getPhoneNumber());
                 updateUser.setUpdateTime(LocalDateTime.now());
-                updateUser.setVipLevel(user.getVipLevel());
+                if (isVip) {
+                    updateUser.setVipLevel(user.getVipLevel());
+                } else {
+                    // 不是VIP，则将VIP等级设置为0
+                    updateUser.setVipLevel(0);
+                    updateUser.setVipExpireTime(null);
+                }
                 userService.updateById(updateUser);
                 user.setPhone(wechatUser.getPhoneNumber());
+            } else {
+                if (!isVip) {
+                    // 默认非VIP
+                    user.setVipLevel(0);
+                    user.setVipExpireTime(null);
+                    userService.updateById(user);
+                }
             }
             
             return user;

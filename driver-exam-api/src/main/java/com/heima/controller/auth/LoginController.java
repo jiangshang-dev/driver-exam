@@ -150,6 +150,7 @@ public class LoginController {
             result.put("id", user.getId());
             result.put("vipLevel", user.getVipLevel());
             result.put("vipExpireTime", user.getVipExpireTime());
+            result.put("integral", user.getIntegral());
 
             log.info("会员状态检查完成: userId={}, isVip={}", userId, isVip);
             return new Result<Map<String, Object>>().ok(result);

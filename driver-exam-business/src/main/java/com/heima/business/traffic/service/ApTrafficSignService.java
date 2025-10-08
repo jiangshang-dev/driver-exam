@@ -2,7 +2,10 @@ package com.heima.business.traffic.service;
 
 import com.heima.business.traffic.dto.ApTrafficSignDTO;
 import com.heima.business.traffic.entity.ApTrafficSignEntity;
+import com.heima.common.page.PageData;
 import com.heima.common.service.CrudService;
+
+import java.util.Map;
 
 /**
  * 交通标志表
@@ -12,4 +15,5 @@ import com.heima.common.service.CrudService;
  */
 public interface ApTrafficSignService extends CrudService<ApTrafficSignEntity, ApTrafficSignDTO> {
 
+    PageData<ApTrafficSignDTO> pageApp(Map<String, Object> params);
 }

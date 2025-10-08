@@ -37,7 +37,7 @@ public class ApTrafficSignController {
         @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref="String")
     })
     public Result<PageData<ApTrafficSignDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
-        PageData<ApTrafficSignDTO> page = apTrafficSignService.page(params);
+        PageData<ApTrafficSignDTO> page = apTrafficSignService.pageApp(params);
 
         return new Result<PageData<ApTrafficSignDTO>>().ok(page);
     }

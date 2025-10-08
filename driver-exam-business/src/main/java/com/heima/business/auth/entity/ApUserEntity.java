@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -35,7 +36,11 @@ public class ApUserEntity {
     /** 邮箱 */
     private String email;
 
+    /** 会员等级 0:普通用户 1:VIP用户 */
     private Integer vipLevel;
+
+    /** 积分 */
+    private Integer integral;
 
     /** 会员到期时间 */
     private LocalDateTime vipExpireTime;
@@ -54,4 +59,7 @@ public class ApUserEntity {
     
     /** 更新时间 */
     private LocalDateTime updateTime;
+
+    /** 最后积分更新时间 */
+    public LocalDate lastIntegralUpdate;
 }

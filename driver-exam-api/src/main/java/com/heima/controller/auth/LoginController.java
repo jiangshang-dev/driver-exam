@@ -1,5 +1,6 @@
 package com.heima.controller.auth;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class LoginController {
             result.put("vipExpireTime", loginResult.getVipExpireTime());
             result.put("level", loginResult.getLevel());
             result.put("avatar", loginResult.getAvatar());
+            result.put("integral", loginResult.getIntegral());
 
             log.info("微信小程序登录成功: userId={}, nickname={}", loginResult.getId(), loginResult.getNickname());
             return new Result<Map<String, Object>>().ok(result);
@@ -110,6 +112,21 @@ public class LoginController {
 
             if (user == null) {
                 return new Result<Map<String, Object>>().error("用户不存在");
+            }
+
+            // 判断今天已经加过1后不能再加了， 第二天再给积分加1
+            LocalDate today = LocalDate.now();
+            // 需要在ApUserEntity中添加这个字段
+            LocalDate lastIntegralUpdate = user.getLastIntegralUpdate();
+
+            if (!today.equals(lastIntegralUpdate)) {
+                ApUserEntity updateUser = new ApUserEntity();
+                Integer integral = user.getIntegral();
+                updateUser.setId(user.getId());
+                updateUser.setIntegral(integral + 1);
+                // 记录最后积分更新日期
+                updateUser.setLastIntegralUpdate(today);
+                userService.updateById(updateUser);
             }
 
             // 检查会员是否过期

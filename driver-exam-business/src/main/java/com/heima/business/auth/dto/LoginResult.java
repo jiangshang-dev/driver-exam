@@ -34,6 +34,9 @@ public class LoginResult {
     /** 用户等级 */
     private Integer level;
 
+    /** 积分 */
+    private Integer integral;
+
     /** 会员到期时间 */
     private LocalDateTime vipExpireTime;
 }

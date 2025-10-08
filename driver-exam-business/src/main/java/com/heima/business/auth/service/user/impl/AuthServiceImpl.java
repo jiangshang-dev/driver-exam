@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -79,6 +80,7 @@ public class AuthServiceImpl implements AuthService {
             result.setVipLevel(user.getVipLevel()); // 默认非VIP
             result.setVipExpireTime(user.getVipExpireTime()); // 默认非VIP
             result.setLevel(1);    // 默认等级
+            result.setIntegral(user.getIntegral()); // 默认积分
             
             log.info("微信小程序登录成功: userId={}, openId={}", user.getId(), wechatUser.getOpenId());
             return result;
@@ -105,9 +107,20 @@ public class AuthServiceImpl implements AuthService {
                     && user.getVipExpireTime().isAfter(LocalDateTime.now());
             
             // 如果这次登录获取到了手机号，但用户表中没有，则更新手机号
-            if (StrUtil.isNotBlank(wechatUser.getPhoneNumber()) && 
-                StrUtil.isBlank(user.getPhone())) {
+            if (StrUtil.isNotBlank(wechatUser.getPhoneNumber()) && StrUtil.isBlank(user.getPhone())) {
                 ApUserEntity updateUser = new ApUserEntity();
+
+                LocalDate today = LocalDate.now();
+                LocalDate lastIntegralUpdate = user.getLastIntegralUpdate();
+
+                if (!today.equals(lastIntegralUpdate)) {
+                    Integer integral = user.getIntegral();
+                    // 积分+1
+                    updateUser.setIntegral(integral + 1);
+                    // 记录最后积分更新日期
+                    updateUser.setLastIntegralUpdate(today);
+                }
+
                 updateUser.setId(user.getId());
                 updateUser.setPhone(wechatUser.getPhoneNumber());
                 updateUser.setUpdateTime(LocalDateTime.now());
@@ -165,6 +178,7 @@ public class AuthServiceImpl implements AuthService {
         user.setGender(wechatUser.getSex());
         user.setVipLevel(0); // 默认非VIP
         user.setStatus(1); // 正常状态
+        user.setIntegral(0); // 默认积分
         
         userService.save(user);
         log.info("创建新用户成功: userId={}, openId={}", user.getId(), wechatUser.getOpenId());

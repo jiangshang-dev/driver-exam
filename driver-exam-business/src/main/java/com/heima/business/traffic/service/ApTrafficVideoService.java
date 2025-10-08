@@ -2,7 +2,10 @@ package com.heima.business.traffic.service;
 
 import com.heima.business.traffic.dto.ApTrafficVideoDTO;
 import com.heima.business.traffic.entity.ApTrafficVideoEntity;
+import com.heima.common.page.PageData;
 import com.heima.common.service.CrudService;
+
+import java.util.Map;
 
 /**
  * 交规视频表
@@ -12,4 +15,5 @@ import com.heima.common.service.CrudService;
  */
 public interface ApTrafficVideoService extends CrudService<ApTrafficVideoEntity, ApTrafficVideoDTO> {
 
+    PageData<ApTrafficVideoDTO> pageApp(Map<String, Object> params);
 }

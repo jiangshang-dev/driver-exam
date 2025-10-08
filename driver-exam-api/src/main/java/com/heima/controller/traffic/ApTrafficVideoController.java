@@ -42,7 +42,7 @@ public class ApTrafficVideoController {
         @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref="String")
     })
     public Result<PageData<ApTrafficVideoDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
-        PageData<ApTrafficVideoDTO> page = apTrafficVideoService.page(params);
+        PageData<ApTrafficVideoDTO> page = apTrafficVideoService.pageApp(params);
 
         return new Result<PageData<ApTrafficVideoDTO>>().ok(page);
     }

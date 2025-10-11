@@ -78,7 +78,6 @@ public class ApTrafficVideoServiceImpl extends CrudServiceImpl<ApTrafficVideoDao
         int limit = StrUtil.isBlank(limitStr) ? 10 : Integer.parseInt(limitStr);  // 默认每页10条
         int pageNo = StrUtil.isBlank(pageNoStr) ? 1 : Integer.parseInt(pageNoStr); // 默认第一页
 
-
         // 使用 MyBatis Plus 分页查询
         Page<ApTrafficVideoEntity> page = new Page<>(pageNo, limit);
         page = baseDao.selectPage(page, wrapper);

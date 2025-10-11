@@ -1,5 +1,6 @@
 package com.heima.business.auth.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
@@ -49,11 +50,13 @@ public class ApUserDTO implements Serializable {
 	private Integer integral;
 
 	@SchemaProperty(name = "会员到期时间")
-	private Date vipExpireTime;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime vipExpireTime;
 
 	/** 最后积分更新时间 */
 	@SchemaProperty(name = "最后积分更新时间")
-	public Date lastIntegralUpdate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	public LocalDate lastIntegralUpdate;
 
 	@SchemaProperty(name = "状态 0:禁用 1:正常")
 	private Integer status;
@@ -62,7 +65,8 @@ public class ApUserDTO implements Serializable {
 	private Integer vipLevel;
 
 	@SchemaProperty(name = "最后登录时间")
-	private Date lastLoginTime;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDateTime lastLoginTime;
 
 	@SchemaProperty(name = "创建时间")
 	private Date createTime;

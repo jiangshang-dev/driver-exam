@@ -22,8 +22,11 @@ public class ApUserLikeRecordDTO implements Serializable {
 	@SchemaProperty(name = "点赞ID，雪花算法生成")
 	private Long id;
 
-	@SchemaProperty(name = "用户ID")
-	private Long userId;
+	@SchemaProperty(name = "用户手机号")
+	private String phone;
+
+	@SchemaProperty(name = "点赞视频标题")
+	private String videoTitle;
 
 	@SchemaProperty(name = "点赞对象类型：comment-评论，video-视频")
 	private String targetType;
@@ -32,7 +35,7 @@ public class ApUserLikeRecordDTO implements Serializable {
 	private Long targetId;
 
 	@SchemaProperty(name = "是否点赞：0-取消点赞，1-点赞")
-	private Integer isLike;
+	private Boolean isLike;
 
 	@SchemaProperty(name = "是否删除：0-未删除，1-已删除")
 	private Integer isDeleted;

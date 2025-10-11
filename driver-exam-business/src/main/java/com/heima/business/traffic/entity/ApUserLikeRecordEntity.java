@@ -1,5 +1,6 @@
 package com.heima.business.traffic.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -23,6 +24,16 @@ public class ApUserLikeRecordEntity {
      * 用户ID
      */
 	private Long userId;
+    /**
+     * 手机号
+     */
+    @TableField(exist = false)
+	private String phone;
+    /**
+     * 视频标题
+     */
+    @TableField(exist = false)
+	private String videoTitle;
     /**
      * 点赞对象类型：comment-评论，video-视频
      */

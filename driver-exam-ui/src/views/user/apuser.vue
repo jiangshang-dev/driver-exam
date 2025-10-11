@@ -29,7 +29,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="password" label="密码" header-align="center" align="center"></el-table-column>
+<!--      <el-table-column prop="password" label="密码" header-align="center" align="center"></el-table-column>-->
       <el-table-column prop="realName" label="真实姓名" header-align="center" align="center"></el-table-column>
       <el-table-column prop="avatar" label="头像" header-align="center" align="center"></el-table-column>
       <el-table-column prop="integral" label="积分" header-align="center" align="center"></el-table-column>
@@ -51,6 +51,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="vipExpireTime" label="会员到期时间" header-align="center" align="center" width="120"></el-table-column>
+      <el-table-column prop="lastIntegralUpdate" label="最后积分更新时间" header-align="center" align="center" width="120"></el-table-column>
       <el-table-column prop="lastLoginTime" label="最后登录时间" header-align="center" align="center" width="120"></el-table-column>
       <el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
         <template v-slot="scope">

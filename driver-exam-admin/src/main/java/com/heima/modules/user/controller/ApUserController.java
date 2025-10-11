@@ -48,7 +48,7 @@ public class ApUserController {
     })
     @RequiresPermissions("apuser:page")
     public Result<PageData<ApUserDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
-        PageData<ApUserDTO> page = apUserService.page(params);
+        PageData<ApUserDTO> page = apUserService.pages(params);
 
         return new Result<PageData<ApUserDTO>>().ok(page);
     }

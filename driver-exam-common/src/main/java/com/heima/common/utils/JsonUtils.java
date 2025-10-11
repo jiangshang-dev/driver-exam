@@ -1,12 +1,14 @@
 package com.heima.common.utils;
 
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * JSON 工具类
@@ -14,7 +16,15 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 public class JsonUtils {
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        // 添加Java 8时间类型支持
+        objectMapper.registerModule(new JavaTimeModule());
+        // 禁用将日期写为时间戳的特性，确保使用格式化
+        objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
 
     public static String toJsonString(Object object) {
         try {

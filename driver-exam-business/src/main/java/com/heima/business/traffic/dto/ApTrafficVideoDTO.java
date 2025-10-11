@@ -122,5 +122,6 @@ public class ApTrafficVideoDTO implements Serializable {
 	@SchemaProperty(name = "修改时间")
 	private Date gmtModified;
 
-
+	@SchemaProperty(name = "是否点赞")
+	private Boolean isLike;
 }

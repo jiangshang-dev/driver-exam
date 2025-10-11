@@ -1,5 +1,6 @@
 package com.heima.business.traffic.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -152,4 +153,10 @@ public class ApTrafficVideoEntity {
      * 修改时间
      */
 	private Date gmtModified;
+
+    /**
+     * 是否点赞
+     */
+    @TableField(exist = false)
+    private Boolean isLike;
 }

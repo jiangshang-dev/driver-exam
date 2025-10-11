@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -42,6 +44,16 @@ public class ApUserDTO implements Serializable {
 
 	@SchemaProperty(name = "性别 0:未知 1:男 2:女")
 	private Integer gender;
+
+	@SchemaProperty(name = "积分")
+	private Integer integral;
+
+	@SchemaProperty(name = "会员到期时间")
+	private Date vipExpireTime;
+
+	/** 最后积分更新时间 */
+	@SchemaProperty(name = "最后积分更新时间")
+	public Date lastIntegralUpdate;
 
 	@SchemaProperty(name = "状态 0:禁用 1:正常")
 	private Integer status;

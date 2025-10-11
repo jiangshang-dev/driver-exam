@@ -14,38 +14,38 @@
 
     <!-- 添加查询条件表单 -->
     <el-form :inline="true" :model="queryForm" @submit.prevent="handleQuery" style="margin-bottom: 20px;">
-      <el-form-item label="科目">
-        <el-select v-model="queryForm.subject" placeholder="请选择科目" clearable>
-          <el-option label="科目一" value="1"></el-option>
-          <el-option label="科目四" value="4"></el-option>
-        </el-select>
-      </el-form-item>
+    <el-form-item label="科目">
+      <el-select v-model="queryForm.subject" placeholder="请选择科目" clearable>
+        <el-option label="科目一" value="1"></el-option>
+        <el-option label="科目四" value="4"></el-option>
+      </el-select>
+    </el-form-item>
 
-      <el-form-item label="考试类型">
-        <el-select v-model="queryForm.examType" placeholder="请选择考试类型" clearable>
-          <el-option label="C1" value="C1"></el-option>
-          <el-option label="C2" value="C2"></el-option>
-          <el-option label="A1" value="A1"></el-option>
-          <el-option label="A2" value="A2"></el-option>
-          <el-option label="B1" value="B1"></el-option>
-          <el-option label="B2" value="B2"></el-option>
-        </el-select>
-      </el-form-item>
+    <el-form-item label="考试类型">
+      <el-select v-model="queryForm.examType" placeholder="请选择考试类型" clearable>
+        <el-option label="C1" value="C1"></el-option>
+        <el-option label="C2" value="C2"></el-option>
+        <el-option label="A1" value="A1"></el-option>
+        <el-option label="A2" value="A2"></el-option>
+        <el-option label="B1" value="B1"></el-option>
+        <el-option label="B2" value="B2"></el-option>
+      </el-select>
+    </el-form-item>
 
-      <el-form-item label="题目标签" prop="tags">
-        <el-select v-model="queryForm.tags" placeholder="题目标签">
-          <el-option v-for="item in questionTagsOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
-        </el-select>
-      </el-form-item>
+    <el-form-item label="题目标签" prop="tags">
+      <el-select v-model="queryForm.tags" placeholder="题目标签">
+        <el-option v-for="item in questionTagsOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
+      </el-select>
+    </el-form-item>
 
-      <el-form-item label="题目内容">
-        <el-input v-model="queryForm.questionContent" placeholder="请输入题目内容" clearable></el-input>
-      </el-form-item>
+    <el-form-item label="题目内容">
+      <el-input v-model="queryForm.questionContent" placeholder="请输入题目内容" clearable></el-input>
+    </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="handleQuery">查询</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="handleQuery">查询</el-button>
+      <el-button @click="resetQuery">重置</el-button>
+    </el-form-item>
     </el-form>
 
     <el-table v-loading="state.dataListLoading" :data="state.dataList" border @selection-change="state.dataListSelectionChangeHandle" style="width: 100%">

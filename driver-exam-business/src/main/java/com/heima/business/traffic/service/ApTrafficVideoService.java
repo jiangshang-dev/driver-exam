@@ -16,4 +16,10 @@ import java.util.Map;
 public interface ApTrafficVideoService extends CrudService<ApTrafficVideoEntity, ApTrafficVideoDTO> {
 
     PageData<ApTrafficVideoDTO> pageApp(Map<String, Object> params);
+
+    boolean liked(String id, String token);
+
+    boolean videoPlayer(String id, String token);
+
+    ApTrafficVideoDTO getInfoById(Long id, String token);
 }

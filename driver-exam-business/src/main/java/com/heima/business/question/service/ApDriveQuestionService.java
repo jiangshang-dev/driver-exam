@@ -18,7 +18,7 @@ public interface ApDriveQuestionService extends CrudService<ApDriveQuestionEntit
 
     void syncQuestion(SubjectEnums subject, ExamTypeEnums model, String testType);
 
-    List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType);
+    List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType, String examType);
 
     List<ApDriveQuestionEntity> examDriveQuestion(String subject);
 }

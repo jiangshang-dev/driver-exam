@@ -49,43 +49,16 @@ public class ApTrafficVideoController {
 
     @GetMapping("{id}")
     @Operation(summary = "信息")
-    public Result<ApTrafficVideoDTO> get(@PathVariable("id") Long id){
-        ApTrafficVideoDTO data = apTrafficVideoService.get(id);
-
+    public Result<ApTrafficVideoDTO> get(@PathVariable("id") Long id, @RequestHeader("Authorization") String token){
+        ApTrafficVideoDTO data = apTrafficVideoService.getInfoById(id, token);
         return new Result<ApTrafficVideoDTO>().ok(data);
     }
 
-    @PostMapping
-    @Operation(summary = "保存")
-    public Result save(@RequestBody ApTrafficVideoDTO dto){
-        //效验数据
-        ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
-
-        apTrafficVideoService.save(dto);
-
-        return new Result();
-    }
-
-    @PutMapping
-    @Operation(summary = "修改")
-    public Result update(@RequestBody ApTrafficVideoDTO dto){
-        //效验数据
-        ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
-
-        apTrafficVideoService.update(dto);
-
-        return new Result();
-    }
-
-    @DeleteMapping
-    @Operation(summary = "删除")
-    public Result delete(@RequestBody Long[] ids){
-        //效验数据
-        AssertUtils.isArrayEmpty(ids, "id");
-
-        apTrafficVideoService.delete(ids);
-
-        return new Result();
+    @GetMapping("liked/{id}")
+    @Operation(summary = "点赞")
+    public Result liked(@PathVariable("id") String id, @RequestHeader("Authorization") String token){
+        boolean flag = apTrafficVideoService.liked(id, token);
+        return new Result().ok(flag);
     }
 
 }

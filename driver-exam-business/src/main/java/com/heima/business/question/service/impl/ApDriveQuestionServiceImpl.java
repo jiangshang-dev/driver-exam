@@ -121,9 +121,10 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
     }
 
     @Override
-    public List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType) {
+    public List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType, String examType) {
         QueryWrapper<ApDriveQuestionEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("subject", subject).eq(StringUtils.isNotBlank(questionType),"tags", questionType);
+        queryWrapper.eq("subject", subject).eq(StringUtils.isNotBlank(questionType),"tags", questionType)
+                .eq(StringUtils.isNotBlank(examType),"exam_type", examType.toLowerCase());
         List<ApDriveQuestionEntity> driveTopicList = baseDao.selectList(queryWrapper);
         return driveTopicList;
     }

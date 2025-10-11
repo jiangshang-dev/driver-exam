@@ -27,8 +27,9 @@ public class DriveController {
      */
     @GetMapping("/driveTopicList")
     public Result driveTopicList(@RequestParam(value = "subject", defaultValue = "1") String subject,
-                                 @RequestParam(value = "questionType", defaultValue = "") String questionType) {
-        List<ApDriveQuestionEntity> driveTopicList = driveQuestionService.driveQuestionList(subject, questionType);
+                                 @RequestParam(value = "questionType", defaultValue = "") String questionType,
+                                 @RequestParam(value = "examType", defaultValue = "c1") String examType) {
+        List<ApDriveQuestionEntity> driveTopicList = driveQuestionService.driveQuestionList(subject, questionType, examType);
         return new Result<List<ApDriveQuestionEntity>>().ok(driveTopicList);
     }
 

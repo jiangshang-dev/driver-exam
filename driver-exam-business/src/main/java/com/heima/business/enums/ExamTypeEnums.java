@@ -17,10 +17,19 @@ public enum ExamTypeEnums {
 
     C1("c1", "c1"),
     C2("c2", "c2"),
+    C3("c3", "c3"),
+    C4("c4", "c4"),
+    C6("c6", "c6"),
     B1("b1", "b1"),
     B2("b2", "b2"),
     A1("a1", "a1"),
-    A2("a2", "a2");
+    A2("a2", "a2"),
+    A3("a3", "a3"),
+    D("D", "D"),
+    E("E", "E"),
+    F("F", "F"),
+
+    ;
 
     @EnumValue
     @JsonValue

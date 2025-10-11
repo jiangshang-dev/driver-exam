@@ -1,17 +1,5 @@
 <template>
   <div class="mod-demo__apdrivequestion">
-    <el-form :inline="true" :model="state.dataForm" @keyup.enter="state.getDataList()">
-      <el-form-item>
-        <el-button v-if="state.hasPermission('apdrivequestion:save')" type="primary" @click="addOrUpdateHandle()">新增 </el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button v-if="state.hasPermission('apdrivequestion:delete')" type="danger" @click="state.deleteHandle()"> 删除 </el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button v-if="state.hasPermission('apdrivequestion:sync')" type="primary" @click="openSyncDialog()"> 同步题库 </el-button>
-      </el-form-item>
-    </el-form>
-
     <!-- 添加查询条件表单 -->
     <el-form :inline="true" :model="queryForm" @submit.prevent="handleQuery" style="margin-bottom: 20px">
       <el-form-item label="科目">
@@ -25,10 +13,16 @@
         <el-select v-model="queryForm.examType" placeholder="请选择考试类型" clearable>
           <el-option label="C1" value="C1"></el-option>
           <el-option label="C2" value="C2"></el-option>
+          <el-option label="C3" value="C3"></el-option>
+          <el-option label="C4" value="C4"></el-option>
           <el-option label="A1" value="A1"></el-option>
           <el-option label="A2" value="A2"></el-option>
+          <el-option label="A3" value="A3"></el-option>
           <el-option label="B1" value="B1"></el-option>
           <el-option label="B2" value="B2"></el-option>
+          <el-option label="D" value="D"></el-option>
+          <el-option label="E" value="E"></el-option>
+          <el-option label="F" value="F"></el-option>
         </el-select>
       </el-form-item>
 
@@ -45,6 +39,18 @@
       <el-form-item>
         <el-button type="primary" @click="handleQuery">查询</el-button>
         <el-button @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-form :inline="true" :model="state.dataForm" @keyup.enter="state.getDataList()">
+      <el-form-item>
+        <el-button v-if="state.hasPermission('apdrivequestion:save')" type="primary" @click="addOrUpdateHandle()">新增 </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-if="state.hasPermission('apdrivequestion:delete')" type="danger" @click="state.deleteHandle()"> 删除 </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-if="state.hasPermission('apdrivequestion:sync')" type="primary" @click="openSyncDialog()"> 同步题库 </el-button>
       </el-form-item>
     </el-form>
 
@@ -127,7 +133,7 @@
       </el-table-column>
       <el-table-column prop="sequenceOrder" label="顺序刷题排序" header-align="center" align="center"></el-table-column>
       <el-table-column prop="weight" label="题目权重" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="knowledgePoints" label="知识点" header-align="center" align="center"></el-table-column>
+<!--      <el-table-column prop="knowledgePoints" label="知识点" header-align="center" align="center"></el-table-column>-->
       <el-table-column prop="viewCount" label="浏览次数" header-align="center" align="center"></el-table-column>
       <el-table-column prop="errorCount" label="错误次数" header-align="center" align="center"></el-table-column>
       <el-table-column prop="correctCount" label="正确次数" header-align="center" align="center"></el-table-column>

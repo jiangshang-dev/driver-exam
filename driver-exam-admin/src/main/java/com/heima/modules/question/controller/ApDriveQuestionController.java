@@ -130,7 +130,7 @@ public class ApDriveQuestionController {
     @RequiresPermissions("apdrivequestion:sync")
     public Result syncQuestion(@RequestParam(value = "subject", defaultValue = "ONE") SubjectEnums subject,
                              @RequestParam(value = "model", defaultValue = "C1") ExamTypeEnums model,
-                             @RequestParam(value = "testType", defaultValue = "order") String testType) throws Exception {
+                             @RequestParam(value = "testType", defaultValue = "order") String testType) {
         // 手动验证参数
         if (subject == null) {
             return new Result().error("学科不允许为空！");

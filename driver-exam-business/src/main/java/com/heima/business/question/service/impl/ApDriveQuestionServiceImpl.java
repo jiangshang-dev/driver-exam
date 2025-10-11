@@ -2,15 +2,14 @@ package com.heima.business.question.service.impl;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import cn.hutool.json.JSONNull;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.heima.common.exception.RenException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -164,6 +163,13 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
 
         Map<String, String> headers = new HashMap<>();
         JSONObject request = request(apiUrl, map, headers);
+        Integer errorCode = (Integer) request.get("error_code");
+        if (errorCode != 0) {
+            JSONNull result = (JSONNull) request.get("result");
+            if (result.equals(JSONNull.NULL)) {
+                throw new RenException("暂无符合车型或科目");
+            }
+        }
         JSONArray jsonObject = (JSONArray) request.get("result");
         List<SyncDriveQuestionDTO> driveVos = JSONUtil.toList(jsonObject, SyncDriveQuestionDTO.class);
         return driveVos;

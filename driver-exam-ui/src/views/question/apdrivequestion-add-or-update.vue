@@ -103,11 +103,11 @@
           <el-option v-for="item in questionTagsOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="知识点" prop="knowledgePoints">
+<!--      <el-form-item label="知识点" prop="knowledgePoints">
         <el-select v-model="dataForm.knowledgePoints" placeholder="知识点" multiple>
           <el-option v-for="item in knowledgePointsOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="题目来源" prop="source">
         <el-select v-model="dataForm.source" placeholder="题目来源">
           <el-option label="官方" value="official"></el-option>

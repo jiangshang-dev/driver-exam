@@ -161,20 +161,20 @@ public class ApTrafficVideoServiceImpl extends CrudServiceImpl<ApTrafficVideoDao
      * 点赞记录表
      */
     private void saveUserLikeRecord(Long userId, Long videoId, String targetType, Boolean isLike) {
-
         ApUserLikeRecordEntity entity = new ApUserLikeRecordEntity();
         entity.setUserId(userId);
         entity.setTargetId(videoId);
         entity.setTargetType(targetType);
         entity.setIsLike(isLike);
         entity.setCreateTime(new Date());
-        entity.setUpdateTime(new Date());
 
         ApUserLikeRecordEntity record = apUserLikeRecordDao.getById(userId, videoId, targetType);
         if (record != null) {
             entity.setId(record.getId());
+            entity.setUpdateTime(new Date());
             apUserLikeRecordDao.updateById(entity);
         } else {
+            entity.setUpdateTime(new Date());
             apUserLikeRecordDao.insert(entity);
         }
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.heima.business.uniad.dao.ApAdWatchRecordDao">
+
+    <resultMap type="com.heima.business.uniad.entity.ApAdWatchRecordEntity" id="apAdWatchRecordMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userNickname" column="user_nickname"/>
+        <result property="adId" column="ad_id"/>
+        <result property="adPlatform" column="ad_platform"/>
+        <result property="adType" column="ad_type"/>
+        <result property="adPosition" column="ad_position"/>
+        <result property="watchDate" column="watch_date"/>
+        <result property="rewardType" column="reward_type"/>
+        <result property="rewardAmount" column="reward_amount"/>
+        <result property="rewardStatus" column="reward_status"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="platformType" column="platform_type"/>
+        <result property="ipAddress" column="ip_address"/>
+        <result property="userAgent" column="user_agent"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+</mapper>

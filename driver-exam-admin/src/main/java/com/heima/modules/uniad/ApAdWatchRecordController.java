@@ -16,6 +16,7 @@ import com.heima.common.validator.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,10 @@ import java.util.Map;
  * @since 1.0.0 2025-10-08
  */
 @RestController
-@RequestMapping("demo/apadwatchrecord")
+@RequestMapping("apadwatchrecord")
 @Tag(name="广告观看记录表")
 public class ApAdWatchRecordController {
-    @Autowired
+    @Resource
     private ApAdWatchRecordService apAdWatchRecordService;
 
     @GetMapping("page")
@@ -47,7 +48,7 @@ public class ApAdWatchRecordController {
         @Parameter(name = Constant.ORDER_FIELD, description = "排序字段", in = ParameterIn.QUERY, ref="String") ,
         @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref="String")
     })
-    @RequiresPermissions("demo:apadwatchrecord:page")
+    @RequiresPermissions("apadwatchrecord:page")
     public Result<PageData<ApAdWatchRecordDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
         PageData<ApAdWatchRecordDTO> page = apAdWatchRecordService.page(params);
 

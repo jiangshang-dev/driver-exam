@@ -1,10 +1,12 @@
 package com.heima.business.uniad.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -41,7 +43,8 @@ public class ApAdWatchRecordDTO implements Serializable {
 	private String adPosition;
 
 	@SchemaProperty(name = "观看日期")
-	private Date watchDate;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime watchDate;
 
 	@SchemaProperty(name = "奖励类型：vip_days-会员天数，points-积分等")
 	private String rewardType;

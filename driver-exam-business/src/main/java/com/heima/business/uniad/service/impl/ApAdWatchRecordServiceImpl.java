@@ -40,6 +40,7 @@ public class ApAdWatchRecordServiceImpl extends CrudServiceImpl<ApAdWatchRecordD
 
         QueryWrapper<ApAdWatchRecordEntity> wrapper = new QueryWrapper<>();
         wrapper.eq(StrUtil.isNotBlank(id), "id", id);
+        wrapper.orderByDesc("watch_date");
 
         return wrapper;
     }

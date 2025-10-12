@@ -35,13 +35,13 @@
         </dependency>
 
         <!-- 阿里云上传SDK -->
-        <dependency>
-            <groupId>com.aliyun.vod</groupId>
-            <artifactId>upload</artifactId>
-            <version>1.4.15</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/aliyun-java-vod-upload-1.4.15.jar</systemPath>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun.vod</groupId>-->
+<!--            <artifactId>upload</artifactId>-->
+<!--            <version>1.4.15</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/src/main/resources/aliyun-java-vod-upload-1.4.15.jar</systemPath>-->
+<!--        </dependency>-->
 
         <!-- Spring Boot Web Starter -->
         <dependency>

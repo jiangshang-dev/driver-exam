@@ -52,7 +52,7 @@
       </el-table-column>
       <el-table-column prop="status" label="状态" header-align="center" align="center">
         <template v-slot="scope">
-          {{ scope.row.status === 1 ? "正常" : "禁用" }}
+          {{ scope.row.status ? "正常" : "禁用" }}
         </template>
       </el-table-column>
       <el-table-column prop="vipLevel" label="是否为VIP" header-align="center" align="center">

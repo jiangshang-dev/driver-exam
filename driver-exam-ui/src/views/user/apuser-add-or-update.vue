@@ -1,44 +1,54 @@
 <template>
   <el-dialog v-model="visible" :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" @keyup.enter="dataFormSubmitHandle()" label-width="120px">
-          <el-form-item label="用户名" prop="username">
+      <el-form-item label="用户名" prop="username">
         <el-input v-model="dataForm.username" placeholder="用户名"></el-input>
       </el-form-item>
-          <el-form-item label="密码" prop="password">
+      <el-form-item label="密码" prop="password">
         <el-input v-model="dataForm.password" placeholder="密码"></el-input>
       </el-form-item>
-          <el-form-item label="真实姓名" prop="realName">
+      <el-form-item label="真实姓名" prop="realName">
         <el-input v-model="dataForm.realName" placeholder="真实姓名"></el-input>
       </el-form-item>
-          <el-form-item label="头像" prop="avatar">
-        <el-input v-model="dataForm.avatar" placeholder="头像"></el-input>
-      </el-form-item>
-          <el-form-item label="手机号" prop="phone">
+      <el-form-item label="手机号" prop="phone">
         <el-input v-model="dataForm.phone" placeholder="手机号"></el-input>
       </el-form-item>
-          <el-form-item label="邮箱" prop="email">
+      <el-form-item label="邮箱" prop="email">
         <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
       </el-form-item>
-          <el-form-item label="性别" prop="gender">
-            <el-radio-group v-model="dataForm.gender">
-              <el-radio label="1">男</el-radio>
-              <el-radio label="2">女</el-radio>
-              <el-radio label="0">未知</el-radio>
-            </el-radio-group>
-        </el-form-item>
-          <el-form-item label="状态" prop="status">
-            <el-radio-group v-model="dataForm.status">
-              <el-radio label="1">正常</el-radio>
-              <el-radio label="0">禁用</el-radio>
-            </el-radio-group>
-        </el-form-item>
-          <el-form-item label="是否为VIP" prop="vipLevel">
-            <el-radio-group v-model="dataForm.vipLevel">
-              <el-radio label="1">是</el-radio>
-              <el-radio label="0">否</el-radio>
-            </el-radio-group>
-        </el-form-item>
-      </el-form>
+      <el-form-item label="性别" prop="gender">
+        <el-radio-group v-model="dataForm.gender">
+          <el-radio :label="1">男</el-radio>
+          <el-radio :label="2">女</el-radio>
+          <el-radio :label="0">未知</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-radio-group v-model="dataForm.status">
+          <el-radio :label="true">正常</el-radio>
+          <el-radio :label="false">禁用</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="评论权限" prop="commentPermission">
+        <el-radio-group v-model="dataForm.commentPermission">
+          <el-radio :label="true">开启</el-radio>
+          <el-radio :label="false">禁用</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="是否为VIP" prop="vipLevel">
+        <el-radio-group v-model="dataForm.vipLevel">
+          <el-radio :label="1">是</el-radio>
+          <el-radio :label="0">否</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- 添加缺失的字段 -->
+      <el-form-item label="积分" prop="integral">
+        <el-input v-model="dataForm.integral" placeholder="积分"></el-input>
+      </el-form-item>
+      <el-form-item label="违规评论次数" prop="violationCommentCount">
+        <el-input v-model="dataForm.violationCommentCount" placeholder="违规评论次数"></el-input>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">确定</el-button>
@@ -50,52 +60,38 @@
 import { reactive, ref } from "vue";
 import baseService from "@/service/baseService";
 import { ElMessage } from "element-plus";
+
 const emit = defineEmits(["refreshDataList"]);
 
 const visible = ref(false);
 const dataFormRef = ref();
 
 const dataForm = reactive({
-  id: '',  username: '',  password: '',  realName: '',  avatar: '',  phone: '',  email: '',  gender: '',  status: '',  vipLevel: '',  lastLoginTime: '',  createTime: '',  updateTime: ''});
+  id: "",
+  username: "",
+  commentPermission: "",
+  password: "",
+  realName: "",
+  avatar: "",
+  phone: "",
+  email: "",
+  gender: "",
+  integral: "",
+  status: "",
+  vipLevel: "",
+  violationCommentCount: ""
+});
 
 const rules = ref({
-          username: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          password: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          realName: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          avatar: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          phone: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          email: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          gender: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          status: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          vipLevel: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          lastLoginTime: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          createTime: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ],
-          updateTime: [
-      { required: true, message: '必填项不能为空', trigger: 'blur' }
-    ]
-  });
+  username: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  password: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  realName: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  phone: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  email: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  gender: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  status: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  vipLevel: [{ required: true, message: "必填项不能为空", trigger: "blur" }]
+});
 
 const init = (id?: number) => {
   visible.value = true;
@@ -126,7 +122,7 @@ const dataFormSubmitHandle = () => {
     }
     (!dataForm.id ? baseService.post : baseService.put)("/apuser", dataForm).then((res) => {
       ElMessage.success({
-        message: '成功',
+        message: "成功",
         duration: 500,
         onClose: () => {
           visible.value = false;

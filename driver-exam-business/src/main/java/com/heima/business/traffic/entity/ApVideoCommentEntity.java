@@ -79,4 +79,10 @@ public class ApVideoCommentEntity {
      * 修改时间
      */
 	private Date gmtModified;
+
+    /**
+     * 是否点赞
+     */
+    @TableField(exist = false)
+    private Boolean isLikeComment;
 }

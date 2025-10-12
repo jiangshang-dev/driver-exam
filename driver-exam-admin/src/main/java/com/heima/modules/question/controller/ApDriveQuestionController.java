@@ -46,21 +46,22 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("/apdrivequestion")
-@Tag(name="驾考题目表")
+@Tag(name = "驾考题目表")
 public class ApDriveQuestionController {
+
     @Resource
     private ApDriveQuestionService apDriveQuestionService;
 
     @GetMapping("page")
     @Operation(summary = "分页")
     @Parameters({
-        @Parameter(name = Constant.PAGE, description = "当前页码，从1开始", in = ParameterIn.QUERY, required = true, ref="int") ,
-        @Parameter(name = Constant.LIMIT, description = "每页显示记录数", in = ParameterIn.QUERY,required = true, ref="int") ,
-        @Parameter(name = Constant.ORDER_FIELD, description = "排序字段", in = ParameterIn.QUERY, ref="String") ,
-        @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref="String")
+        @Parameter(name = Constant.PAGE, description = "当前页码，从1开始", in = ParameterIn.QUERY, required = true, ref = "int"),
+        @Parameter(name = Constant.LIMIT, description = "每页显示记录数", in = ParameterIn.QUERY, required = true, ref = "int"),
+        @Parameter(name = Constant.ORDER_FIELD, description = "排序字段", in = ParameterIn.QUERY, ref = "String"),
+        @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)", in = ParameterIn.QUERY, ref = "String")
     })
     @RequiresPermissions("apdrivequestion:page")
-    public Result<PageData<ApDriveQuestionDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
+    public Result<PageData<ApDriveQuestionDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
         PageData<ApDriveQuestionDTO> page = apDriveQuestionService.page(params);
 
         return new Result<PageData<ApDriveQuestionDTO>>().ok(page);
@@ -69,7 +70,7 @@ public class ApDriveQuestionController {
     @GetMapping("{id}")
     @Operation(summary = "信息")
     @RequiresPermissions("apdrivequestion:info")
-    public Result<ApDriveQuestionDTO> get(@PathVariable("id") Long id){
+    public Result<ApDriveQuestionDTO> get(@PathVariable("id") Long id) {
         ApDriveQuestionDTO data = apDriveQuestionService.get(id);
 
         return new Result<ApDriveQuestionDTO>().ok(data);
@@ -79,7 +80,7 @@ public class ApDriveQuestionController {
     @Operation(summary = "保存")
     @LogOperation("保存")
     @RequiresPermissions("apdrivequestion:save")
-    public Result save(@RequestBody ApDriveQuestionDTO dto){
+    public Result save(@RequestBody ApDriveQuestionDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
@@ -94,9 +95,9 @@ public class ApDriveQuestionController {
             String explain = dto.getQuestionExplain();
             // 转义常见的控制字符
             explain = explain.replace("\n", "\\n")
-                             .replace("\r", "\\r")
-                             .replace("\t", "\\t")
-                             .replace("\"", "\\\"");
+                    .replace("\r", "\\r")
+                    .replace("\t", "\\t")
+                    .replace("\"", "\\\"");
             dto.setQuestionExplain(explain);
         }
         return dto;
@@ -106,10 +107,10 @@ public class ApDriveQuestionController {
     @Operation(summary = "修改")
     @LogOperation("修改")
     @RequiresPermissions("apdrivequestion:update")
-    public Result update(@RequestBody ApDriveQuestionDTO dto){
+    public Result update(@RequestBody ApDriveQuestionDTO dto) {
         // 预处理DTO
         dto = preprocessDto(dto);
-        
+
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
@@ -122,7 +123,7 @@ public class ApDriveQuestionController {
     @Operation(summary = "删除")
     @LogOperation("删除")
     @RequiresPermissions("apdrivequestion:delete")
-    public Result delete(@RequestBody Long[] ids){
+    public Result delete(@RequestBody Long[] ids) {
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
 
@@ -146,8 +147,8 @@ public class ApDriveQuestionController {
     @LogOperation("同步试题")
     @RequiresPermissions("apdrivequestion:sync")
     public Result syncQuestion(@RequestParam(value = "subject", defaultValue = "ONE") SubjectEnums subject,
-                             @RequestParam(value = "model", defaultValue = "C1") ExamTypeEnums model,
-                             @RequestParam(value = "testType", defaultValue = "order") String testType) {
+            @RequestParam(value = "model", defaultValue = "C1") ExamTypeEnums model,
+            @RequestParam(value = "testType", defaultValue = "order") String testType) {
         // 手动验证参数
         if (subject == null) {
             return new Result().error("学科不允许为空！");
@@ -158,7 +159,7 @@ public class ApDriveQuestionController {
         if (testType == null || testType.trim().isEmpty()) {
             return new Result().error("测试类型不允许为空！");
         }
-        
+
         apDriveQuestionService.syncQuestion(subject, model, testType);
         return new Result().ok("同步成功");
     }

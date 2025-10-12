@@ -177,7 +177,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPhone(wechatUser.getPhoneNumber());
         user.setGender(wechatUser.getSex());
         user.setVipLevel(0); // 默认非VIP
-        user.setStatus(1); // 正常状态
+        user.setStatus(true); // 正常状态
         user.setIntegral(0); // 默认积分
         
         userService.save(user);

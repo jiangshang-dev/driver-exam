@@ -42,6 +42,12 @@ public class ApUserEntity {
     /** 积分 */
     private Integer integral;
 
+    /** 评论权限：0-禁止评论，1-允许评论 */
+    private Boolean commentPermission;
+
+    /** 违规评论次数 */
+    private Integer violationCommentCount;
+
     /** 会员到期时间 */
     private LocalDateTime vipExpireTime;
 
@@ -49,7 +55,7 @@ public class ApUserEntity {
     private Integer gender;
     
     /** 状态 0:禁用 1:正常 */
-    private Integer status;
+    private Boolean status;
     
     /** 最后登录时间 */
     private LocalDateTime lastLoginTime;

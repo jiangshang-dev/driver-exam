@@ -1,5 +1,6 @@
 package com.heima.business.traffic.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
@@ -67,5 +68,10 @@ public class ApVideoCommentDTO implements Serializable {
 	@SchemaProperty(name = "修改时间")
 	private Date gmtModified;
 
+	/**
+	 * 是否点赞
+	 */
+	@SchemaProperty(name = "是否点赞")
+	private Boolean isLikeComment;
 
 }

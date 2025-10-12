@@ -31,10 +31,20 @@
       <el-table-column prop="username" label="用户名" header-align="center" align="center"></el-table-column>
 <!--      <el-table-column prop="password" label="密码" header-align="center" align="center"></el-table-column>-->
       <el-table-column prop="realName" label="真实姓名" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="avatar" label="头像" header-align="center" align="center"></el-table-column>
+<!--      <el-table-column prop="avatar" label="头像" header-align="center" align="center"></el-table-column>-->
       <el-table-column prop="integral" label="积分" header-align="center" align="center"></el-table-column>
       <el-table-column prop="phone" label="手机号" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="email" label="邮箱" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="violationCommentCount" label="评论违规次数" header-align="center" align="center" width="120">
+        <template v-slot="scope">
+          {{ scope.row.violationCommentCount }} 次
+        </template>
+      </el-table-column>
+      <el-table-column prop="commentPermission" label="评论权限" header-align="center" align="center" width="100">
+        <template v-slot="scope">
+          <el-tag v-if="!scope.row.commentPermission" type="info">禁止</el-tag>
+          <el-tag v-if="scope.row.commentPermission" type="success">允许</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="gender" label="性别" header-align="center" align="center">
         <template v-slot="scope">
           {{ scope.row.gender === 1 ? "男" : scope.row.gender === 2 ? "女" : "未知" }}
@@ -70,11 +80,16 @@
 import useView from "@/hooks/useView";
 import { reactive, ref, toRefs } from "vue";
 import AddOrUpdate from "./apuser-add-or-update.vue";
+import baseService from "@/service/baseService";
+import { ElMessage } from "element-plus";
 
 // 添加查询表单相关
 const queryForm = reactive({
   phone: '',
 });
+
+// 添加一个标志来跟踪是否是用户操作
+const isUserAction = ref(false);
 
 const resetQuery = () => {
   queryForm.phone = '';
@@ -103,7 +118,8 @@ const view = reactive({
   getDataListURL: "/apuser/page",
   getDataListIsPage: true,
   exportURL: "/apuser/export",
-  deleteURL: "/apuser"
+  deleteURL: "/apuser",
+  commentSwitchURL: "/apuser/commentSwitch"
 });
 
 const state = reactive({ ...useView(view), ...toRefs(view) });

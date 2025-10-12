@@ -3,9 +3,13 @@ package com.heima.controller.traffic;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.json.JSONUtil;
 import com.heima.business.auth.entity.ApUserEntity;
 import com.heima.business.auth.service.user.ApUserService;
+import com.heima.business.common.aliyun.GreenTextScan;
+import com.heima.business.constants.MqContants;
 import jakarta.annotation.Resource;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,11 +51,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "视频评论表")
 public class ApVideoCommentController {
 
-    @Autowired
+    @Resource
     private ApVideoCommentService apVideoCommentService;
 
     @Resource
     private ApUserService apUserService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @GetMapping("page")
     @Operation(summary = "分页")
@@ -77,8 +84,8 @@ public class ApVideoCommentController {
 
     @GetMapping("byVideo/{videoId}")
     @Operation(summary = "根据视频ID获取审核通过的评论")
-    public Result<List<ApVideoCommentDTO>> getCommentsByVideoId(@PathVariable("videoId") Long videoId) {
-        List<ApVideoCommentDTO> comments = apVideoCommentService.getApprovedCommentsByVideoId(videoId);
+    public Result<List<ApVideoCommentDTO>> getCommentsByVideoId(@PathVariable("videoId") Long videoId, @RequestHeader("Authorization") String token) {
+        List<ApVideoCommentDTO> comments = apVideoCommentService.getApprovedCommentsByVideoId(videoId, token);
         return new Result<List<ApVideoCommentDTO>>().ok(comments);
     }
 
@@ -91,13 +98,20 @@ public class ApVideoCommentController {
         Long userId = JwtUtils.getUserId(token);
         ApUserEntity apUser = apUserService.getById(userId);
         AssertUtils.isNull(apUser, "用户不存在");
-        if (apUser.getStatus() != 1) {
+        if (!apUser.getStatus()) {
             return new Result<>().error("用户被禁用");
+        }
+        Boolean commentPermission = apUser.getCommentPermission();
+        if (!commentPermission) {
+            return new Result<>().error("违规过多,评论已禁用");
         }
 
         dto.setUserId(userId);
         dto.setAuditStatus(0); // 待审核
         apVideoCommentService.save(dto);
+
+        String message = JSONUtil.toJsonStr(dto);
+        rabbitTemplate.convertAndSend(MqContants.DRIVER_EXCHANGE, MqContants.DRIVER_INSERT_KEY, message);
         return new Result();
     }
 
@@ -109,6 +123,15 @@ public class ApVideoCommentController {
         Long userId = JwtUtils.getUserId(token);
 
         ApVideoCommentDTO reply = apVideoCommentService.replyToComment(parentId, replyContent, userId);
+
+        ApUserEntity apUser = apUserService.getById(userId);
+        Boolean commentPermission = apUser.getCommentPermission();
+        if (!commentPermission) {
+            return new Result<ApVideoCommentDTO>().error("违规过多,功能已禁用");
+        }
+
+        String message = JSONUtil.toJsonStr(reply);
+        rabbitTemplate.convertAndSend(MqContants.DRIVER_EXCHANGE, MqContants.DRIVER_INSERT_KEY, message);
         return new Result<ApVideoCommentDTO>().ok(reply);
     }
 
@@ -132,6 +155,13 @@ public class ApVideoCommentController {
         apVideoCommentService.delete(ids);
 
         return new Result();
+    }
+
+    @GetMapping("liked/{id}")
+    @Operation(summary = "点赞")
+    public Result liked(@PathVariable("id") String id, @RequestHeader("Authorization") String token){
+        boolean flag = apVideoCommentService.liked(id, token);
+        return new Result().ok(flag);
     }
 
 }

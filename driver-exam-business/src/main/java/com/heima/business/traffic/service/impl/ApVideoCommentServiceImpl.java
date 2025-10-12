@@ -3,9 +3,14 @@ package com.heima.business.traffic.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.util.BooleanUtil;
 import com.heima.business.auth.dao.ApUserDao;
 import com.heima.business.auth.entity.ApUserEntity;
+import com.heima.business.traffic.dto.ApTrafficVideoDTO;
+import com.heima.business.traffic.entity.ApTrafficVideoEntity;
+import com.heima.common.utils.JwtUtils;
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -30,6 +35,9 @@ public class ApVideoCommentServiceImpl extends CrudServiceImpl<ApVideoCommentDao
     @Resource
     private ApUserDao apUserDao;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public QueryWrapper<ApVideoCommentEntity> getWrapper(Map<String, Object> params) {
         String id = (String) params.get("id");
@@ -41,7 +49,7 @@ public class ApVideoCommentServiceImpl extends CrudServiceImpl<ApVideoCommentDao
     }
 
     @Override
-    public List<ApVideoCommentDTO> getApprovedCommentsByVideoId(Long videoId) {
+    public List<ApVideoCommentDTO> getApprovedCommentsByVideoId(Long videoId, String token) {
         QueryWrapper<ApVideoCommentEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("video_id", videoId);
         wrapper.eq("audit_status", 1); // 1表示审核通过
@@ -55,6 +63,7 @@ public class ApVideoCommentServiceImpl extends CrudServiceImpl<ApVideoCommentDao
             String phone = apUser.getPhone();
             // 手机号只留前三位和后4位，中间用***
             item.setPhone(phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4));
+            isVideoCommentLiked(item, token);
         });
         return sourcedToTarget;
     }
@@ -93,5 +102,49 @@ public class ApVideoCommentServiceImpl extends CrudServiceImpl<ApVideoCommentDao
         baseDao.updateById(parentComment);
 
         return ConvertUtils.sourceToTarget(reply, ApVideoCommentDTO.class);
+    }
+
+    @Override
+    public boolean liked(String id, String token) {
+
+        // 1 当前登录用户id
+        Long userId = JwtUtils.getUserId(token);
+        // String ipAddr = IpUtils.getIpAddr(request);
+
+        // 2 判断当前登录用户是否已经点赞
+        String key = "video_comment_liked:" + id;
+        Boolean isMember = stringRedisTemplate.opsForSet().isMember(key, userId.toString());
+
+        if (BooleanUtil.isFalse(isMember)) {
+            // 3 如果未点赞，可以点赞
+            // 3.1数据库点赞数+1
+            ApVideoCommentEntity entity = baseDao.selectById(id);
+            entity.setLikeCount(entity.getLikeCount() + 1);
+            int isSuccess = baseDao.updateById(entity);
+            // 3.2保存用户到redis的set集合
+            if (isSuccess > 0) {
+                stringRedisTemplate.opsForSet().add(key, userId.toString());
+            }
+            return true;
+        } else {
+            // 4.如果已点赞，不能重复点赞，取消点赞
+            // 4.1数据库点赞数-1
+            ApVideoCommentEntity entity = baseDao.selectById(id);
+            entity.setLikeCount(entity.getLikeCount() - 1);
+            int isSuccess = baseDao.updateById(entity);
+            // 4.2把用户从redis的set集合中删除
+            if (isSuccess > 0) {
+                stringRedisTemplate.opsForSet().remove(key, userId.toString());
+            }
+            return false;
+        }
+    }
+
+    private void isVideoCommentLiked(ApVideoCommentDTO videoComment, String token) {
+        // 当前登录用户id
+        Long userId = JwtUtils.getUserId(token);
+        String key = "video_comment_liked:" + videoComment.getId();
+        Boolean isMember = stringRedisTemplate.opsForSet().isMember(key, userId.toString());
+        videoComment.setIsLikeComment(BooleanUtil.isTrue(isMember));
     }
 }

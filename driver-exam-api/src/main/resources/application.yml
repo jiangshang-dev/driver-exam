@@ -61,11 +61,20 @@ spring:
           max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
           max-idle: 10      # 连接池中的最大空闲连接
           min-idle: 5       # 连接池中的最小空闲连接
-
+  rabbitmq:
+    host: 8.152.154.153
+    port: 5672
+    username: admin
+    password: admin
 renren:
   redis:
     open: false  # 是否开启redis缓存  true开启   false关闭
 
+# 文本审核
+aliyun:
+  access-key-id: LTAI5tPae3dmePr1FTzQtXhb
+  secret: Ls0fM0ZyJmmDABZBi2Q9ahVqcEd7Mi
+  scenes: terrorism
 
 #mybatis
 mybatis-plus:

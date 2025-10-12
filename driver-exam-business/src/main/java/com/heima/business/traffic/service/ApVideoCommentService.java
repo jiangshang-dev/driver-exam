@@ -20,7 +20,7 @@ public interface ApVideoCommentService extends CrudService<ApVideoCommentEntity,
      * @param videoId 视频ID
      * @return 审核通过的评论列表
      */
-    List<ApVideoCommentDTO> getApprovedCommentsByVideoId(Long videoId);
+    List<ApVideoCommentDTO> getApprovedCommentsByVideoId(Long videoId, String token);
 
     /**
      * 回复评论
@@ -31,4 +31,7 @@ public interface ApVideoCommentService extends CrudService<ApVideoCommentEntity,
      * @return 回复的评论DTO
      */
     ApVideoCommentDTO replyToComment(Long parentId, String replyContent, Long userId);
+
+    boolean liked(String id, String token);
+
 }

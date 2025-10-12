@@ -88,11 +88,28 @@ public class ApDriveQuestionController {
         return new Result();
     }
 
+    // 添加一个预处理方法
+    private ApDriveQuestionDTO preprocessDto(ApDriveQuestionDTO dto) {
+        if (dto != null && dto.getQuestionExplain() != null) {
+            String explain = dto.getQuestionExplain();
+            // 转义常见的控制字符
+            explain = explain.replace("\n", "\\n")
+                             .replace("\r", "\\r")
+                             .replace("\t", "\\t")
+                             .replace("\"", "\\\"");
+            dto.setQuestionExplain(explain);
+        }
+        return dto;
+    }
+
     @PutMapping
     @Operation(summary = "修改")
     @LogOperation("修改")
     @RequiresPermissions("apdrivequestion:update")
     public Result update(@RequestBody ApDriveQuestionDTO dto){
+        // 预处理DTO
+        dto = preprocessDto(dto);
+        
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 

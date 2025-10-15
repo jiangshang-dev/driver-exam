@@ -50,7 +50,7 @@ public class ApAdWatchRecordController {
     })
     @RequiresPermissions("apadwatchrecord:page")
     public Result<PageData<ApAdWatchRecordDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params){
-        PageData<ApAdWatchRecordDTO> page = apAdWatchRecordService.page(params);
+        PageData<ApAdWatchRecordDTO> page = apAdWatchRecordService.pages(params);
 
         return new Result<PageData<ApAdWatchRecordDTO>>().ok(page);
     }

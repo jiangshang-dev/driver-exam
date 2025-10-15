@@ -1,5 +1,16 @@
 <template>
   <div class="mod-demo__apadwatchrecord">
+    <!-- 添加查询条件表单 -->
+    <el-form :inline="true" :model="queryForm" @submit.prevent="handleQuery" style="margin-bottom: 20px;">
+      <el-form-item label="用户昵称">
+        <el-input v-model="queryForm.phone" placeholder="请输入用户昵称" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
     <el-form :inline="true" :model="state.dataForm" @keyup.enter="state.getDataList()">
       <el-form-item>
 <!--        <el-button v-if="state.hasPermission('apadwatchrecord:delete')" type="danger" @click="state.deleteHandle()">删除 </el-button>-->
@@ -12,8 +23,8 @@
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="userId" label="用户ID" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="adId" label="广告ID" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="userNickname" label="用户昵称" header-align="center" align="center"></el-table-column>
+<!--      <el-table-column prop="adId" label="广告ID" header-align="center" align="center"></el-table-column>-->
       <el-table-column prop="adPlatform" label="广告平台" header-align="center" align="center">
       </el-table-column>
       <el-table-column prop="adType" label="广告类型" header-align="center" align="center">
@@ -22,13 +33,19 @@
         </template>
       </el-table-column>
       <el-table-column prop="watchDate" label="观看日期" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="rewardType" label="奖励类型：vip_days-会员天数，points-积分等" header-align="center" align="center">
-
+      <el-table-column prop="rewardType" label="奖励类型" header-align="center" align="center">
+        <template v-slot="scope">
+<!--       用tag   -->
+          <el-tag v-if="scope.row.rewardType === 'vip_days'">会员天数</el-tag>
+          <el-tag v-if="scope.row.rewardType === 'points'">积分</el-tag>
+        </template>
       </el-table-column>
       <el-table-column prop="rewardAmount" label="奖励数量" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="rewardStatus" label="奖励发放状态：0-未发放，1-已发放，2-发放失败" header-align="center" align="center">
+      <el-table-column prop="rewardStatus" label="奖励发放状态" header-align="center" align="center">
         <template v-slot="scope">
-          {{ scope.row.rewardStatus === 0 ? "未发放" : scope.row.rewardStatus === 1 ? "已发放" : "发放失败" }}
+          <el-tag v-if="scope.row.rewardStatus === 0">未发放</el-tag>
+          <el-tag v-if="scope.row.rewardStatus === 1">已发放</el-tag>
+          <el-tag v-if="scope.row.rewardStatus === 2">发放失败</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="platformType" label="平台类型" header-align="center" align="center">
@@ -65,4 +82,32 @@ const addOrUpdateRef = ref();
 const addOrUpdateHandle = (id?: number) => {
   addOrUpdateRef.value.init(id);
 };
+
+// 添加查询表单相关
+const queryForm = reactive({
+  phone: '',
+});
+
+const resetQuery = () => {
+  queryForm.phone = '';
+  handleQuery();
+  // 确保dataForm已初始化并清空查询条件
+  if (!state.dataForm) {
+    state.dataForm = {};
+  }
+  Object.assign(state.dataForm as Record<string, any>, queryForm);
+  state.page = 1;
+  state.getDataList();
+};
+
+const handleQuery = () => {
+  // 确保dataForm已初始化并合并查询条件
+  if (!state.dataForm) {
+    state.dataForm = {};
+  }
+  Object.assign(state.dataForm as Record<string, any>, queryForm);
+  state.page = 1; // 重置到第一页
+  state.getDataList();
+};
+
 </script>

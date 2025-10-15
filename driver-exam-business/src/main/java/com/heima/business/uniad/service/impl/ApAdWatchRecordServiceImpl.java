@@ -1,15 +1,21 @@
 package com.heima.business.uniad.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.heima.business.auth.dto.LoginResult;
 import com.heima.business.auth.entity.ApUserEntity;
 import com.heima.business.auth.service.user.ApUserService;
+import com.heima.business.enums.TrafficStatus;
+import com.heima.business.traffic.dto.ApTrafficVideoDTO;
+import com.heima.business.traffic.entity.ApTrafficVideoEntity;
 import com.heima.business.uniad.dao.ApAdWatchRecordDao;
 import com.heima.business.uniad.dto.ApAdWatchRecordDTO;
 import com.heima.business.uniad.entity.ApAdWatchRecordEntity;
 import com.heima.business.uniad.service.ApAdWatchRecordService;
+import com.heima.common.page.PageData;
 import com.heima.common.service.impl.CrudServiceImpl;
 import cn.hutool.core.util.StrUtil;
+import com.heima.common.utils.ConvertUtils;
 import com.heima.common.utils.IpUtils;
 import com.heima.common.utils.JwtUtils;
 import jakarta.annotation.Resource;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,5 +88,34 @@ public class ApAdWatchRecordServiceImpl extends CrudServiceImpl<ApAdWatchRecordD
         result.setVipExpireTime(user.getVipExpireTime());
         result.setAvatar(user.getAvatar());
         return result;
+    }
+
+    @Override
+    public PageData<ApAdWatchRecordDTO> pages(Map<String, Object> params) {
+
+        String id = (String) params.get("id");
+        String phone = (String) params.get("phone");
+        String limitStr = (String) params.get("limit");
+        String pageNoStr = (String) params.get("page");
+
+        QueryWrapper<ApAdWatchRecordEntity> wrapper = new QueryWrapper<>();
+
+        // 解析分页参数
+        int limit = StrUtil.isBlank(limitStr) ? 10 : Integer.parseInt(limitStr);  // 默认每页10条
+        int pageNo = StrUtil.isBlank(pageNoStr) ? 1 : Integer.parseInt(pageNoStr); // 默认第一页
+
+        // 使用 MyBatis Plus 分页查询
+        Page<ApAdWatchRecordEntity> page = new Page<>(pageNo, limit);
+        page = baseDao.selectPage(page, wrapper);
+
+        List<ApAdWatchRecordEntity> records = page.getRecords();
+        records.forEach(record -> {
+            ApUserEntity user = apUserService.getById(record.getUserId());
+            record.setUserNickname(StrUtil.isBlank(user.getPhone())? user.getRealName() : user.getPhone());
+        });
+        records = records.stream().filter(record -> record.getUserNickname().contains(phone)).toList();
+        // 转换实体类到 DTO
+        List<ApAdWatchRecordDTO> list = ConvertUtils.sourceToTarget(records, ApAdWatchRecordDTO.class);
+        return new PageData<>(list, page.getTotal());
     }
 }

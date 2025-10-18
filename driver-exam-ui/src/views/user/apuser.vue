@@ -2,7 +2,7 @@
   <div class="mod-demo__apuser">
     <!-- 添加查询条件表单 -->
     <el-form :inline="true" :model="queryForm" @submit.prevent="handleQuery" style="margin-bottom: 20px;">
-      <el-form-item label="题目内容">
+      <el-form-item label="用户手机号">
         <el-input v-model="queryForm.phone" placeholder="请输入手机号" clearable></el-input>
       </el-form-item>
 

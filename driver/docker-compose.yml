@@ -13,6 +13,19 @@ services:
     working_dir: /data
     networks:
       - my-network
+  driver-api:
+    container_name: "driver-api-app"
+    image: 'driver/driver-api:latest'
+    ports:
+      - "8089:8089"
+    environment:
+      - spring.profiles.active=dev
+    build:
+      context: back-api
+      dockerfile: Dockerfile
+    working_dir: /data
+    networks:
+      - my-network
   driver-web:
     container_name: "driver-ui-app"
     image: 'driver/driver-ui:latest'
@@ -27,3 +40,6 @@ services:
 networks:
   my-network:
     driver: bridge
+
+# docker run -d -p 8089:8089 --name driver-exam-api driver-exam-api java -jar /data/api.jar --server.address=0.0.0.0 --server.port=8089 --spring.profiles.active=dev
+# docker run -d -p 8089:8089 -e SERVER_ADDRESS=0.0.0.0 --name driver-exam-api driver-exam-api

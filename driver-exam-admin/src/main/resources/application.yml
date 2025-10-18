@@ -36,7 +36,11 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
       enabled: true
-
+  rabbitmq:
+    host: 8.152.154.153
+    port: 5672
+    username: admin
+    password: admin
   data:
     redis:
       database: 0
@@ -92,20 +96,3 @@ auth:
 drive:
   key: c840fd2624309bc47aed32c5065ea20f
   url: http://v.juhe.cn/jztk/query
-
-langchain4j:
-  open-ai:
-    streaming-chat-model:
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
-      model-name: qwen3-max-preview
-      timeout: 900000
-      temperature: 0.8
-      log-requests: true
-      log-responses: true
-      api-key: sk-58df9e6ceb654bf0b6a782c02003fc94
-    chat-model:
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
-      api-key: sk-58df9e6ceb654bf0b6a782c02003fc94
-      model-name: qwen3-max-preview
-      log-requests: true
-      log-responses: true

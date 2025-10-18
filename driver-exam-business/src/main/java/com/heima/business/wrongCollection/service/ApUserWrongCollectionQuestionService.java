@@ -28,4 +28,8 @@ public interface ApUserWrongCollectionQuestionService extends CrudService<ApUser
     PageData<ApUserWrongCollectionQuestionDTO> myWrongPage(Map<String, Object> params);
 
     boolean clearWrong(Long userId);
+
+    PageData<ApUserWrongCollectionQuestionDTO> pagesWrong(Map<String, Object> params);
+
+    PageData<ApUserWrongCollectionQuestionDTO> pagesCollection(Map<String, Object> params);
 }

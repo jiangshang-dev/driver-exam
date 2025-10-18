@@ -56,6 +56,12 @@ public class ApUserEntity {
     
     /** 状态 0:禁用 1:正常 */
     private Boolean status;
+
+    /** AI聊天权限：0-禁止AI聊天，1-允许AI聊天 */
+    private Boolean aichatPermission;
+
+    /** 违规AI聊天次数 */
+    private Integer violationAichatCount;
     
     /** 最后登录时间 */
     private LocalDateTime lastLoginTime;

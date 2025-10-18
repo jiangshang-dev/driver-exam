@@ -6,16 +6,11 @@ import java.util.Map;
 import com.heima.business.wrongCollection.entity.ApUserWrongCollectionQuestionEntity;
 import com.heima.common.constant.Constant;
 import com.heima.common.page.PageData;
+import com.heima.common.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.heima.business.enums.RecordTypeEnums;
@@ -81,7 +76,12 @@ public class ApUserWrongCollectionQuestionController {
 
     @GetMapping("isCollected")
     @Operation(summary = "判断是否已收藏")
-    public Result<Boolean> isCollected(@RequestParam("userId") Long userId, @RequestParam("questionId") Long questionId) {
+    public Result<Boolean> isCollected(@RequestHeader("Authorization") String token, @RequestParam("questionId") Long questionId) {
+        Long userId = JwtUtils.getUserId(token);
+        if (userId == null) {
+            return new Result<Boolean>().error("用户未登录");
+        }
+
         // 检查是否已存在该题目的收藏记录
         ApUserWrongCollectionQuestionDTO existingDto = apUserWrongCollectionQuestionService.getOne(
                 new QueryWrapper<ApUserWrongCollectionQuestionEntity>()
@@ -104,14 +104,19 @@ public class ApUserWrongCollectionQuestionController {
 
     @PostMapping("collect")
     @Operation(summary = "收藏/取消收藏")
-    public Result collect(@RequestBody ApUserWrongCollectionQuestionDTO dto) {
+    public Result collect(@RequestBody ApUserWrongCollectionQuestionDTO dto, @RequestHeader("Authorization") String token) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
+
+        Long userId = JwtUtils.getUserId(token);
+        if (userId == null) {
+            return new Result<Boolean>().error("用户未登录");
+        }
 
         // 检查是否已存在该题目的收藏记录
         ApUserWrongCollectionQuestionDTO existingDto = apUserWrongCollectionQuestionService.getOne(
                 new QueryWrapper<com.heima.business.wrongCollection.entity.ApUserWrongCollectionQuestionEntity>()
-                        .eq("user_id", dto.getUserId())
+                        .eq("user_id", userId)
                         .eq("subject", dto.getSubject())
                         .eq("question_id", dto.getQuestionId())
                         .eq("record_type", RecordTypeEnums.COLLECT.getValue())

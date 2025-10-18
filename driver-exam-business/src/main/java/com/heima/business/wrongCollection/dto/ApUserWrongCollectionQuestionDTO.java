@@ -104,5 +104,6 @@ public class ApUserWrongCollectionQuestionDTO implements Serializable {
 	@SchemaProperty(name = "修改时间")
 	private LocalDateTime updateTime;
 
-
+	@SchemaProperty(name = "用户昵称")
+	private String userNickname;
 }

@@ -113,7 +113,8 @@ public class ApAdWatchRecordServiceImpl extends CrudServiceImpl<ApAdWatchRecordD
             ApUserEntity user = apUserService.getById(record.getUserId());
             record.setUserNickname(StrUtil.isBlank(user.getPhone())? user.getRealName() : user.getPhone());
         });
-        records = records.stream().filter(record -> record.getUserNickname().contains(phone)).toList();
+
+        if (StrUtil.isNotBlank(phone)) records = records.stream().filter(record -> record.getUserNickname().contains(phone)).toList();
         // 转换实体类到 DTO
         List<ApAdWatchRecordDTO> list = ConvertUtils.sourceToTarget(records, ApAdWatchRecordDTO.class);
         return new PageData<>(list, page.getTotal());

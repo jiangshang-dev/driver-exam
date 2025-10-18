@@ -4,8 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.heima.business.auth.entity.ApUserEntity;
+import com.heima.business.auth.service.user.ApUserService;
 import com.heima.business.enums.RecordTypeEnums;
+import com.heima.business.question.entity.ApDriveQuestionEntity;
+import com.heima.business.question.service.ApDriveQuestionService;
+import com.heima.business.uniad.dto.ApAdWatchRecordDTO;
+import com.heima.business.uniad.entity.ApAdWatchRecordEntity;
 import com.heima.common.page.PageData;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -26,6 +34,12 @@ import cn.hutool.core.util.StrUtil;
  */
 @Service
 public class ApUserWrongCollectionQuestionServiceImpl extends CrudServiceImpl<ApUserWrongCollectionQuestionDao, ApUserWrongCollectionQuestionEntity, ApUserWrongCollectionQuestionDTO> implements ApUserWrongCollectionQuestionService {
+
+    @Resource
+    private ApUserService apUserService;
+
+    @Resource
+    private ApDriveQuestionService apDriveQuestionService;
 
     @Override
     public QueryWrapper<ApUserWrongCollectionQuestionEntity> getWrapper(Map<String, Object> params){
@@ -88,5 +102,89 @@ public class ApUserWrongCollectionQuestionServiceImpl extends CrudServiceImpl<Ap
         List<ApUserWrongCollectionQuestionEntity> selectedList = baseDao.selectList(queryWrapper);
         int delete = baseDao.deleteByIds(selectedList);
         return delete > 0;
+    }
+
+    @Override
+    public PageData<ApUserWrongCollectionQuestionDTO> pagesWrong(Map<String, Object> params) {
+        String id = (String) params.get("id");
+        String phone = (String) params.get("phone");
+        String limitStr = (String) params.get("limit");
+        String pageNoStr = (String) params.get("page");
+        String recordType = (String) params.get("recordType");
+
+        QueryWrapper<ApUserWrongCollectionQuestionEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("record_type", 1);
+
+        // 解析分页参数
+        int limit = StrUtil.isBlank(limitStr) ? 10 : Integer.parseInt(limitStr);  // 默认每页10条
+        int pageNo = StrUtil.isBlank(pageNoStr) ? 1 : Integer.parseInt(pageNoStr); // 默认第一页
+
+        // 使用 MyBatis Plus 分页查询
+        Page<ApUserWrongCollectionQuestionEntity> page = new Page<>(pageNo, limit);
+        page = baseDao.selectPage(page, wrapper);
+
+        List<ApUserWrongCollectionQuestionEntity> records = page.getRecords();
+        records.forEach(record -> {
+            ApUserEntity user = apUserService.getById(record.getUserId());
+            if (user != null) {
+                record.setUserNickname(StrUtil.isBlank(user.getPhone())? user.getRealName() : user.getPhone());
+            } else {
+                record.setUserNickname("未知用户");
+            }
+
+            ApDriveQuestionEntity driveQuestion = apDriveQuestionService.selectById(record.getQuestionId());
+            if (driveQuestion != null) {
+                record.setQuestionContent(driveQuestion.getQuestionContent());
+                record.setImageUrl(driveQuestion.getImageUrl());
+                record.setCorrectAnswer(driveQuestion.getCorrectAnswer());
+            }
+        });
+
+        if (StrUtil.isNotBlank(phone)) records = records.stream().filter(record -> record.getUserNickname().contains(phone)).toList();
+        // 转换实体类到 DTO
+        List<ApUserWrongCollectionQuestionDTO> list = ConvertUtils.sourceToTarget(records, ApUserWrongCollectionQuestionDTO.class);
+        return new PageData<>(list, page.getTotal());
+    }
+
+    @Override
+    public PageData<ApUserWrongCollectionQuestionDTO> pagesCollection(Map<String, Object> params) {
+        String id = (String) params.get("id");
+        String phone = (String) params.get("phone");
+        String limitStr = (String) params.get("limit");
+        String pageNoStr = (String) params.get("page");
+        String recordType = (String) params.get("recordType");
+
+        QueryWrapper<ApUserWrongCollectionQuestionEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("record_type", 0);
+
+        // 解析分页参数
+        int limit = StrUtil.isBlank(limitStr) ? 10 : Integer.parseInt(limitStr);  // 默认每页10条
+        int pageNo = StrUtil.isBlank(pageNoStr) ? 1 : Integer.parseInt(pageNoStr); // 默认第一页
+
+        // 使用 MyBatis Plus 分页查询
+        Page<ApUserWrongCollectionQuestionEntity> page = new Page<>(pageNo, limit);
+        page = baseDao.selectPage(page, wrapper);
+
+        List<ApUserWrongCollectionQuestionEntity> records = page.getRecords();
+        records.forEach(record -> {
+            ApUserEntity user = apUserService.getById(record.getUserId());
+            if (user != null) {
+                record.setUserNickname(StrUtil.isBlank(user.getPhone())? user.getRealName() : user.getPhone());
+            } else {
+                record.setUserNickname("未知用户");
+            }
+
+            ApDriveQuestionEntity driveQuestion = apDriveQuestionService.selectById(record.getQuestionId());
+            if (driveQuestion != null) {
+                record.setQuestionContent(driveQuestion.getQuestionContent());
+                record.setImageUrl(driveQuestion.getImageUrl());
+                record.setCorrectAnswer(driveQuestion.getCorrectAnswer());
+            }
+        });
+
+        if (StrUtil.isNotBlank(phone)) records = records.stream().filter(record -> record.getUserNickname().contains(phone)).toList();
+        // 转换实体类到 DTO
+        List<ApUserWrongCollectionQuestionDTO> list = ConvertUtils.sourceToTarget(records, ApUserWrongCollectionQuestionDTO.class);
+        return new PageData<>(list, page.getTotal());
     }
 }

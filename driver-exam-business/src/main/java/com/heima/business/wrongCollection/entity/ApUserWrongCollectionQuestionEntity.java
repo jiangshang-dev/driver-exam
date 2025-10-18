@@ -79,4 +79,28 @@ public class ApUserWrongCollectionQuestionEntity {
      * 修改时间
      */
 	private LocalDateTime updateTime;
+
+    /**
+     * 用户昵称
+     */
+    @TableField(exist = false)
+    private String userNickname;
+
+    /**
+     * 题目内容
+     */
+    @TableField(exist = false)
+    private String questionContent;
+
+    /**
+     * 配图URL
+     */
+    @TableField(exist = false)
+    private String imageUrl;
+
+    /**
+     * 正确答案
+     */
+    @TableField(exist = false)
+    private String correctAnswer;
 }

@@ -46,9 +46,9 @@
       <el-form-item>
         <el-button v-if="state.hasPermission('apdrivequestion:save')" type="primary" @click="addOrUpdateHandle()">新增 </el-button>
       </el-form-item>
-      <el-form-item>
+<!--      <el-form-item>
         <el-button v-if="state.hasPermission('apdrivequestion:delete')" type="danger" @click="state.deleteHandle()"> 删除 </el-button>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button v-if="state.hasPermission('apdrivequestion:sync')" type="primary" @click="openSyncDialog()"> 同步题库 </el-button>
       </el-form-item>
@@ -155,7 +155,7 @@
       <el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
         <template v-slot="scope">
           <el-button v-if="state.hasPermission('apdrivequestion:update')" type="primary" link @click="addOrUpdateHandle(scope.row.id)">修改 </el-button>
-          <el-button v-if="state.hasPermission('apdrivequestion:delete')" type="primary" link @click="state.deleteHandle(scope.row.id)">删除 </el-button>
+<!--          <el-button v-if="state.hasPermission('apdrivequestion:delete')" type="primary" link @click="state.deleteHandle(scope.row.id)">删除 </el-button>-->
         </template>
       </el-table-column>
     </el-table>

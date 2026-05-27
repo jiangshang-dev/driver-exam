@@ -2,15 +2,18 @@
   <el-dialog v-model="visible" :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" @keyup.enter="dataFormSubmitHandle()" label-width="120px">
       <el-form-item label="科目" prop="subject">
-        <el-select v-model="dataForm.subject" placeholder="科目">
+        <el-input v-model="dataForm.subject" readonly placeholder="科目"></el-input>
+<!--        <el-select v-model="dataForm.subject" placeholder="科目">
           <el-option label="科目一" value="1"></el-option>
           <el-option label="科目四" value="4"></el-option>
-        </el-select>
+        </el-select>-->
       </el-form-item>
+
       <el-form-item label="考试类型" prop="examType">
-        <el-select v-model="dataForm.examType" placeholder="考试类型" clearable>
+        <el-input v-model="dataForm.examType" readonly placeholder="考试类型"></el-input>
+<!--        <el-select v-model="dataForm.examType" placeholder="考试类型" clearable>
           <el-option v-for="item in examTypeOptions" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"></el-option>
-        </el-select>
+        </el-select>-->
       </el-form-item>
 <!--      <el-form-item label="题型代码" prop="questionType">
         <el-select v-model="dataForm.questionType" placeholder="题型代码">
@@ -22,7 +25,7 @@
         <el-input v-model="dataForm.questionTypeName" placeholder="题型名称"></el-input>
       </el-form-item>-->
       <el-form-item label="题目内容" prop="questionContent">
-        <el-input v-model="dataForm.questionContent" placeholder="题目内容"></el-input>
+        <el-input v-model="dataForm.questionContent" readonly placeholder="题目内容"></el-input>
       </el-form-item>
       <el-form-item label="题目格式" prop="questionFormat">
         <el-select v-model="dataForm.questionFormat" placeholder="题目格式">
@@ -32,16 +35,16 @@
         </el-select>
       </el-form-item>
       <el-form-item label="选项A" prop="optionA">
-        <el-input v-model="dataForm.optionA" placeholder="选项A"></el-input>
+        <el-input v-model="dataForm.optionA" readonly placeholder="选项A"></el-input>
       </el-form-item>
       <el-form-item label="选项B" prop="optionB">
-        <el-input v-model="dataForm.optionB" placeholder="选项B"></el-input>
+        <el-input v-model="dataForm.optionB" readonly placeholder="选项B"></el-input>
       </el-form-item>
       <el-form-item label="选项C" prop="optionC">
-        <el-input v-model="dataForm.optionC" placeholder="选项C"></el-input>
+        <el-input v-model="dataForm.optionC" readonly placeholder="选项C"></el-input>
       </el-form-item>
       <el-form-item label="选项D" prop="optionD">
-        <el-input v-model="dataForm.optionD" placeholder="选项D"></el-input>
+        <el-input v-model="dataForm.optionD" readonly placeholder="选项D"></el-input>
       </el-form-item>
       <el-form-item label="正确答案" prop="correctAnswer">
         <el-select v-model="dataForm.correctAnswer" placeholder="正确答案" multiple>
@@ -52,7 +55,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="题目解析" prop="questionExplain">
-        <el-input v-model="dataForm.questionExplain" placeholder="题目解析"></el-input>
+        <el-input v-model="dataForm.questionExplain" readonly placeholder="题目解析"></el-input>
       </el-form-item>
       <el-form-item label="题目配图URL" prop="imageUrl">
         <el-image

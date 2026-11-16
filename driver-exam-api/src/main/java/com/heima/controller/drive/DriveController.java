@@ -43,4 +43,15 @@ public class DriveController {
         List<ApDriveQuestionEntity> driveTopicList = driveQuestionService.examDriveQuestion(subject);
         return new Result<>().ok(driveTopicList);
     }
+
+    /**
+     * 每日一练，固定条数。不改顺序刷题和模拟考试的取题方式。
+     */
+    @GetMapping("/dailyQuestion")
+    public Result dailyQuestion(@RequestParam(value = "subject", defaultValue = "1") String subject,
+                                @RequestParam(value = "examType", defaultValue = "c1") String examType,
+                                @RequestParam(value = "size", defaultValue = "10") int size) {
+        List<ApDriveQuestionEntity> questions = driveQuestionService.dailyQuestion(subject, examType, size);
+        return new Result<List<ApDriveQuestionEntity>>().ok(questions);
+    }
 }

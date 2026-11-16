@@ -144,6 +144,54 @@ public class ApDriveQuestionServiceImpl extends CrudServiceImpl<ApDriveQuestionD
         return resultPage.getRecords().stream().filter(record -> StringUtils.isNotBlank(record.getOptionA()) && StringUtils.isNotBlank(record.getOptionB())).toList();
     }
 
+    @Override
+    public List<ApDriveQuestionEntity> dailyQuestion(String subject, String examType, int size) {
+        int limit = size < 1 ? 10 : Math.min(size, 20);
+        String model = StringUtils.isBlank(examType) ? "c1" : examType.toLowerCase();
+
+        QueryWrapper<ApDriveQuestionEntity> minWrapper = new QueryWrapper<>();
+        minWrapper.select("id").eq("subject", subject).eq("exam_type", model).orderByAsc("id").last("LIMIT 1");
+        ApDriveQuestionEntity minRow = baseDao.selectOne(minWrapper);
+        if (minRow == null || minRow.getId() == null) {
+            return List.of();
+        }
+        QueryWrapper<ApDriveQuestionEntity> maxWrapper = new QueryWrapper<>();
+        maxWrapper.select("id").eq("subject", subject).eq("exam_type", model).orderByDesc("id").last("LIMIT 1");
+        ApDriveQuestionEntity maxRow = baseDao.selectOne(maxWrapper);
+        long minId = minRow.getId();
+        long maxId = maxRow == null || maxRow.getId() == null ? minId : maxRow.getId();
+        long span = Math.max(maxId - minId, 1L);
+        long startId = minId + (long) (Math.random() * span);
+
+        List<ApDriveQuestionEntity> picked = new ArrayList<>(selectDailySlice(subject, model, startId, limit));
+        if (picked.size() < limit) {
+            Set<Long> exists = picked.stream().map(ApDriveQuestionEntity::getId).collect(Collectors.toSet());
+            for (ApDriveQuestionEntity item : selectDailySlice(subject, model, minId, limit)) {
+                if (item.getId() != null && exists.add(item.getId())) {
+                    picked.add(item);
+                    if (picked.size() >= limit) {
+                        break;
+                    }
+                }
+            }
+        }
+        return picked;
+    }
+
+    private List<ApDriveQuestionEntity> selectDailySlice(String subject, String examType, long startId, int limit) {
+        QueryWrapper<ApDriveQuestionEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("subject", subject)
+                .eq("exam_type", examType)
+                .ge("id", startId)
+                .isNotNull("option_a")
+                .ne("option_a", "")
+                .isNotNull("option_b")
+                .ne("option_b", "")
+                .orderByAsc("id")
+                .last("LIMIT " + limit);
+        return baseDao.selectList(queryWrapper);
+    }
+
     /**
      * 驾照题库获取题库
      *

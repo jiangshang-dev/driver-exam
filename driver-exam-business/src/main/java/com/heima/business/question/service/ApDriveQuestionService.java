@@ -21,4 +21,9 @@ public interface ApDriveQuestionService extends CrudService<ApDriveQuestionEntit
     List<ApDriveQuestionEntity> driveQuestionList(String subject, String questionType, String examType);
 
     List<ApDriveQuestionEntity> examDriveQuestion(String subject);
+
+    /**
+     * 每日一练。按主键范围取固定条数，不走全量列表。
+     */
+    List<ApDriveQuestionEntity> dailyQuestion(String subject, String examType, int size);
 }

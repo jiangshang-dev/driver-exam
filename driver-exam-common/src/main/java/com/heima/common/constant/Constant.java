@@ -112,7 +112,15 @@ public interface Constant {
         /**
          * 腾讯云
          */
-        QCLOUD(3);
+        QCLOUD(3),
+        /**
+         * MinIO
+         */
+        MINIO(4),
+        /**
+         * RustFS
+         */
+        RUSTFS(5);
 
         private int value;
 

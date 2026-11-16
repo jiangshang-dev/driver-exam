@@ -9,8 +9,10 @@
 package com.heima.modules.oss.cloud;
 
 import com.heima.common.validator.group.AliyunGroup;
+import com.heima.common.validator.group.MinioGroup;
 import com.heima.common.validator.group.QcloudGroup;
 import com.heima.common.validator.group.QiniuGroup;
+import com.heima.common.validator.group.RustfsGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,8 +32,8 @@ import java.io.Serializable;
 public class CloudStorageConfig implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Schema(title = "类型 1：七牛  2：阿里云  3：腾讯云 ")
-    @Range(min = 1, max = 6, message = "{oss.type.range}")
+    @Schema(title = "类型 1：七牛  2：阿里云  3：腾讯云  4：MinIO  5：RustFS")
+    @Range(min = 1, max = 5, message = "{oss.type.range}")
     private Integer type;
 
     @Schema(title = "七牛绑定的域名")
@@ -105,5 +107,53 @@ public class CloudStorageConfig implements Serializable {
     @Schema(title = "腾讯云COS所属地区")
     @NotBlank(message = "{qcloud.region.require}", groups = QcloudGroup.class)
     private String qcloudRegion;
+
+    @Schema(title = "MinIO绑定的域名")
+    @NotBlank(message = "{minio.domain.require}", groups = MinioGroup.class)
+    @URL(message = "{minio.domain.url}", groups = MinioGroup.class)
+    private String minioDomain;
+
+    @Schema(title = "MinIO路径前缀")
+    private String minioPrefix;
+
+    @Schema(title = "MinIO Endpoint")
+    @NotBlank(message = "{minio.endpoint.require}", groups = MinioGroup.class)
+    private String minioEndPoint;
+
+    @Schema(title = "MinIO AccessKey")
+    @NotBlank(message = "{minio.accesskey.require}", groups = MinioGroup.class)
+    private String minioAccessKey;
+
+    @Schema(title = "MinIO SecretKey")
+    @NotBlank(message = "{minio.secretkey.require}", groups = MinioGroup.class)
+    private String minioSecretKey;
+
+    @Schema(title = "MinIO BucketName")
+    @NotBlank(message = "{minio.bucketname.require}", groups = MinioGroup.class)
+    private String minioBucketName;
+
+    @Schema(title = "RustFS绑定的域名")
+    @NotBlank(message = "{rustfs.domain.require}", groups = RustfsGroup.class)
+    @URL(message = "{rustfs.domain.url}", groups = RustfsGroup.class)
+    private String rustfsDomain;
+
+    @Schema(title = "RustFS路径前缀")
+    private String rustfsPrefix;
+
+    @Schema(title = "RustFS Endpoint")
+    @NotBlank(message = "{rustfs.endpoint.require}", groups = RustfsGroup.class)
+    private String rustfsEndPoint;
+
+    @Schema(title = "RustFS AccessKey")
+    @NotBlank(message = "{rustfs.accesskey.require}", groups = RustfsGroup.class)
+    private String rustfsAccessKey;
+
+    @Schema(title = "RustFS SecretKey")
+    @NotBlank(message = "{rustfs.secretkey.require}", groups = RustfsGroup.class)
+    private String rustfsSecretKey;
+
+    @Schema(title = "RustFS BucketName")
+    @NotBlank(message = "{rustfs.bucketname.require}", groups = RustfsGroup.class)
+    private String rustfsBucketName;
 
 }

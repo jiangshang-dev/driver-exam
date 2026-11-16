@@ -9,6 +9,7 @@ import com.heima.common.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,10 +51,10 @@ public class StudyController {
         }
         return new Result<Map<String, Object>>().ok(studyFeatureService.checkin(
                 userId,
-                request.subject(),
-                request.examType(),
-                request.questionCount(),
-                request.correctCount()
+                request.getSubject(),
+                request.getExamType(),
+                request.getQuestionCount(),
+                request.getCorrectCount()
         ));
     }
 
@@ -65,23 +66,23 @@ public class StudyController {
         if (userId == null) {
             return new Result<ApExamPlanEntity>().error("请先登录");
         }
-        if (StringUtils.isBlank(request.examDate())) {
+        if (StringUtils.isBlank(request.getExamDate())) {
             return new Result<ApExamPlanEntity>().error("请选择考试日期");
         }
         LocalDate examDate;
         try {
-            examDate = LocalDate.parse(request.examDate());
+            examDate = LocalDate.parse(request.getExamDate());
         } catch (DateTimeParseException ex) {
             return new Result<ApExamPlanEntity>().error("考试日期格式应为 yyyy-MM-dd");
         }
         ApExamPlanEntity plan = studyFeatureService.savePlan(
                 userId,
-                request.subject(),
-                request.examType(),
+                request.getSubject(),
+                request.getExamType(),
                 examDate,
-                request.targetScore(),
-                request.dailyGoal(),
-                request.remark()
+                request.getTargetScore(),
+                request.getDailyGoal(),
+                request.getRemark()
         );
         return new Result<ApExamPlanEntity>().ok(plan);
     }
@@ -112,12 +113,12 @@ public class StudyController {
         }
         return new Result<ApPracticeProgressEntity>().ok(studyFeatureService.saveProgress(
                 userId,
-                request.subject(),
-                request.examType(),
-                request.questionType(),
-                request.lastIndex(),
-                request.answeredCount(),
-                request.correctCount()
+                request.getSubject(),
+                request.getExamType(),
+                request.getQuestionType(),
+                request.getLastIndex(),
+                request.getAnsweredCount(),
+                request.getCorrectCount()
         ));
     }
 
@@ -141,12 +142,31 @@ public class StudyController {
         return JwtUtils.getUserId(token);
     }
 
-    public record CheckinRequest(Integer subject, String examType, Integer questionCount, Integer correctCount) {
+    @Data
+    public static class CheckinRequest {
+        private Integer subject;
+        private String examType;
+        private Integer questionCount;
+        private Integer correctCount;
     }
 
-    public record PlanRequest(Integer subject, String examType, String examDate, Integer targetScore, Integer dailyGoal, String remark) {
+    @Data
+    public static class PlanRequest {
+        private Integer subject;
+        private String examType;
+        private String examDate;
+        private Integer targetScore;
+        private Integer dailyGoal;
+        private String remark;
     }
 
-    public record ProgressRequest(Integer subject, String examType, String questionType, Integer lastIndex, Integer answeredCount, Integer correctCount) {
+    @Data
+    public static class ProgressRequest {
+        private Integer subject;
+        private String examType;
+        private String questionType;
+        private Integer lastIndex;
+        private Integer answeredCount;
+        private Integer correctCount;
     }
 }

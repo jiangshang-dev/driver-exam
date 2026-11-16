@@ -22,6 +22,23 @@ PREPARE idx_stmt FROM @idx_sql;
 EXECUTE idx_stmt;
 DEALLOCATE PREPARE idx_stmt;
 
+-- 每日一练按 subject + exam_type + id 取一小段，避免整表排序
+SET @range_idx_exists := (
+    SELECT COUNT(1)
+    FROM information_schema.statistics
+    WHERE table_schema = DATABASE()
+      AND table_name = 'ap_drive_question'
+      AND index_name = 'idx_subject_exam_id'
+);
+SET @range_idx_sql := IF(
+    @range_idx_exists = 0,
+    'ALTER TABLE ap_drive_question ADD INDEX idx_subject_exam_id (subject, exam_type, id)',
+    'SELECT 1'
+);
+PREPARE range_idx_stmt FROM @range_idx_sql;
+EXECUTE range_idx_stmt;
+DEALLOCATE PREPARE range_idx_stmt;
+
 CREATE TABLE IF NOT EXISTS ap_study_checkin (
     id             BIGINT      NOT NULL COMMENT '主键',
     user_id        BIGINT      NOT NULL COMMENT '用户ID',

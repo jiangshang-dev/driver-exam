@@ -17,8 +17,10 @@ import com.heima.common.utils.JsonUtils;
 import com.heima.common.utils.Result;
 import com.heima.common.validator.ValidatorUtils;
 import com.heima.common.validator.group.AliyunGroup;
+import com.heima.common.validator.group.MinioGroup;
 import com.heima.common.validator.group.QcloudGroup;
 import com.heima.common.validator.group.QiniuGroup;
+import com.heima.common.validator.group.RustfsGroup;
 import com.heima.modules.oss.cloud.CloudStorageConfig;
 import com.heima.modules.oss.cloud.OSSFactory;
 import com.heima.modules.oss.entity.SysOssEntity;
@@ -87,6 +89,10 @@ public class SysOssController {
         } else if (config.getType() == Constant.CloudService.QCLOUD.getValue()) {
             //校验腾讯云数据
             ValidatorUtils.validateEntity(config, QcloudGroup.class);
+        } else if (config.getType() == Constant.CloudService.MINIO.getValue()) {
+            ValidatorUtils.validateEntity(config, MinioGroup.class);
+        } else if (config.getType() == Constant.CloudService.RUSTFS.getValue()) {
+            ValidatorUtils.validateEntity(config, RustfsGroup.class);
         }
 
         sysParamsService.updateValueByCode(KEY, JsonUtils.toJsonString(config));

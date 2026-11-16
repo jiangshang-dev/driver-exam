@@ -6,6 +6,8 @@
           <el-radio :label="1">七牛</el-radio>
           <el-radio :label="2">阿里云</el-radio>
           <el-radio :label="3">腾讯云</el-radio>
+          <el-radio :label="4">MinIO</el-radio>
+          <el-radio :label="5">RustFS</el-radio>
         </el-radio-group>
       </el-form-item>
       <template v-if="dataForm.type === 1">
@@ -79,6 +81,46 @@
           </el-select>
         </el-form-item>
       </template>
+      <template v-else-if="dataForm.type === 4">
+        <el-form-item prop="minioDomain" label="域名">
+          <el-input v-model="dataForm.minioDomain" placeholder="访问域名，如：http://127.0.0.1:9000/bucket"></el-input>
+        </el-form-item>
+        <el-form-item prop="minioPrefix" label="路径前缀">
+          <el-input v-model="dataForm.minioPrefix" placeholder="不设置默认为空"></el-input>
+        </el-form-item>
+        <el-form-item prop="minioEndPoint" label="Endpoint">
+          <el-input v-model="dataForm.minioEndPoint" placeholder="S3 地址，如：http://127.0.0.1:9000"></el-input>
+        </el-form-item>
+        <el-form-item prop="minioAccessKey" label="AccessKey">
+          <el-input v-model="dataForm.minioAccessKey" placeholder="MinIO AccessKey"></el-input>
+        </el-form-item>
+        <el-form-item prop="minioSecretKey" label="SecretKey">
+          <el-input v-model="dataForm.minioSecretKey" placeholder="MinIO SecretKey"></el-input>
+        </el-form-item>
+        <el-form-item prop="minioBucketName" label="BucketName">
+          <el-input v-model="dataForm.minioBucketName" placeholder="MinIO BucketName"></el-input>
+        </el-form-item>
+      </template>
+      <template v-else-if="dataForm.type === 5">
+        <el-form-item prop="rustfsDomain" label="域名">
+          <el-input v-model="dataForm.rustfsDomain" placeholder="访问域名，如：http://127.0.0.1:9000/bucket"></el-input>
+        </el-form-item>
+        <el-form-item prop="rustfsPrefix" label="路径前缀">
+          <el-input v-model="dataForm.rustfsPrefix" placeholder="不设置默认为空"></el-input>
+        </el-form-item>
+        <el-form-item prop="rustfsEndPoint" label="Endpoint">
+          <el-input v-model="dataForm.rustfsEndPoint" placeholder="S3 地址，如：http://127.0.0.1:9000"></el-input>
+        </el-form-item>
+        <el-form-item prop="rustfsAccessKey" label="AccessKey">
+          <el-input v-model="dataForm.rustfsAccessKey" placeholder="RustFS AccessKey"></el-input>
+        </el-form-item>
+        <el-form-item prop="rustfsSecretKey" label="SecretKey">
+          <el-input v-model="dataForm.rustfsSecretKey" placeholder="RustFS SecretKey"></el-input>
+        </el-form-item>
+        <el-form-item prop="rustfsBucketName" label="BucketName">
+          <el-input v-model="dataForm.rustfsBucketName" placeholder="RustFS BucketName"></el-input>
+        </el-form-item>
+      </template>
     </el-form>
     <template v-slot:footer>
       <el-button @click="visible = false">取消</el-button>
@@ -115,7 +157,19 @@ const dataForm = reactive({
   qcloudSecretId: "",
   qcloudSecretKey: "",
   qcloudBucketName: "",
-  qcloudRegion: ""
+  qcloudRegion: "",
+  minioDomain: "",
+  minioPrefix: "",
+  minioEndPoint: "",
+  minioAccessKey: "",
+  minioSecretKey: "",
+  minioBucketName: "",
+  rustfsDomain: "",
+  rustfsPrefix: "",
+  rustfsEndPoint: "",
+  rustfsAccessKey: "",
+  rustfsSecretKey: "",
+  rustfsBucketName: ""
 });
 
 const rules = ref({
@@ -133,7 +187,17 @@ const rules = ref({
   qcloudSecretId: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   qcloudSecretKey: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   qcloudBucketName: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  qcloudRegion: [{ required: true, message: "必填项不能为空", trigger: "blur" }]
+  qcloudRegion: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  minioDomain: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  minioEndPoint: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  minioAccessKey: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  minioSecretKey: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  minioBucketName: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  rustfsDomain: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  rustfsEndPoint: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  rustfsAccessKey: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  rustfsSecretKey: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  rustfsBucketName: [{ required: true, message: "必填项不能为空", trigger: "blur" }]
 });
 
 const init = () => {

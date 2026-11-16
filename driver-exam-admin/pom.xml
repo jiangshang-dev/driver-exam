@@ -19,6 +19,7 @@
         <aliyun.oss.version>2.8.3</aliyun.oss.version>
         <aliyun.core.version>3.2.2</aliyun.core.version>
         <qcloud.cos.version>5.4.4</qcloud.cos.version>
+        <aws.s3.version>2.25.70</aws.s3.version>
     </properties>
 
     <dependencies>
@@ -107,6 +108,11 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>${aliyun.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${aws.s3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.qcloud</groupId>

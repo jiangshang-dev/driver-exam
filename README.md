@@ -17,11 +17,22 @@
 
 ---
 
+## 🔗 源码仓库
+
+| 端 | 仓库地址 |
+| --- | --- |
+| 后端服务（管理后台 / API / AI / VOD） | [https://github.com/jiangshang-dev/driver-exam](https://github.com/jiangshang-dev/driver-exam) |
+| 移动端（App / H5 / 微信小程序） | [https://github.com/jiangshang-dev/drive-test-app](https://github.com/jiangshang-dev/drive-test-app) |
+
+> 建议先 Star 两个仓库再 Clone，方便后续第一时间获取功能更新与问题修复。
+
+---
+
 > ### ⭐ Star First, Clone Later
 >
 > **如果这个项目对你有帮助，请先点一下右上角的 Star 再 Clone。**
 > 不 Star 直接 Clone 的话……项目可能会在凌晨三点给你抛一个 `NullPointerException` 😄
-> （开玩笑的。但 Star 是开源作者最大的动力，也是你 debug 时最好的玄学加持。）
+> （开玩笑的。但 Star 是开源作者持续迭代最大的动力。）
 
 ---
 
@@ -34,7 +45,9 @@
 - **AI 智能助手**：基于 AgentScope 的多轮对话、流式输出、思考过程展示
 - **文件与视频**：统一文件服务器、大文件分片断点续传、阿里云 VOD 视频点播
 
-项目源自 renren-security 快速开发脚手架，在其权限体系上补齐了完整驾考业务、AI 能力和商城体系，适合作为**毕业设计 / 课程设计 / 企业级脚手架 / 二次开发底座**。
+项目在 renren-security 成熟的权限体系之上，补齐了完整的驾考业务、AI 能力与商城体系。代码结构清晰、模块边界明确，既适合作为**毕业设计 / 课程设计**，也可以直接用于**企业级项目与商业产品二次开发**。
+
+> 💼 **本项目允许商业使用**：采用 Apache License 2.0，个人与企业均可免费用于商业项目，无需额外授权或授权费用，详见下方「商业使用」章节。
 
 ---
 
@@ -75,6 +88,29 @@
 - 字典、参数、定时任务、日志、系统监控
 - 多数据源、代码生成器
 - 登录方式：账号密码、手机号验证码（验证码登录自动注册）、微信小程序一键登录
+
+---
+
+## 🛣️ 持续迭代
+
+项目仍在**持续完善和优化**中，功能与体验会不断更新，不是一次性交付的静态代码：
+
+- 持续补充业务功能，修复使用过程中发现的问题
+- 持续优化接口性能、页面加载速度与移动端交互体验
+- 持续增强 AI 能力（多模型接入、多模态、语音、知识库等）
+- 计划方向：管理后台数据看板、支付/短信服务商对接、更多对象存储适配、题库与考试体验优化
+- 所有更新会同步到后端仓库与移动端仓库，建议 **Watch + Star** 获取最新版本
+- 欢迎通过 Issue 反馈 Bug 或新需求，也欢迎 Pull Request 一起完善
+
+---
+
+## 💼 商业使用
+
+- 本项目采用 **Apache License 2.0**，**允许个人和企业免费商用**，包括闭源商用、私有化部署和二次开发，无需额外授权，也没有授权费用
+- 商用时请保留项目原始的版权声明与 [LICENSE](LICENSE) 文件
+- 项目按「现状」提供，不附带任何明示或暗示的担保；因使用本项目产生的风险由使用者自行承担
+- 如用于商业项目，欢迎 Star 支持，也欢迎在项目介绍中注明来源（非强制）
+- 如需深度定制、功能扩展或技术合作，欢迎通过 Issue 联系交流
 
 ---
 
@@ -140,7 +176,7 @@ driver-exam
 └─ pom.xml                      Maven 聚合工程
 ```
 
-移动端工程 `drive-test-app` 为独立 uni-app 项目（App / H5 / 微信小程序）。
+移动端工程 `drive-test-app` 为独立的 uni-app 项目（App / H5 / 微信小程序），源码地址：[https://github.com/jiangshang-dev/drive-test-app](https://github.com/jiangshang-dev/drive-test-app)。
 
 ---
 
@@ -272,12 +308,16 @@ A：先在「AI 管理 → 模型配置」里新增模型并点「测试可用�
 
 ## 🤝 参与贡献
 
-1. Fork 本仓库
-2. 新建分支：`feature/your-feature`
-3. 提交代码：`feat: xxx`
-4. 发起 Pull Request
+项目会长期维护、持续迭代，欢迎一起把它做得更好：
 
-欢迎提交 Issue 反馈 Bug 或新需求。
+1. Fork 对应仓库
+   - 后端：[jiangshang-dev/driver-exam](https://github.com/jiangshang-dev/driver-exam)
+   - 移动端：[jiangshang-dev/drive-test-app](https://github.com/jiangshang-dev/drive-test-app)
+2. 新建分支：`feature/your-feature` 或 `fix/your-fix`
+3. 提交代码：建议使用 `feat: xxx`、`fix: xxx`、`docs: xxx` 规范
+4. 发起 Pull Request，说明改动内容和测试情况
+
+发现 Bug 或有新需求，欢迎提交 Issue；有价值的建议会优先排期实现。
 
 **如果这个项目帮到了你，别忘了点一个 ⭐ Star，这是对开源最好的支持。**
 
@@ -285,7 +325,12 @@ A：先在「AI 管理 → 模型配置」里新增模型并点「测试可用�
 
 ## 📄 License
 
-[Apache License 2.0](LICENSE)
+本项目基于 [Apache License 2.0](LICENSE) 开源：
+
+- ✅ 允许商业使用、修改、分发、私有化部署与闭源集成
+- ✅ 无需支付授权费用
+- ⚠️ 请保留原始版权声明与 LICENSE 文件
+- ⚠️ 软件按「现状」提供，不附带任何担保
 
 ---
 

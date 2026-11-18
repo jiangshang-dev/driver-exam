@@ -2,8 +2,17 @@
   <div class="mod-demo__apuserlikerecord">
     <!-- 添加查询条件表单 -->
     <el-form :inline="true" :model="queryForm" @submit.prevent="handleQuery" style="margin-bottom: 20px">
-      <el-form-item label="题目内容">
-        <el-input v-model="queryForm.userId" placeholder="请输入题目内容" clearable></el-input>
+      <el-form-item label="用户手机号">
+        <el-input v-model="queryForm.phone" placeholder="请输入用户手机号" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="视频标题">
+        <el-input v-model="queryForm.videoTitle" placeholder="请输入视频标题" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="点赞类型">
+        <el-select v-model="queryForm.targetType" placeholder="全部" clearable style="width: 120px">
+          <el-option label="视频" value="video"></el-option>
+          <el-option label="评论" value="comment"></el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item>
@@ -66,7 +75,9 @@ const state = reactive({ ...useView(view), ...toRefs(view) });
 
 // 添加查询表单相关
 const queryForm = reactive({
-  userId: "",
+  phone: "",
+  videoTitle: "",
+  targetType: ""
 });
 
 const handleQuery = () => {
@@ -80,7 +91,9 @@ const handleQuery = () => {
 };
 
 const resetQuery = () => {
-  queryForm.userId = "";
+  queryForm.phone = "";
+  queryForm.videoTitle = "";
+  queryForm.targetType = "";
   handleQuery();
   // 确保dataForm已初始化并清空查询条件
   if (!state.dataForm) {

@@ -3,6 +3,7 @@ package com.heima.controller.study;
 import com.heima.business.study.entity.ApExamPlanEntity;
 import com.heima.business.study.entity.ApKnowledgeCardEntity;
 import com.heima.business.study.entity.ApPracticeProgressEntity;
+import com.heima.business.mall.service.MallService;
 import com.heima.business.study.service.StudyFeatureService;
 import com.heima.common.utils.JwtUtils;
 import com.heima.common.utils.Result;
@@ -34,6 +35,8 @@ public class StudyController {
 
     @Resource
     private StudyFeatureService studyFeatureService;
+    @Resource
+    private MallService mallService;
 
     @GetMapping("/summary")
     @Operation(summary = "学习概览")
@@ -49,13 +52,20 @@ public class StudyController {
         if (userId == null) {
             return new Result<Map<String, Object>>().error("请先登录");
         }
-        return new Result<Map<String, Object>>().ok(studyFeatureService.checkin(
+        Map<String, Object> summary = studyFeatureService.checkin(
                 userId,
                 request.getSubject(),
                 request.getExamType(),
                 request.getQuestionCount(),
                 request.getCorrectCount()
-        ));
+        );
+        try {
+            int balance = mallService.grant(userId, "CHECKIN", java.time.LocalDate.now().toString(), 0);
+            summary.put("pointsBalance", balance);
+        } catch (Exception ignored) {
+            summary.put("pointsBalance", null);
+        }
+        return new Result<Map<String, Object>>().ok(summary);
     }
 
     @PostMapping("/plan")

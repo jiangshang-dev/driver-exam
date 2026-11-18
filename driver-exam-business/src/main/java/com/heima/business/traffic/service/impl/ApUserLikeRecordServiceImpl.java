@@ -49,8 +49,28 @@ public class ApUserLikeRecordServiceImpl extends CrudServiceImpl<ApUserLikeRecor
     public PageData<ApUserLikeRecordDTO> pages(Map<String, Object> params) {
         String limitStr = (String) params.get("limit");
         String pageNoStr = (String) params.get("page");
+        String phone = (String) params.get("phone");
+        String targetType = (String) params.get("targetType");
+        String videoTitle = (String) params.get("videoTitle");
 
         QueryWrapper<ApUserLikeRecordEntity> wrapper = new QueryWrapper<>();
+
+        // 按手机号筛选用户
+        if (StrUtil.isNotBlank(phone)) {
+            List<ApUserEntity> users = apUserDao.selectList(new QueryWrapper<ApUserEntity>().like("phone", phone));
+            if (users.isEmpty()) {
+                return new PageData<>(List.of(), 0L);
+            }
+            wrapper.in("user_id", users.stream().map(ApUserEntity::getId).toList());
+        }
+        wrapper.eq(StrUtil.isNotBlank(targetType), "target_type", targetType);
+        if (StrUtil.isNotBlank(videoTitle)) {
+            List<ApTrafficVideoEntity> videos = apTrafficVideoDao.selectList(new QueryWrapper<ApTrafficVideoEntity>().like("video_title", videoTitle));
+            if (videos.isEmpty()) {
+                return new PageData<>(List.of(), 0L);
+            }
+            wrapper.in("target_id", videos.stream().map(ApTrafficVideoEntity::getId).toList());
+        }
 
         // 解析分页参数
         int limit = StrUtil.isBlank(limitStr) ? 10 : Integer.parseInt(limitStr);  // 默认每页10条
@@ -63,9 +83,9 @@ public class ApUserLikeRecordServiceImpl extends CrudServiceImpl<ApUserLikeRecor
         List<ApUserLikeRecordEntity> records = page.getRecords();
         records.forEach(record -> {
             ApUserEntity userEntity = apUserDao.selectById(record.getUserId());
-            record.setPhone(userEntity.getPhone());
+            record.setPhone(userEntity == null ? "" : userEntity.getPhone());
             ApTrafficVideoEntity trafficVideo = apTrafficVideoDao.selectById(record.getTargetId());
-            record.setVideoTitle(trafficVideo.getVideoTitle());
+            record.setVideoTitle(trafficVideo == null ? "" : trafficVideo.getVideoTitle());
         });
 
         // 转换实体类到 DTO

@@ -4,7 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.BCrypt;
+import com.heima.common.utils.CacheService;
 import com.heima.common.utils.JwtUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +38,12 @@ public class LoginController {
 
     @Resource
     private ApUserService userService;
+
+    @Resource
+    private CacheService cacheService;
+
+    private static final String SMS_CODE_KEY = "login:sms:code:";
+    private static final String SMS_LIMIT_KEY = "login:sms:limit:";
 
     /**
      * 微信小程序登录
@@ -159,5 +171,168 @@ public class LoginController {
             log.error("会员状态检查失败", e);
             return new Result<Map<String, Object>>().error("检查失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 发送登录验证码
+     */
+    @GetMapping("/sendCode")
+    public Result<Map<String, Object>> sendCode(@RequestParam String mobile) {
+        if (!mobile.matches("^1[3-9]\\d{9}$")) {
+            return new Result<Map<String, Object>>().error("手机号格式不正确");
+        }
+        String limitKey = SMS_LIMIT_KEY + mobile;
+        if (cacheService.get(limitKey) != null) {
+            return new Result<Map<String, Object>>().error("验证码发送过于频繁，请稍后再试");
+        }
+        String code = RandomUtil.randomNumbers(6);
+        cacheService.setEx(SMS_CODE_KEY + mobile, code, 5, TimeUnit.MINUTES);
+        cacheService.setEx(limitKey, "1", 60, TimeUnit.SECONDS);
+        log.info("【登录验证码】mobile={}, code={}（5分钟内有效）", mobile, code);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", "验证码已发送");
+        return new Result<Map<String, Object>>().ok(result);
+    }
+
+    /**
+     * 手机号验证码登录（手机号不存在时自动注册）
+     */
+    @Log(type = "sms", description = "手机号验证码登录", isLogin = true)
+    @PostMapping("/verifyCodeLogin")
+    public Result<Map<String, Object>> verifyCodeLogin(@RequestParam String mobile, @RequestParam String code) {
+        if (!mobile.matches("^1[3-9]\\d{9}$")) {
+            return new Result<Map<String, Object>>().error("手机号格式不正确");
+        }
+        String cacheCode = cacheService.get(SMS_CODE_KEY + mobile);
+        if (StrUtil.isBlank(cacheCode)) {
+            return new Result<Map<String, Object>>().error("验证码已过期，请重新获取");
+        }
+        if (!cacheCode.equals(code)) {
+            return new Result<Map<String, Object>>().error("验证码不正确");
+        }
+        cacheService.delete(SMS_CODE_KEY + mobile);
+
+        ApUserEntity user = userService.findByPhone(mobile);
+        if (user == null) {
+            user = new ApUserEntity();
+            user.setUsername("u_" + mobile);
+            user.setPhone(mobile);
+            user.setRealName("驾考用户" + mobile.substring(mobile.length() - 4));
+            user.setVipLevel(0);
+            user.setIntegral(0);
+            user.setStatus(true);
+            user.setCreateTime(LocalDateTime.now());
+            user.setUpdateTime(LocalDateTime.now());
+            userService.save(user);
+            log.info("验证码登录自动注册用户: userId={}, mobile={}", user.getId(), mobile);
+        }
+        if (Boolean.FALSE.equals(user.getStatus())) {
+            return new Result<Map<String, Object>>().error("账号已被禁用");
+        }
+        userService.updateLastLoginTime(user.getId());
+        return new Result<Map<String, Object>>().ok(buildLoginMap(user));
+    }
+
+    /**
+     * 用户名密码登录（用户名或手机号 + 密码）
+     */
+    @Log(type = "username", description = "用户名密码登录", isLogin = true)
+    @PostMapping("/username")
+    public Result<Map<String, Object>> usernameLogin(@RequestBody Map<String, String> params) {
+        String username = StrUtil.trim(params.get("username"));
+        String password = params.get("password");
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return new Result<Map<String, Object>>().error("用户名和密码不能为空");
+        }
+        ApUserEntity user = userService.findByUsername(username);
+        if (user == null) {
+            user = userService.findByPhone(username);
+        }
+        if (user == null) {
+            return new Result<Map<String, Object>>().error("用户名或密码错误");
+        }
+        if (StrUtil.isBlank(user.getPassword())) {
+            return new Result<Map<String, Object>>().error("该账号未设置密码，请使用手机号验证码登录");
+        }
+        if (!passwordMatches(password, user.getPassword())) {
+            return new Result<Map<String, Object>>().error("用户名或密码错误");
+        }
+        if (Boolean.FALSE.equals(user.getStatus())) {
+            return new Result<Map<String, Object>>().error("账号已被禁用");
+        }
+        userService.updateLastLoginTime(user.getId());
+        return new Result<Map<String, Object>>().ok(buildLoginMap(user));
+    }
+
+    /**
+     * 用户名密码注册
+     */
+    @Log(type = "register", description = "用户名密码注册", isLogin = true)
+    @PostMapping("/register")
+    public Result<Map<String, Object>> register(@RequestBody Map<String, String> params) {
+        String username = StrUtil.trim(params.get("username"));
+        String password = params.get("password");
+        String confirmPassword = params.get("confirmPassword");
+        String mobile = StrUtil.trim(params.get("mobile"));
+
+        if (StrUtil.isBlank(username) || username.length() < 3 || username.length() > 20) {
+            return new Result<Map<String, Object>>().error("用户名长度需在 3-20 个字符之间");
+        }
+        if (StrUtil.isBlank(password) || password.length() < 6) {
+            return new Result<Map<String, Object>>().error("密码长度不能少于 6 位");
+        }
+        if (StrUtil.isNotBlank(confirmPassword) && !password.equals(confirmPassword)) {
+            return new Result<Map<String, Object>>().error("两次输入的密码不一致");
+        }
+        if (userService.findByUsername(username) != null) {
+            return new Result<Map<String, Object>>().error("用户名已存在");
+        }
+        if (StrUtil.isNotBlank(mobile)) {
+            if (!mobile.matches("^1[3-9]\\d{9}$")) {
+                return new Result<Map<String, Object>>().error("手机号格式不正确");
+            }
+            if (userService.findByPhone(mobile) != null) {
+                return new Result<Map<String, Object>>().error("手机号已被注册");
+            }
+        }
+
+        ApUserEntity user = new ApUserEntity();
+        user.setUsername(username);
+        user.setPassword(BCrypt.hashpw(password));
+        user.setRealName(username);
+        user.setPhone(StrUtil.blankToDefault(mobile, null));
+        user.setVipLevel(0);
+        user.setIntegral(0);
+        user.setStatus(true);
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        userService.save(user);
+        log.info("用户注册成功: userId={}, username={}", user.getId(), username);
+
+        userService.updateLastLoginTime(user.getId());
+        return new Result<Map<String, Object>>().ok(buildLoginMap(user));
+    }
+
+    private boolean passwordMatches(String rawPassword, String storedPassword) {
+        if (storedPassword.startsWith("$2a$") || storedPassword.startsWith("$2b$") || storedPassword.startsWith("$2y$")) {
+            return BCrypt.checkpw(rawPassword, storedPassword);
+        }
+        return storedPassword.equals(rawPassword) || storedPassword.equals(SecureUtil.md5(rawPassword));
+    }
+
+    private Map<String, Object> buildLoginMap(ApUserEntity user) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", user.getId());
+        result.put("account", user.getUsername());
+        result.put("nickname", StrUtil.blankToDefault(user.getRealName(), user.getUsername()));
+        result.put("mobile", user.getPhone());
+        result.put("token", JwtUtils.generateToken(user.getId()));
+        result.put("vipLevel", user.getVipLevel() == null ? 0 : user.getVipLevel());
+        result.put("vipExpireTime", user.getVipExpireTime());
+        result.put("level", 1);
+        result.put("avatar", user.getAvatar());
+        result.put("integral", user.getIntegral() == null ? 0 : user.getIntegral());
+        return result;
     }
 }

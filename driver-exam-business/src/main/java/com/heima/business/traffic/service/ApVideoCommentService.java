@@ -34,4 +34,14 @@ public interface ApVideoCommentService extends CrudService<ApVideoCommentEntity,
 
     boolean liked(String id, String token);
 
+    /**
+     * 审核评论
+     *
+     * @param ids         评论ID集合
+     * @param auditStatus 审核状态：1-通过，2-不通过
+     * @param auditRemark 审核备注
+     * @param auditUserId 审核人ID
+     */
+    void audit(List<Long> ids, Integer auditStatus, String auditRemark, Long auditUserId);
+
 }

@@ -9,15 +9,15 @@
     <name>driver-exam</name>
     <description>驾考系统</description>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.4</version>
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.4</version>
+    </parent>
 
     <modules>
         <module>driver-exam-common</module>
-		<module>driver-exam-dynamic-datasource</module>
+        <module>driver-exam-dynamic-datasource</module>
         <module>driver-exam-admin</module>
         <module>driver-exam-api</module>
         <module>driver-exam-generator</module>
@@ -40,7 +40,37 @@
         <knife4j.version>4.5.0</knife4j.version>
         <springdoc.version>2.8.4</springdoc.version>
         <jackson.version>2.15.2</jackson.version>
+        <agentscope.version>2.0.0-RC4</agentscope.version>
+        <openai-java.version>4.28.0</openai-java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.agentscope</groupId>
+                <artifactId>agentscope</artifactId>
+                <version>${agentscope.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.agentscope</groupId>
+                <artifactId>agentscope-harness</artifactId>
+                <version>${agentscope.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.agentscope</groupId>
+                <artifactId>agentscope-spring-boot-starter</artifactId>
+                <version>${agentscope.version}</version>
+            </dependency>
+
+            <!-- AgentScope OpenAITextEmbedding 依赖 -->
+            <dependency>
+                <groupId>com.openai</groupId>
+                <artifactId>openai-java</artifactId>
+                <version>${openai-java.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>

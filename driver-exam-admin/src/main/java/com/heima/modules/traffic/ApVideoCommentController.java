@@ -1,7 +1,9 @@
 package com.heima.modules.traffic;
 
+import com.heima.business.traffic.dto.ApVideoCommentAuditDTO;
 import com.heima.business.traffic.dto.ApVideoCommentDTO;
 import com.heima.business.traffic.service.ApVideoCommentService;
+import com.heima.modules.security.user.SecurityUser;
 import com.heima.common.annotation.LogOperation;
 import com.heima.common.constant.Constant;
 import com.heima.common.page.PageData;
@@ -94,6 +96,19 @@ public class ApVideoCommentController {
         AssertUtils.isArrayEmpty(ids, "id");
 
         apVideoCommentService.delete(ids);
+
+        return new Result();
+    }
+
+    @PostMapping("audit")
+    @Operation(summary = "审核")
+    @LogOperation("审核")
+    @RequiresPermissions("apvideocomment:update")
+    public Result audit(@RequestBody ApVideoCommentAuditDTO dto){
+        AssertUtils.isNull(dto.getIds(), "ids");
+        AssertUtils.isNull(dto.getAuditStatus(), "auditStatus");
+
+        apVideoCommentService.audit(dto.getIds(), dto.getAuditStatus(), dto.getAuditRemark(), SecurityUser.getUserId());
 
         return new Result();
     }

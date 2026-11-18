@@ -75,4 +75,22 @@ public abstract class AbstractCloudStorageService {
      */
     public abstract String uploadSuffix(InputStream inputStream, String suffix);
 
+    /**
+     * 文件上传（带内容长度，支持大文件流式上传；默认实现复用上面的方法）
+     * @param inputStream   字节流
+     * @param path          文件路径，包含文件名
+     * @param contentLength 文件字节数
+     * @return              返回http地址
+     */
+    public String upload(InputStream inputStream, String path, long contentLength) {
+        return upload(inputStream, path);
+    }
+
+    /**
+     * 文件上传（带内容长度，支持大文件流式上传）
+     */
+    public String uploadSuffix(InputStream inputStream, String suffix, long contentLength) {
+        return uploadSuffix(inputStream, suffix);
+    }
+
 }

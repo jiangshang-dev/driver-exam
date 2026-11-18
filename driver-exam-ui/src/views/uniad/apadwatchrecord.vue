@@ -2,8 +2,8 @@
   <div class="mod-demo__apadwatchrecord">
     <!-- 添加查询条件表单 -->
     <el-form :inline="true" :model="queryForm" @submit.prevent="handleQuery" style="margin-bottom: 20px;">
-      <el-form-item label="用户昵称">
-        <el-input v-model="queryForm.phone" placeholder="请输入用户昵称" clearable></el-input>
+      <el-form-item label="用户手机号/昵称">
+        <el-input v-model="queryForm.phone" placeholder="请输入手机号或昵称" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleQuery">查询</el-button>
@@ -66,7 +66,7 @@
 
 <script lang="ts" setup>
 import useView from "@/hooks/useView";
-import { reactive, ref, toRefs } from "vue";
+import { reactive, toRefs } from "vue";
 
 const view = reactive({
   deleteIsBatch: true,
@@ -77,11 +77,6 @@ const view = reactive({
 });
 
 const state = reactive({ ...useView(view), ...toRefs(view) });
-
-const addOrUpdateRef = ref();
-const addOrUpdateHandle = (id?: number) => {
-  addOrUpdateRef.value.init(id);
-};
 
 // 添加查询表单相关
 const queryForm = reactive({

@@ -19,6 +19,9 @@
       <el-form-item>
         <el-button v-if="state.hasPermission('aptrafficvideo:delete')" type="danger" @click="state.deleteHandle()"> 删除 </el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button v-if="state.hasPermission('aptrafficvideo:export')" type="primary" @click="state.exportHandle()"> 导出 </el-button>
+      </el-form-item>
     </el-form>
     <el-table v-loading="state.dataListLoading" :data="state.dataList" border @selection-change="state.dataListSelectionChangeHandle" style="width: 100%">
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>

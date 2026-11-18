@@ -15,7 +15,7 @@ import { getThemeConfigCache, setThemeColor, updateTheme } from "./utils/theme";
 
 export default defineComponent({
   name: "App",
-  components: { Layout, FullscreenLayout, [ElConfigProvider.name]: ElConfigProvider },
+  components: { Layout, FullscreenLayout, [(ElConfigProvider as any).name]: ElConfigProvider },
   setup() {
     const store = useAppStore();
     const route = useRoute();

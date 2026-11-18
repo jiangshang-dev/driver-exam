@@ -111,6 +111,13 @@ auth:
 drive:
   key: c840fd2624309bc47aed32c5065ea20f
   url: http://v.juhe.cn/jztk/query
+  ai:
+    model:
+      base-url: ${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
+      api-key: ${DASHSCOPE_API_KEY:${langchain4j.open-ai.chat-model.api-key:}}
+      model-name: ${DASHSCOPE_MODEL:qwen-plus}
+      timeout-seconds: 900
+      enable-thinking: false
 
 langchain4j:
   open-ai:

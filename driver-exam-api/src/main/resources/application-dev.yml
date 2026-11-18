@@ -1,3 +1,11 @@
+wechat:
+  pay:
+    enabled: false
+    app-id:
+    mch-id:
+    api-key:
+    notify-url: http://localhost:8081/api/mall/pay/notify
+
 spring:
   datasource:
     druid:

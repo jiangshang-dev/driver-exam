@@ -23,6 +23,8 @@ knife4j:
 
 spring:
   # 环境 dev|test|prod
+  application:
+    name: driver-exam
   profiles:
     active: dev
   messages:
@@ -46,7 +48,7 @@ spring:
       database: 0
       host: localhost
       port: 6379
-      password: Lingxi@7ujm   # 密码（默认为空）
+      password:   # 密码（默认为空）
       timeout: 6000ms  # 连接超时时长（毫秒）
       lettuce:
         pool:
@@ -96,3 +98,10 @@ auth:
 drive:
   key: c840fd2624309bc47aed32c5065ea20f
   url: http://v.juhe.cn/jztk/query
+  ai:
+    model:
+      base-url: ${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
+      api-key: ${DASHSCOPE_API_KEY:}
+      model-name: ${DASHSCOPE_MODEL:qwen-plus}
+      timeout-seconds: 900
+      enable-thinking: false

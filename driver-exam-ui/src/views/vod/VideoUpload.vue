@@ -1,8 +1,14 @@
 <template>
   <div class="video-upload-container">
     <h2>视频上传</h2>
-    <!-- 使用新创建的上传组件 -->
-    <VodUpload />
+    <el-tabs v-model="uploadTab" type="border-card">
+      <el-tab-pane label="阿里云VOD上传" name="vod">
+        <VodUpload />
+      </el-tab-pane>
+      <el-tab-pane label="大文件分片上传" name="chunk">
+        <BigFileUpload @success="handleBigFileUploaded" />
+      </el-tab-pane>
+    </el-tabs>
 
     <!-- 保留原有的视频列表部分 -->
     <div class="video-list-section">
@@ -34,6 +40,33 @@
         @current-change="handleCurrentChange"
       />
 
+    </div>
+
+    <!-- 大文件分片上传记录 -->
+    <div class="video-list-section uploaded-file-section">
+      <h2>已上传文件</h2>
+      <el-table v-if="uploadedFiles.length > 0" :data="uploadedFiles" style="width: 100%">
+        <el-table-column prop="fileName" label="文件名" min-width="220" show-overflow-tooltip></el-table-column>
+        <el-table-column label="大小" width="110">
+          <template #default="scope">{{ formatFileSize(scope.row.size) }}</template>
+        </el-table-column>
+        <el-table-column label="类型" width="90">
+          <template #default="scope">
+            <el-tag :type="isVideoFile(scope.row.fileName) ? 'success' : 'info'">
+              {{ isVideoFile(scope.row.fileName) ? "视频" : "文件" }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="time" label="上传时间" width="180"></el-table-column>
+        <el-table-column label="操作" width="220">
+          <template #default="scope">
+            <el-button v-if="isVideoFile(scope.row.fileName)" size="small" type="primary" @click="playUploadedFile(scope.row)">播放</el-button>
+            <el-button v-else size="small" type="primary" @click="previewFile(scope.row)">预览</el-button>
+            <el-button size="small" @click="copyFileUrl(scope.row)">复制链接</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-empty v-else description="暂无上传记录，大文件分片上传成功后显示在这里" :image-size="60"></el-empty>
     </div>
 
     <!-- 视频播放对话框 -->
@@ -69,11 +102,67 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import baseService from '@/service/baseService'
 // 引入新创建的上传组件
 import VodUpload from '@/components/VodUpload.vue'
+// 大文件分片上传（MinIO/RustFS 等文件服务器）
+import BigFileUpload from '@/components/BigFileUpload.vue'
 // 引入新的视频播放组件
 import VideoPlayer from '@/components/VideoPlayer.vue'
 
+// 上传方式：vod-阿里云VOD，chunk-大文件分片
+const uploadTab = ref('vod')
+
 // 视频列表
 const videoList = ref([])
+
+// 大文件分片上传记录
+const uploadedFiles = ref([])
+const VIDEO_EXTENSIONS = ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv', 'webm', 'm4v', 'mpeg', 'mpg', 'ts', '3gp']
+
+const isVideoFile = (fileName) => {
+  if (!fileName) return false
+  const ext = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : ''
+  return VIDEO_EXTENSIONS.includes(ext)
+}
+
+const formatFileSize = (bytes) => {
+  if (!bytes) return '-'
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+  if (bytes < 1024 * 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + ' MB'
+  return (bytes / 1024 / 1024 / 1024).toFixed(2) + ' GB'
+}
+
+const handleBigFileUploaded = (payload) => {
+  uploadedFiles.value.unshift({
+    url: payload.url,
+    fileName: payload.fileName,
+    size: payload.size,
+    time: new Date().toLocaleString()
+  })
+}
+
+const playUploadedFile = (row) => {
+  currentVideo.value = {
+    title: row.fileName,
+    playUrl: row.url,
+    coverUrl: '',
+    viewCount: 0,
+    createTime: row.time,
+    description: ''
+  }
+  showVideoDialog.value = true
+}
+
+const previewFile = (row) => {
+  window.open(row.url, '_blank')
+}
+
+const copyFileUrl = async (row) => {
+  try {
+    await navigator.clipboard.writeText(row.url)
+    ElMessage.success('链接已复制')
+  } catch (e) {
+    ElMessage.warning('复制失败，请手动复制')
+  }
+}
 
 // 视频播放对话框相关
 const showVideoDialog = ref(false)

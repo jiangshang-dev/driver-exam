@@ -11,27 +11,16 @@
         <CoverImageUpload v-model="dataForm.coverImage" />
       </el-form-item>
 
-      <!-- 简化版视频上传组件 -->
+      <!-- 大文件分片上传 -->
       <el-form-item label="视频上传">
-        <div class="video-upload-container">
-          <SimpleVodUpload ref="vodUploadRef" @upload-success="handleUploadSuccess" @upload-error="handleUploadError" />
-          <!-- 显示已上传的视频信息 -->
-          <div v-if="uploadedVideoInfo" class="uploaded-video-info">
-            <el-alert
-              title="视频上传成功"
-              type="success"
-              :description="`视频ID: ${uploadedVideoInfo.videoId}, 视频标题: ${uploadedVideoInfo.title}`"
-              show-icon
-              closable
-              @close="clearUploadedVideo"
-            />
+        <div class="video-upload-box">
+          <BigFileUpload ref="bigUploadRef" compact accept="video/*" @success="handleBigUploadSuccess" />
+          <div v-if="dataForm.videoUrl" class="uploaded-file">
+            <span class="uploaded-label">已上传：</span>
+            <a :href="dataForm.videoUrl" target="_blank" rel="noopener">{{ uploadedFileName || dataForm.videoUrl }}</a>
+            <el-button link type="danger" @click="clearUploadedVideo">移除</el-button>
           </div>
         </div>
-      </el-form-item>
-
-      <!-- 隐藏字段，用于存储视频ID -->
-      <el-form-item label="阿里云视频ID" prop="aliyunVideoId" v-show="false">
-        <el-input v-model="dataForm.aliyunVideoId" placeholder="阿里云视频ID"></el-input>
       </el-form-item>
 
       <el-form-item label="视频分类" prop="category">
@@ -87,32 +76,25 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import baseService from "@/service/baseService";
 import { ElMessage } from "element-plus";
-// 引入简化版视频上传组件
-import SimpleVodUpload from "@/components/SimpleVodUpload.vue";
+// 大文件分片上传（MinIO/RustFS 等文件服务器）
+import BigFileUpload from "@/components/BigFileUpload.vue";
 import CoverImageUpload from "@/components/CoverImageUpload.vue";
 
 const emit = defineEmits(["refreshDataList"]);
 
 const visible = ref(false);
 const dataFormRef = ref();
-const vodUploadRef = ref();
+const bigUploadRef = ref();
+const uploadedFileName = ref("");
 
 // 定义类型接口
-interface VideoInfo {
-  videoId: string;
-  title: string;
-}
-
 interface CategoryOption {
   id: string;
   categoryName: string;
 }
-
-// 已上传的视频信息
-const uploadedVideoInfo = ref<VideoInfo | null>(null);
 
 const dataForm = reactive({
   id: "",
@@ -154,48 +136,19 @@ const dataForm = reactive({
 const rules = ref({
   videoTitle: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
   videoDesc: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  coverImage: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  // 视频URL和阿里云视频ID不再作为必填项，因为通过上传获取
-  // aliyunVideoId: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  playAuth: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  videoDuration: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  videoSize: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  videoFormat: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  resolution: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  category: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  tags: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  coverImage: [{ required: true, message: "必填项不能为空", trigger: "change" }],
+  category: [{ required: true, message: "必填项不能为空", trigger: "change" }],
   instructor: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  difficultyLevel: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  isVip: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  isHot: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  isDownloadable: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  viewCount: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  likeCount: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  shareCount: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  commentCount: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  downloadCount: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  rating: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  ratingCount: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
+  difficultyLevel: [{ required: true, message: "必填项不能为空", trigger: "change" }],
+  isVip: [{ required: true, message: "必填项不能为空", trigger: "change" }],
+  isHot: [{ required: true, message: "必填项不能为空", trigger: "change" }],
+  isDownloadable: [{ required: true, message: "必填项不能为空", trigger: "change" }],
   sortOrder: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  status: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  uploadUserId: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  auditUserId: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  auditTime: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  publishTime: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  isDeleted: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  gmtCreate: [{ required: true, message: "必填项不能为空", trigger: "blur" }],
-  gmtModified: [{ required: true, message: "必填项不能为空", trigger: "blur" }]
+  status: [{ required: true, message: "必填项不能为空", trigger: "change" }]
 });
 
 // 分类选项
 const categoryOptions = ref<CategoryOption[]>([]);
-
-// 监听视频标题变化，同步到上传组件
-watch(() => dataForm.videoTitle, (newTitle) => {
-  if (vodUploadRef.value && vodUploadRef.value.form) {
-    vodUploadRef.value.form.title = newTitle;
-  }
-});
 
 const init = (id?: number) => {
   visible.value = true;
@@ -242,12 +195,9 @@ const getInfo = (id: number) => {
 
     Object.assign(dataForm, data);
 
-    // 如果已有视频ID，显示已上传信息
-    if (res.data.aliyunVideoId) {
-      uploadedVideoInfo.value = {
-        videoId: res.data.aliyunVideoId,
-        title: res.data.videoTitle
-      };
+    // 回显已上传的视频
+    if (res.data.videoUrl) {
+      uploadedFileName.value = getFileName(res.data.videoUrl);
     }
   });
 };
@@ -265,28 +215,34 @@ const getCategory = () => {
   })
 };
 
-// 处理上传成功事件
-const handleUploadSuccess = (videoInfo: VideoInfo) => {
-  uploadedVideoInfo.value = videoInfo;
-  dataForm.aliyunVideoId = videoInfo.videoId;
-  // 如果表单标题为空，使用上传的视频标题
+const getFileName = (url: string) => {
+  if (!url) {
+    return "";
+  }
+  const name = url.split("?")[0].split("/").pop() || url;
+  return decodeURIComponent(name);
+};
+
+// 大文件上传成功
+const handleBigUploadSuccess = (payload: { url: string; fileName: string; size: number; extension: string }) => {
+  dataForm.videoUrl = payload.url;
+  (dataForm as any).videoSize = payload.size || "";
+  dataForm.videoFormat = payload.extension || "";
+  uploadedFileName.value = payload.fileName;
   if (!dataForm.videoTitle) {
-    dataForm.videoTitle = videoInfo.title;
+    dataForm.videoTitle = payload.fileName.replace(/\.[^.]+$/, "");
   }
   ElMessage.success("视频上传成功");
 };
 
-// 处理上传失败事件
-const handleUploadError = (error: string) => {
-  ElMessage.error(`视频上传失败: ${error}`);
-};
-
 // 清除已上传的视频信息
 const clearUploadedVideo = () => {
-  uploadedVideoInfo.value = null;
-  dataForm.aliyunVideoId = "";
-  if (vodUploadRef.value) {
-    vodUploadRef.value.resetForm();
+  uploadedFileName.value = "";
+  dataForm.videoUrl = "";
+  dataForm.videoSize = "";
+  dataForm.videoFormat = "";
+  if (bigUploadRef.value) {
+    bigUploadRef.value.reset();
   }
 };
 
@@ -298,7 +254,7 @@ const dataFormSubmitHandle = () => {
     }
 
     // 检查是否上传了视频
-    if (!dataForm.aliyunVideoId) {
+    if (!dataForm.videoUrl) {
       ElMessage.error("请先上传视频");
       return false;
     }
@@ -342,17 +298,42 @@ defineExpose({
 </script>
 
 <style scoped>
-.video-upload-container {
+.video-upload-box {
   width: 100%;
+  padding: 12px 14px;
+  border: 1px dashed #dcdfe6;
+  border-radius: 8px;
+  background: #fafbfc;
 }
 
-.uploaded-video-info {
-  margin-top: 15px;
+.uploaded-file {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #e4e7ed;
+  font-size: 13px;
+  color: #606266;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.video-upload-container :deep(.simple-vod-upload) {
+.uploaded-file a {
+  color: #409eff;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.uploaded-file a:hover {
+  text-decoration: underline;
+}
+
+.uploaded-label {
+  color: #909399;
+}
+
+.video-upload-box :deep(.big-file-upload) {
   padding: 0;
-  margin: 0;
 }
 </style>
 

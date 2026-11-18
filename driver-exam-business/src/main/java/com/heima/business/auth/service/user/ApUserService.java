@@ -13,5 +13,6 @@ public interface ApUserService extends CrudService<ApUserEntity, ApUserDTO> {
     public ApUserEntity getById(Long id);
     public void updateLastLoginTime(Long userId);
     public ApUserEntity findByPhone(String phone);
+    public ApUserEntity findByUsername(String username);
     PageData<ApUserDTO> pages(Map<String, Object> params);
 }

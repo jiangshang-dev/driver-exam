@@ -6,6 +6,7 @@ import com.heima.common.exception.RenException;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
@@ -55,12 +56,14 @@ public class S3CloudStorageService extends AbstractCloudStorageService {
         }
     }
 
-    private String upload(InputStream inputStream, String path, long contentLength) {
+    @Override
+    public String upload(InputStream inputStream, String path, long contentLength) {
         String endpointUrl = normalizeEndpoint(endpoint);
         try (S3Client client = S3Client.builder()
                 .endpointOverride(URI.create(endpointUrl))
                 .region(Region.US_EAST_1)
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
+                .httpClient(UrlConnectionHttpClient.create())
                 .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
                 .build()) {
             client.putObject(PutObjectRequest.builder().bucket(bucket).key(path).build(),

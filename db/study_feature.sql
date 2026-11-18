@@ -157,3 +157,19 @@ INSERT INTO ap_knowledge_card (id, subject, category, title, content, sort_order
 SELECT 8800000000000000012, 4, '文明驾驶', '礼让行人是判断题高频', '通过人行横道必须减速，遇行人正在通过要停车让行。学校、公交站、窄路会车减速靠右。不抢黄灯，不加塞，不向车外抛扔物品。', 60
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM ap_knowledge_card WHERE id = 8800000000000000012);
+
+-- 学习记录 / 考试记录 后台页面菜单（学习管理下）
+UPDATE sys_menu SET url = '/learning/studyRecord' WHERE pid = 1973335724252581890 AND name = '学习记录';
+UPDATE sys_menu SET url = '/learning/examRecord' WHERE pid = 1973335724252581890 AND name = '考试记录';
+
+INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date)
+SELECT 1978000000000000301, m.id, '查看', '', 'study:record:page', 1, '', 0, 1067246875800000001, NOW(), 1067246875800000001, NOW()
+FROM sys_menu m
+WHERE m.pid = 1973335724252581890 AND m.name = '学习记录'
+  AND NOT EXISTS (SELECT 1 FROM sys_menu WHERE id = 1978000000000000301);
+
+INSERT INTO sys_menu (id, pid, name, url, permissions, menu_type, icon, sort, creator, create_date, updater, update_date)
+SELECT 1978000000000000302, m.id, '查看', '', 'exam:record:page', 1, '', 0, 1067246875800000001, NOW(), 1067246875800000001, NOW()
+FROM sys_menu m
+WHERE m.pid = 1973335724252581890 AND m.name = '考试记录'
+  AND NOT EXISTS (SELECT 1 FROM sys_menu WHERE id = 1978000000000000302);

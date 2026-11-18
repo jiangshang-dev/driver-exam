@@ -110,4 +110,14 @@ public class ApUserServiceImpl extends CrudServiceImpl<ApUserDao, ApUserEntity, 
                 .eq(ApUserEntity::getPhone, phone)
                 .eq(ApUserEntity::getStatus, 1));
     }
+
+    /**
+     * 根据用户名查找用户
+     */
+    @Override
+    public ApUserEntity findByUsername(String username) {
+        return authUserDao.selectOne(new LambdaQueryWrapper<ApUserEntity>()
+                .eq(ApUserEntity::getUsername, username)
+                .eq(ApUserEntity::getStatus, 1));
+    }
 }

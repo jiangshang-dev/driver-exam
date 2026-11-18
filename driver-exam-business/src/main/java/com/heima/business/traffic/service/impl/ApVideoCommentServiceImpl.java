@@ -41,11 +41,38 @@ public class ApVideoCommentServiceImpl extends CrudServiceImpl<ApVideoCommentDao
     @Override
     public QueryWrapper<ApVideoCommentEntity> getWrapper(Map<String, Object> params) {
         String id = (String) params.get("id");
+        String videoId = (String) params.get("videoId");
+        String userId = (String) params.get("userId");
+        String auditStatus = (String) params.get("auditStatus");
+        String commentContent = (String) params.get("commentContent");
 
         QueryWrapper<ApVideoCommentEntity> wrapper = new QueryWrapper<>();
         wrapper.eq(StrUtil.isNotBlank(id), "id", id);
+        wrapper.eq(StrUtil.isNotBlank(videoId), "video_id", videoId);
+        wrapper.eq(StrUtil.isNotBlank(userId), "user_id", userId);
+        wrapper.eq(StrUtil.isNotBlank(auditStatus), "audit_status", auditStatus);
+        wrapper.like(StrUtil.isNotBlank(commentContent), "comment_content", commentContent);
+        wrapper.orderByDesc("gmt_create");
 
         return wrapper;
+    }
+
+    @Override
+    public void audit(List<Long> ids, Integer auditStatus, String auditRemark, Long auditUserId) {
+        if (ids == null || ids.isEmpty() || auditStatus == null) {
+            return;
+        }
+        for (Long id : ids) {
+            ApVideoCommentEntity entity = baseDao.selectById(id);
+            if (entity == null) {
+                continue;
+            }
+            entity.setAuditStatus(auditStatus);
+            entity.setAuditRemark(auditRemark);
+            entity.setAuditUserId(auditUserId);
+            entity.setAuditTime(new java.util.Date());
+            baseDao.updateById(entity);
+        }
     }
 
     @Override
